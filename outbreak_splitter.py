@@ -27,9 +27,9 @@ def split_analyze(filename):
 
     secondary_outbreaks = {}
     for s_node in secondary_nodes.keys():
-        secondary_outbreaks[s_node] = []
+        secondary_outbreaks[s_node] = [(s_node[0],s_node[1],secondary_nodes[s_node][1],0)]
     for s_node, s_node_info in secondary_nodes.items():
-        for g in range(s_node_info[1],len(generations)):
+        for g in range(s_node_info[1]+1,len(generations)):
             gen = generations[g]
             for deme in gen:
                 if distance(deme,s_node) < s_node_info[0]:

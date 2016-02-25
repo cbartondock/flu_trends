@@ -17,8 +17,10 @@ def analyze_kernel(filename):
     return kernel_output_filename
 
 def invert_to_kernel(r_of_t, N):
+    #r_of_t = {k: v for k, v in r_of_t.items() if v!=0.}
     t_of_r = {v: k for k, v in r_of_t.items()}
-    kernel = [(l, 1./(t_of_r[l]*r_of_t[even_round(t_of_r[l]/2.)]**(2*d)))
-            for l in [r_of_t[g] for g in range(3, N)]]
+    kernel = [(l, (-1 if t_of_r[l]*r_of_t[even_round(t_of_r[l]/2.)] == 0. or l<2 else 1./(t_of_r[l]*r_of_t[even_round(t_of_r[l]/2.)]**(2*d))))
+            for l in r_of_t.values()]
+    kernel = filter(lambda p: p[1]!=-1, kernel)
     kernel = zip(*kernel)
     return kernel
