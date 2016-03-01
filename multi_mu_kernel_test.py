@@ -1,23 +1,33 @@
 from universal import *
 from growth_simulator import simulate_outbreak
+from outbreak_splitter import *
 from kernel_analysis import *
 
 N = 10
-mus = [2.3, 2.5, 2.7]
+mus = [1.9,2.0,2.1]
 L = 1000000000
 C = 1
-n_sim = 300
-
+n_sim = 3
+max_pop = 10**5;
 kernels = {}
 for mu in mus:
     pairs =[]
     for i in range(0, n_sim):
-        r_of_t = simulate_outbreak(d, N, mu, L, C)[2]
-        kernel = list(zip(*invert_to_kernel(r_of_t, N)))
-        pairs.extend(kernel)
+        simulation_results = simulate_outbreak(d, N, mu, L, C, False, max_pop)
+        r_of_t = simulation_results[2]
+        generations = simulation_results[1]
+        secondary_r_of_ts = get_secondaries(generations)[1]
+        primary_kernel = list(zip(*invert_to_kernel(r_of_t)))
+        pairs.extend(primary_kernel)
+        secondary_count=0
+        for s_node, s_r_of_t in secondary_r_of_ts.items():
+            secondary_kernel = list(zip(*invert_to_kernel(s_r_of_t)))
+            secondary_count += len(secondary_kernel)
+            pairs.extend(secondary_kernel)
+        print "Secondary outbreaks got us an extra {0} kernel points for mu={1}".format(secondary_count, mu)
     pairs.sort(key = lambda p: p[0])
     kernels[mu] = zip(*pairs)
-    print kernels[mu]
+    #print kernels[mu]
 
 kernel_fig = plt.figure()
 kernel_fig.suptitle(r'Approximated Jump Kernel for simulation, $n_s={1}$'.format(mu,n_sim))

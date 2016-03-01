@@ -1,21 +1,13 @@
 from universal import *
 
-def recursive_split_analyze(source):
-
-    return generations + recursive_split_analyze(something)
-
-
-def split_analyze(filename):
-    data_dump_file = open(filename, 'rb')
-    data_dump = pickle.load(data_dump_file)
-    generations = data_dump[1]
-    max_r_of_t = data_dump[2]
+def get_secondaries(generations):
     secondary_nodes = {}
-    for g in range(1, len(generations)-1):
+    print len(generations)
+    for g in range(0, len(generations)-1):
         print g
+        metric = 1.2 * mean([distance(old_deme, origin) for old_deme in generations[g]])
         for deme in generations[g+1]:
             r_deme = distance(deme, origin)
-            metric = 1.2 * mean([distance(old_deme, origin) for old_deme in generations[g]])
             if r_deme > metric+1:
                 source = True
                 for s_node, s_node_info in secondary_nodes.items():
@@ -23,19 +15,36 @@ def split_analyze(filename):
                         source = False
                         break
                 if source:
-                    secondary_nodes[deme] = (.3*(r_deme-metric),g+1)
-
+                    secondary_nodes[deme] = (.14*(r_deme-metric),g+1)
+    print "Converting Format of Secondaries"
     secondary_outbreaks = {}
+    secondary_r_of_ts = {}
     for s_node in secondary_nodes.keys():
         secondary_outbreaks[s_node] = [(s_node[0],s_node[1],secondary_nodes[s_node][1],0)]
+        secondary_r_of_ts[s_node] = {0: 0}
+    #s_node_info has (px, py, global g, local g), s_node has (sx, sy)
     for s_node, s_node_info in secondary_nodes.items():
         for g in range(s_node_info[1]+1,len(generations)):
-            gen = generations[g]
-            for deme in gen:
-                if distance(deme,s_node) < s_node_info[0]:
-                    secondary_outbreaks[s_node].append((deme[0], deme[1], s_node_info[1], g-s_node_info[1]))
+            gen = [deme for deme in generations[g] if distance(deme,s_node) < s_node_info[0]]
+            secondary_r_of_ts[s_node][g-s_node_info[1]] = mean([distance(p,origin) for p in gen])
+            #for deme in gen:
+            #    secondary_outbreaks[s_node].append((deme[0], deme[1], s_node_info[1], g-s_node_info[1]))
     secondary_outbreaks = {k: v for k, v in secondary_outbreaks.items() if len(v)>5 }
-    return secondary_outbreaks
+    return secondary_outbreaks, secondary_r_of_ts
+
+def get_secondary_generational_r_of_t(secondary_outbreaks):
+    r_of_t_secondary = []
+    for source, outbreak in secondary_outbreaks.items():
+        for i in range(0, len(outbreak)):
+            distance_to_source = distance(outbreak[i],source)
+            r_of_t_secondary.append( (outbreak[i][3], distance_to_source) )
+    return r_of_t_secondary
+
+def split_analyze(filename):
+    data_dump_file = open(filename, 'rb')
+    data_dump = pickle.load(data_dump_file)
+    generations = data_dump[1]
+    return get_secondaries(generations)[0]
 
 def growth_rate_plot(secondary_outbreaks, filename):
     data_dump_file = open(filename, 'rb')
@@ -44,19 +53,12 @@ def growth_rate_plot(secondary_outbreaks, filename):
     (L, mu, N, d) = data_dump[4]
 
     l_of_t_primary = []
-    l_of_t_secondary = []
-    for source, outbreak in secondary_outbreaks.items():
-        for i in range(0, len(outbreak)):
-            distance_to_source = distance(outbreak[i],source)
-            l_of_t_secondary.append( (outbreak[i][3], distance_to_source) )
     for g in range(1, len(generations)-1):
         for deme in generations[g]:
             l_of_t_primary.append( (g, distance(deme, origin)) )
-
+    l_of_t_secondary = get_secondary_generational_r_of_t(secondary_outbreaks)
     l_of_t_av_primary = time_average(l_of_t_primary)
     l_of_t_av_secondary = time_average(l_of_t_secondary)
-
-
 
     rfig = plt.figure()
     rfig.suptitle(r'$l(t)$ distribution with secondary outbreaks captured, $\mu={0}$'.format(mu),fontsize=14,fontweight='bold')
@@ -80,11 +82,6 @@ def growth_rate_plot(secondary_outbreaks, filename):
     rav_ax.set_ylabel(r'$E[l(t)]$')
     rav_fig.savefig("outputs/suboutbreaks_average_growth_mu{0}_N{1}.png".format(mu,N),dpi=400)
     plt.clf()
-
-
-
-
-
 
 def animate_secondary_outbreaks(secondary_outbreaks, filename):
     data_dump_file = open(filename, 'rb')

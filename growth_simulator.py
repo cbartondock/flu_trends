@@ -5,24 +5,23 @@ from universal import *
 from kernel_analysis import *
 from plotters import *
 
-def simulate_outbreak(d, N, mu, L, C):
+def simulate_outbreak(d, N, mu, L, C, usegenerations, maxpop):
     #seeding of Lattice
     seed = tuple([0 for i in range(0,d)])
     infected_demes = [seed]
     infection_tracker = Counter() # P: Infected?
     generation_dict={seed: 0} #P: Color num
     r_of_t={0:0.} #N: R
-#rav_of_t={0:0.}
     population_dict = {0: 1}
-    generations = [[] for i in range(0,N+1)]
+    generations = [[]]
     generations[0].append((seed[0],seed[1],0.))
-#Simulation
-    print "Running Simulation"
+
+    #Simulation
     i=0
     radii = []
-    while i < N:
-        print i
+    while (i < N and usegenerations) or (not usegenerations and len(infected_demes) < maxpop):
         i+=1
+        generations.append([])
         for deme in infected_demes:
             Y = random.random()
             R = (Y*(L**(-mu)-C**(-mu))+C**(-mu))**(-1/mu)
@@ -35,23 +34,30 @@ def simulate_outbreak(d, N, mu, L, C):
                 generation_dict[new_infected] = i
         #r_of_t[i] = max(map(lambda p: p[0]**2+p[1]**2, infected_demes))**.5
         r_of_t[i] = mean([distance(p, origin) for p in infected_demes])
-
+        #r_of_t[i] = mean([distance(p,origin) for p in generations[i]])
+        #r_of_t[i] = (len(infected_demes)/np.pi)**.5
         population_dict[i] = len(infected_demes)
     infected_demes=map(lambda deme: (deme[0], deme[1], generation_dict[deme]), infected_demes)
+    print "# demes: {0}".format(len(infected_demes))
+    print "# generations: {0}".format(len(generations))
     return [infected_demes, generations, r_of_t, population_dict, (L,mu,N,d)]
 
 if __name__ == '__main__':
     #Simulation Parameters
-    N = 20
+    N = 30
 
     #Jump Kernel Parameters
-    mu = 2.5
+    mu = 2.0
     C=1
     L=1000000000
-
-    data_dump = simulate_outbreak(d, N, mu, L, C)
+    usegenerations = False
+    maxpop = -1 if usegenerations else 10**5
+    data_dump = simulate_outbreak(d, N, mu, L, C, usegenerations,maxpop)
     print "Saving Simulation Data"
-    output_filename = "data_outputs/simulation_data_N{0}_mu{1}_L{2}.pkl".format(N,mu,L)
+    if usegenerations:
+        output_filename = "data_outputs/simulation_data_N{0}_mu{1}_L{2}.pkl".format(N,mu,L)
+    else:
+        output_filename = "data_outputs/simulation_data_P{0}_mu{1}_L{2}.pkl".format(maxpop,mu,L)
     data_output = open(output_filename,'wb')
     pickle.dump(data_dump, data_output)
     data_output.close()
