@@ -37,7 +37,7 @@ def simulate_outbreak(d, N, mu, L, C, usegenerations, maxpop):
         #r_of_t[i] = mean([distance(p,origin) for p in generations[i]])
         #r_of_t[i] = (len(infected_demes)/np.pi)**.5
         population_dict[i] = len(infected_demes)
-    infected_demes=map(lambda deme: (deme[0], deme[1], generation_dict[deme]), infected_demes)
+    infected_demes = [(deme[0], deme[1], generation_dict[deme]) for deme in infected_demes]
     print "# demes: {0}".format(len(infected_demes))
     print "# generations: {0}".format(len(generations))
     return [infected_demes, generations, r_of_t, population_dict, (L,mu,N,d)]
