@@ -1,0 +1,450 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     16775,        441]
+NotebookOptionsPosition[     16144,        416]
+NotebookOutlinePosition[     16485,        431]
+CellTagsIndexPosition[     16442,        428]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{"SetDirectory", "[", 
+  RowBox[{"NotebookDirectory", "[", "]"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"data", "=", 
+   RowBox[{
+    RowBox[{"Import", "[", "\"\<US.csv\>\"", "]"}], "/.", 
+    RowBox[{"\"\<\>\"", "\[Rule]", "0"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataTr", "=", 
+   RowBox[{"Transpose", "@", "data"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"dataTr", "[", 
+     RowBox[{"[", 
+      RowBox[{"1", ",", 
+       RowBox[{"2", ";;", 
+        RowBox[{"-", "1"}]}]}], "]"}], "]"}], "=", 
+    RowBox[{"DateList", "/@", 
+     RowBox[{"(", 
+      RowBox[{"DateObject", "/@", 
+       RowBox[{"dataTr", "[", 
+        RowBox[{"[", 
+         RowBox[{"1", ",", 
+          RowBox[{"2", ";;", 
+           RowBox[{"-", "1"}]}]}], "]"}], "]"}]}], ")"}]}]}], ";"}], "//", 
+  "Quiet"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dataTrMinusHIAK", "=", 
+   RowBox[{"Delete", "[", 
+    RowBox[{
+     RowBox[{"dataTr", "[", 
+      RowBox[{"[", 
+       RowBox[{"64", ";;", 
+        RowBox[{"-", "1"}]}], "]"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", "1", "}"}], ",", 
+       RowBox[{"{", "30", "}"}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dates", "=", 
+   RowBox[{"DateObject", "[", 
+    RowBox[{"dataTr", "[", 
+     RowBox[{"[", 
+      RowBox[{"1", ",", 
+       RowBox[{"2", ";;", 
+        RowBox[{"-", "1"}]}], ",", 
+       RowBox[{"1", ";;", "3"}]}], "]"}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"itcont", "=", 
+   RowBox[{
+    RowBox[{"Entity", "[", 
+     RowBox[{"\"\<Country\>\"", ",", "\"\<UnitedStates\>\""}], "]"}], "[", 
+    "\"\<Polygon\>\"", "]"}]}], ";"}]}], "Input"],
+
+Cell[BoxData["\<\"F:\\\\Dropbox\\\\PhD\\\\Data\\\\FluTrends\"\>"], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"GeoGraphics", "[", 
+    RowBox[{
+     RowBox[{"Join", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"Line", "[", 
+         RowBox[{"GeoPosition", "[", 
+          RowBox[{"itcont", "[", 
+           RowBox[{"[", 
+            RowBox[{"1", ",", "1", ",", "1"}], "]"}], "]"}], "]"}], "]"}], 
+        "}"}], ",", 
+       RowBox[{"Flatten", "@", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"Black", ",", 
+            RowBox[{"Text", "[", 
+             RowBox[{
+              RowBox[{"dates", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", "-", "1"}], "]"}], "]"}], ",", 
+              RowBox[{"Scaled", "@", 
+               RowBox[{"{", 
+                RowBox[{"0.15", ",", "0.1"}], "}"}]}]}], "]"}], ",", "Black", 
+            ",", 
+            RowBox[{"Point", "[", 
+             RowBox[{"GeoPosition", "@", 
+              RowBox[{"CityData", "[", 
+               RowBox[{
+                RowBox[{"StringReplace", "[", 
+                 RowBox[{
+                  RowBox[{"StringSplit", "[", 
+                   RowBox[{"StringReplace", "[", 
+                    RowBox[{
+                    RowBox[{"dataTrMinusHIAK", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"j", ",", "1"}], "]"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"\"\<Ft\>\"", "\[Rule]", "\"\<Fort\>\""}], ",", 
+                    RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\>\""}], ",", 
+                    RowBox[{"\"\<,\>\"", "\[Rule]", "\"\<, \>\""}]}], "}"}]}],
+                     "]"}], "]"}], ",", 
+                  RowBox[{"\"\<,\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}], ",", 
+                "\"\<Coordinates\>\""}], "]"}]}], "]"}], ",", 
+            RowBox[{"EdgeForm", "[", 
+             RowBox[{"Directive", "[", 
+              RowBox[{"Thick", ",", 
+               RowBox[{"Darker", "@", "Red"}]}], "]"}], "]"}], ",", 
+            RowBox[{"FaceForm", "[", 
+             RowBox[{"Directive", "[", 
+              RowBox[{"Red", ",", 
+               RowBox[{"Opacity", "[", "0.3", "]"}]}], "]"}], "]"}], ",", 
+            RowBox[{"Disk", "[", 
+             RowBox[{
+              RowBox[{"GeoPosition", "@", 
+               RowBox[{"CityData", "[", 
+                RowBox[{
+                 RowBox[{"StringReplace", "[", 
+                  RowBox[{
+                   RowBox[{"StringSplit", "[", 
+                    RowBox[{"StringReplace", "[", 
+                    RowBox[{
+                    RowBox[{"dataTrMinusHIAK", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"j", ",", "1"}], "]"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"\"\<Ft\>\"", "\[Rule]", "\"\<Fort\>\""}], ",", 
+                    RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\>\""}], ",", 
+                    RowBox[{"\"\<,\>\"", "\[Rule]", "\"\<, \>\""}]}], "}"}]}],
+                     "]"}], "]"}], ",", 
+                   RowBox[{"\"\<,\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}], 
+                 ",", "\"\<Coordinates\>\""}], "]"}]}], ",", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"dataTrMinusHIAK", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"j", ",", "i"}], "]"}], "]"}], "/", "15"}], "/", 
+               RowBox[{"Max", "[", 
+                RowBox[{"dataTrMinusHIAK", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"j", ",", 
+                   RowBox[{"2", ";;", 
+                    RowBox[{"-", "1"}]}]}], "]"}], "]"}], "]"}]}]}], "]"}]}], 
+           "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"j", ",", "1", ",", " ", 
+            RowBox[{"Length", "@", "dataTrMinusHIAK"}]}], "}"}]}], "]"}]}]}], 
+      "]"}], ",", 
+     RowBox[{"GeoBackground", "\[Rule]", "None"}], ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}], ",", 
+   RowBox[{"\"\<Week\>\"", "->", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", "2", ",", 
+      RowBox[{"Length", "[", 
+       RowBox[{
+        RowBox[{"dataTr", "[", 
+         RowBox[{"[", "67", "]"}], "]"}], "-", "1"}], "]"}]}], "}"}]}]}], 
+  "]"}]], "Input"],
+
+Cell[BoxData["\<\"F:\\\\Dropbox\\\\PhD\\\\Data\\\\FluTrends\"\>"], "Output"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`i$$ = 2., Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`i$$], 2, 621}}, Typeset`size$$ = {420., {208., 211.}},
+     Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    True, $CellContext`i$509502$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`i$$ = 2}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`i$$, $CellContext`i$509502$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> GeoGraphics[
+        Join[{
+          Line[
+           GeoPosition[
+            Part[$CellContext`itcont, 1, 1, 1]]]}, 
+         Flatten[
+          Table[{Black, 
+            Text[
+             Part[$CellContext`dates, $CellContext`i$$], 
+             Scaled[{0.15, 0.1}]], Black, 
+            Point[
+             GeoPosition[
+              CityData[
+               StringReplace[
+                StringSplit[
+                 StringReplace[
+                  Part[$CellContext`dataTrMinusHIAK, $CellContext`j, 1], {
+                  "Ft" -> "Fort", " " -> "", "," -> ", "}]], "," -> ""], 
+               "Coordinates"]]], 
+            EdgeForm[
+             Directive[Thick, 
+              Darker[Red]]], 
+            FaceForm[
+             Directive[Red, 
+              Opacity[0.3]]], 
+            Disk[
+             GeoPosition[
+              CityData[
+               StringReplace[
+                StringSplit[
+                 StringReplace[
+                  Part[$CellContext`dataTrMinusHIAK, $CellContext`j, 1], {
+                  "Ft" -> "Fort", " " -> "", "," -> ", "}]], "," -> ""], 
+               "Coordinates"]], (
+              Part[$CellContext`dataTrMinusHIAK, $CellContext`j, \
+$CellContext`i$$]/15)/Max[
+              Part[$CellContext`dataTrMinusHIAK, $CellContext`j, 
+               Span[2, -1]]]]}, {$CellContext`j, 1, 
+            Length[$CellContext`dataTrMinusHIAK]}]]], GeoBackground -> None, 
+        ImageSize -> Large], 
+      "Specifications" :> {"Week" -> {$CellContext`i$$, 2, 621}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{471., {253., 260.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output"],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "partd"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part specification \[NoBreak]\\!\\(itcont \
+\[LeftDoubleBracket] \\(\\(1, 1, 1\\)\\) \[RightDoubleBracket]\\)\[NoBreak] \
+is longer than depth of object. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
+ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/General/partd\\\", ButtonNote -> \
+\\\"Part::partd\\\"]\\)\"\>"}]], "Message", "MSG"],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "partd"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part specification \[NoBreak]\\!\\(itcont \
+\[LeftDoubleBracket] \\(\\(1, 1, 1\\)\\) \[RightDoubleBracket]\\)\[NoBreak] \
+is longer than depth of object. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
+ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/General/partd\\\", ButtonNote -> \
+\\\"Part::partd\\\"]\\)\"\>"}]], "Message", "MSG"],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "partd"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part specification \[NoBreak]\\!\\(itcont \
+\[LeftDoubleBracket] \\(\\(1, 1, 1\\)\\) \[RightDoubleBracket]\\)\[NoBreak] \
+is longer than depth of object. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
+ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/General/partd\\\", ButtonNote -> \
+\\\"Part::partd\\\"]\\)\"\>"}]], "Message", "MSG"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"Monitor", "[", 
+  RowBox[{
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "2"}], ",", 
+     RowBox[{"i", "<", 
+      RowBox[{"Length", "[", 
+       RowBox[{"dataTr", "[", 
+        RowBox[{"[", "67", "]"}], "]"}], "]"}]}], ",", 
+     RowBox[{"i", "++"}], ",", 
+     RowBox[{"Export", "[", 
+      RowBox[{
+       RowBox[{"\"\<spread\>\"", "<>", 
+        RowBox[{"ToString", "@", 
+         RowBox[{"(", 
+          RowBox[{"i", "-", "1"}], ")"}]}], "<>", "\"\<.tif\>\""}], ",", 
+       RowBox[{"GeoGraphics", "[", 
+        RowBox[{
+         RowBox[{"Join", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"Line", "[", 
+             RowBox[{"GeoPosition", "[", 
+              RowBox[{"itcont", "[", 
+               RowBox[{"[", 
+                RowBox[{"1", ",", "1", ",", "1"}], "]"}], "]"}], "]"}], "]"}],
+             "}"}], ",", 
+           RowBox[{"Flatten", "@", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"Black", ",", 
+                RowBox[{"Text", "[", 
+                 RowBox[{
+                  RowBox[{"dates", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"i", "-", "1"}], "]"}], "]"}], ",", 
+                  RowBox[{"Scaled", "@", 
+                   RowBox[{"{", 
+                    RowBox[{"0.15", ",", "0.1"}], "}"}]}]}], "]"}], ",", 
+                "Black", ",", 
+                RowBox[{"Point", "[", 
+                 RowBox[{"GeoPosition", "@", 
+                  RowBox[{"CityData", "[", 
+                   RowBox[{
+                    RowBox[{"StringReplace", "[", 
+                    RowBox[{
+                    RowBox[{"StringSplit", "[", 
+                    RowBox[{"StringReplace", "[", 
+                    RowBox[{
+                    RowBox[{"dataTrMinusHIAK", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"j", ",", "1"}], "]"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"\"\<Ft\>\"", "\[Rule]", "\"\<Fort\>\""}], ",", 
+                    RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\>\""}], ",", 
+                    RowBox[{"\"\<,\>\"", "\[Rule]", "\"\<, \>\""}]}], "}"}]}],
+                     "]"}], "]"}], ",", 
+                    RowBox[{"\"\<,\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}], 
+                    ",", "\"\<Coordinates\>\""}], "]"}]}], "]"}], ",", 
+                RowBox[{"EdgeForm", "[", 
+                 RowBox[{"Directive", "[", 
+                  RowBox[{"Thick", ",", 
+                   RowBox[{"Darker", "@", "Red"}]}], "]"}], "]"}], ",", 
+                RowBox[{"FaceForm", "[", 
+                 RowBox[{"Directive", "[", 
+                  RowBox[{"Red", ",", 
+                   RowBox[{"Opacity", "[", "0.3", "]"}]}], "]"}], "]"}], ",", 
+                RowBox[{"Disk", "[", 
+                 RowBox[{
+                  RowBox[{"GeoPosition", "@", 
+                   RowBox[{"CityData", "[", 
+                    RowBox[{
+                    RowBox[{"StringReplace", "[", 
+                    RowBox[{
+                    RowBox[{"StringSplit", "[", 
+                    RowBox[{"StringReplace", "[", 
+                    RowBox[{
+                    RowBox[{"dataTrMinusHIAK", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"j", ",", "1"}], "]"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"\"\<Ft\>\"", "\[Rule]", "\"\<Fort\>\""}], ",", 
+                    RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\>\""}], ",", 
+                    RowBox[{"\"\<,\>\"", "\[Rule]", "\"\<, \>\""}]}], "}"}]}],
+                     "]"}], "]"}], ",", 
+                    RowBox[{"\"\<,\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}], 
+                    ",", "\"\<Coordinates\>\""}], "]"}]}], ",", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"dataTrMinusHIAK", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"j", ",", "i"}], "]"}], "]"}], "/", "15"}], "/", 
+                   RowBox[{"Max", "[", 
+                    RowBox[{"dataTrMinusHIAK", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"j", ",", 
+                    RowBox[{"2", ";;", 
+                    RowBox[{"-", "1"}]}]}], "]"}], "]"}], "]"}]}]}], "]"}]}], 
+               "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"j", ",", "1", ",", " ", 
+                RowBox[{"Length", "@", "dataTrMinusHIAK"}]}], "}"}]}], 
+             "]"}]}]}], "]"}], ",", 
+         RowBox[{"GeoBackground", "\[Rule]", "None"}], ",", 
+         RowBox[{"ImageSize", "\[Rule]", "1000"}]}], "]"}]}], "]"}]}], "]"}], 
+   ",", 
+   RowBox[{"ProgressIndicator", "[", 
+    RowBox[{"i", "/", 
+     RowBox[{"Length", "[", 
+      RowBox[{"dataTr", "[", 
+       RowBox[{"[", "67", "]"}], "]"}], "]"}]}], "]"}]}], "]"}]], "Input"]
+},
+WindowSize->{944, 981},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"10.1 for Microsoft Windows (64-bit) (March 23, 2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 1768, 56, 152, "Input"],
+Cell[2351, 80, 76, 0, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2464, 85, 4241, 102, 312, "Input"],
+Cell[6708, 189, 76, 0, 31, "Output"],
+Cell[6787, 191, 2952, 70, 530, "Output"],
+Cell[9742, 263, 488, 10, 21, "Message"],
+Cell[10233, 275, 488, 10, 21, "Message"],
+Cell[10724, 287, 488, 10, 21, "Message"]
+}, Open  ]],
+Cell[11227, 300, 4913, 114, 292, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

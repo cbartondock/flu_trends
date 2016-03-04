@@ -1,0 +1,252 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8486,        243]
+NotebookOptionsPosition[      8115,        225]
+NotebookOutlinePosition[      8473,        241]
+CellTagsIndexPosition[      8430,        238]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"data", " ", "=", " ", 
+   RowBox[{
+   "Import", "[", 
+    "\"\</Users/chrisdock/Desktop/BioPhys/flu_project/data_outputs/fludata_\
+2003-01-01_2015-01-01_day_2016-03-0413:57:52.434616.csv\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"data", ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"titles", " ", "=", " ", 
+   RowBox[{"data", "[", 
+    RowBox[{"[", "1", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"data", " ", "=", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"#", "[", 
+        RowBox[{"[", "1", "]"}], "]"}], ",", 
+       RowBox[{"#", "[", 
+        RowBox[{"[", "2", "]"}], "]"}], ",", 
+       RowBox[{"#", "[", 
+        RowBox[{"[", "3", "]"}], "]"}], ",", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"ToExpression", "[", "#", "]"}], "&"}], "/@", 
+        RowBox[{"StringSplit", "[", 
+         RowBox[{
+          RowBox[{"StringTake", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "4", "]"}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"2", ",", 
+              RowBox[{"-", "2"}]}], "}"}]}], "]"}], ",", "\"\<,\>\""}], 
+         "]"}]}]}], "}"}], "&"}], "/@", 
+    RowBox[{"data", "[", 
+     RowBox[{"[", 
+      RowBox[{"2", ";;"}], "]"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.666105815764874*^9, 3.666105872624674*^9}, {
+   3.6661059042201643`*^9, 3.6661059197387466`*^9}, {3.666106371332982*^9, 
+   3.666106576121991*^9}, {3.66610662475782*^9, 3.666106935106168*^9}, {
+   3.666107012549322*^9, 3.666107110545829*^9}, {3.6661071506784163`*^9, 
+   3.666107215410322*^9}, {3.666107279906419*^9, 3.666107700490025*^9}, {
+   3.666107737563118*^9, 3.666107828570086*^9}, {3.6661078768056087`*^9, 
+   3.66610794101047*^9}, {3.666108008239636*^9, 3.6661080646009903`*^9}, {
+   3.666108109003212*^9, 3.666108109450892*^9}, 3.666122102733939*^9, 
+   3.6661222905467367`*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"scale", "  ", "=", " ", 
+   RowBox[{".3", "/", 
+    RowBox[{"Max", "[", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"#", "[", 
+         RowBox[{"[", "4", "]"}], "]"}], "&"}], "/@", "data"}], "]"}], 
+     "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"map", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"Entity", "[", 
+     RowBox[{"\"\<Country\>\"", ",", "\"\<UnitedStates\>\""}], "]"}], "[", 
+    "\"\<Polygon\>\"", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"GeoGraphics", "[", 
+    RowBox[{"Join", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"Line", "[", 
+        RowBox[{"GeoPosition", "[", 
+         RowBox[{"map", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ",", "1", ",", "1"}], "]"}], "]"}], "]"}], "]"}], 
+       "}"}], ",", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Point", "@", 
+         RowBox[{"GeoPosition", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"data", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "[", 
+             RowBox[{"[", "2", "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"data", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "[", 
+             RowBox[{"[", "3", "]"}], "]"}]}], "}"}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", 
+          RowBox[{"Length", "[", "data", "]"}]}], "}"}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Disk", "[", 
+         RowBox[{
+          RowBox[{"GeoPosition", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"data", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "2", "]"}], "]"}], ",", 
+             RowBox[{
+              RowBox[{"data", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "3", "]"}], "]"}]}], "}"}], "]"}], ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"data", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "[", 
+             RowBox[{"[", "4", "]"}], "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"IntegerPart", "[", "t", "]"}], "]"}], "]"}], "*", 
+           "scale"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", 
+          RowBox[{"Length", "[", "data", "]"}]}], "}"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "1", ",", 
+     RowBox[{"Length", "[", 
+      RowBox[{
+       RowBox[{"data", "[", 
+        RowBox[{"[", "1", "]"}], "]"}], "[", 
+       RowBox[{"[", "4", "]"}], "]"}], "]"}]}], "}"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.6661223052546062`*^9, 3.666122306837953*^9}, {
+  3.666122445588031*^9, 3.666122446054104*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`t$$ = 3430., Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`t$$], 1, 4019}}, Typeset`size$$ = {
+    1398., {368., 372.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`t$790812$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`t$$ = 1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`t$$, $CellContext`t$790812$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> GeoGraphics[
+        Join[{
+          Line[
+           GeoPosition[
+            Part[$CellContext`map, 1, 1, 1]]]}, 
+         Table[
+          Point[
+           GeoPosition[{
+             Part[
+              Part[$CellContext`data, $CellContext`i], 2], 
+             Part[
+              Part[$CellContext`data, $CellContext`i], 3]}]], {$CellContext`i,
+            1, 
+           Length[$CellContext`data]}], 
+         Table[
+          Disk[
+           GeoPosition[{
+             Part[
+              Part[$CellContext`data, $CellContext`i], 2], 
+             Part[
+              Part[$CellContext`data, $CellContext`i], 3]}], Part[
+             Part[
+              Part[$CellContext`data, $CellContext`i], 4], 
+             
+             IntegerPart[$CellContext`t$$]] $CellContext`scale], \
+{$CellContext`i, 1, 
+           Length[$CellContext`data]}]]], 
+      "Specifications" :> {{$CellContext`t$$, 1, 4019}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{1443., {412., 417.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.666122299326429*^9, 3.666122312386613*^9}, 
+   3.666122449797305*^9}]
+}, Open  ]]
+},
+WindowSize->{1920, 1151},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"10.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (December 10, \
+2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2115, 54, 114, "Input"],
+Cell[CellGroupData[{
+Cell[2698, 78, 2955, 83, 114, "Input"],
+Cell[5656, 163, 2443, 59, 846, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

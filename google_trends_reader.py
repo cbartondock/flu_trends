@@ -151,16 +151,27 @@ def main():
             lat_dict[row[0]]=row[3]
 
     geo_time_series = {}
-    for dma in dmas[1:5]:
+    start = '2007-01-01'
+    end = '2015-01-01'
+    freq = 'day'
+    for dma in dmas[1:]:
         print dma
         data = GetQueryVolumes(words,
-            start_date='2011-01-01',
-            end_date='2015-01-01',
+            start_date=start,
+            end_date=end,
             geo=int(dma),
             geo_level='dma',
-            frequency='day')[1:]
+            frequency=freq)[1:]
         geo_time_series[int(dma)] = [(lat_dict[dma],long_dict[dma]), map(lambda x: sum([x[1+i]*weights[i] for i in range(0,len(weights))])/sum(weights),data)]
-    print geo_time_series
+    #print geo_time_series
+    with open("data_outputs/fludata_{0}_{1}_{2}_{3}.csv".format(start,end,freq,"".join(str(datetime.datetime.now()).split())), 'wb') as csv_output:
+        writer = csv.writer(csv_output, quoting = csv.QUOTE_MINIMAL)
+        writer.writerow(['dma', 'latitude', 'longitude', 'timeseries'])
+        for dma, data in geo_time_series.items():
+            print data
+            writer.writerow([dma, data[0][0], data[0][1],data[1]])
+
+
 
 
 
