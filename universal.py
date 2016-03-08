@@ -1,5 +1,6 @@
 import pickle
-import random
+from random import random as r
+from random import choice
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -22,9 +23,12 @@ rcParams['figure.figsize'] = 7.3, 4.2
 
 
 #Highly Useful Functions and Constants
-distance = lambda p1, p2: ((p1[0]-p2[0])**2+(p1[1]-p2[1])**2)**.5
-mean = lambda l: 0 if len(l)==0 else sum(l)/float(len(l))
+distance = lambda p1, p2: ( (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2 )**.5
+distance_1d = lambda p1, p2: abs(p1[0] - p2[0])
+mean = lambda l: 0 if len(l)==0 else sum(l) / float(len(l))
 even_round = lambda x: int(x) if (x%1==.5 and not(int(x)%2)) else int(round(x))
+sr = lambda : 2*(r()-.5)
+fr = lambda : choice([-1,1])
 origin = (0,0)
 d=2
 
