@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      8486,        243]
-NotebookOptionsPosition[      8115,        225]
-NotebookOutlinePosition[      8473,        241]
-CellTagsIndexPosition[      8430,        238]
+NotebookDataLength[      8530,        243]
+NotebookOptionsPosition[      8159,        225]
+NotebookOutlinePosition[      8517,        241]
+CellTagsIndexPosition[      8474,        238]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -28,7 +28,7 @@ Cell[BoxData[{
    RowBox[{
    "Import", "[", 
     "\"\</Users/chrisdock/Desktop/BioPhys/flu_project/data_outputs/fludata_\
-2003-01-01_2015-01-01_day_2016-03-0413:57:52.434616.csv\>\"", "]"}]}], 
+2007-01-01_2015-01-01_day_2016-03-0811:52:53.246765.csv\>\"", "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{"data", ";"}], "\[IndentingNewLine]", 
  RowBox[{
@@ -72,7 +72,7 @@ Cell[BoxData[{
    3.666107737563118*^9, 3.666107828570086*^9}, {3.6661078768056087`*^9, 
    3.66610794101047*^9}, {3.666108008239636*^9, 3.6661080646009903`*^9}, {
    3.666108109003212*^9, 3.666108109450892*^9}, 3.666122102733939*^9, 
-   3.6661222905467367`*^9}],
+   3.6661222905467367`*^9, 3.666456138195726*^9}],
 
 Cell[CellGroupData[{
 
@@ -164,17 +164,17 @@ Cell[BoxData[{
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`t$$ = 2090., Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`t$$ = 2923., Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{
-      Hold[$CellContext`t$$], 1, 4019}}, Typeset`size$$ = {
-    1398., {368., 372.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`t$790812$$ = 0}, 
+      Hold[$CellContext`t$$], 1, 2923}}, Typeset`size$$ = {
+    1368., {360., 365.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`t$942359$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
      1, StandardForm, "Variables" :> {$CellContext`t$$ = 1}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`t$$, $CellContext`t$790812$$, 0]}, 
+        Hold[$CellContext`t$$, $CellContext`t$942359$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
@@ -206,9 +206,9 @@ Cell[BoxData[
              IntegerPart[$CellContext`t$$]] $CellContext`scale], \
 {$CellContext`i, 1, 
            Length[$CellContext`data]}]]], 
-      "Specifications" :> {{$CellContext`t$$, 1, 4019}}, "Options" :> {}, 
+      "Specifications" :> {{$CellContext`t$$, 1, 2923}}, "Options" :> {}, 
       "DefaultOptions" :> {}],
-     ImageSizeCache->{1443., {425., 430.}},
+     ImageSizeCache->{1413., {404., 409.}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -220,7 +220,7 @@ Cell[BoxData[
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
  CellChangeTimes->{{3.666122299326429*^9, 3.666122312386613*^9}, 
-   3.666122449797305*^9}]
+   3.666122449797305*^9, 3.666456277551098*^9}]
 }, Open  ]]
 },
 WindowSize->{1920, 1151},
@@ -240,10 +240,10 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 2115, 54, 114, "Input"],
+Cell[558, 20, 2137, 54, 114, "Input"],
 Cell[CellGroupData[{
-Cell[2698, 78, 2955, 83, 114, "Input"],
-Cell[5656, 163, 2443, 59, 872, "Output"]
+Cell[2720, 78, 2955, 83, 114, "Input"],
+Cell[5678, 163, 2465, 59, 830, "Output"]
 }, Open  ]]
 }
 ]

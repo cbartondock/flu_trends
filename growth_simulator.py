@@ -51,7 +51,10 @@ def simulate_outbreak(d, N, mu, ug, mp, nes=0, L=1000000000, C=1):
             r_of_t[i] = mean([distance(p, origin) for p in infected_demes])
         else:
             r_of_t[i] = mean([distance_1d(p, origin) for p in infected_demes])"""
-        r_of_t[i] = (len(infected_demes)/np.pi)**.5
+        if d==2:
+            r_of_t[i] = (len(infected_demes)/np.pi)**.5
+        else:
+            r_of_t[i] = len(infected_demes)
         #r_of_t[i] = mean([distance(p,origin) for p in generations[i]])
         #r_of_t[i] = (len(infected_demes)/np.pi)**.5
         population_dict[i] = len(infected_demes)
