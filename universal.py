@@ -30,7 +30,7 @@ even_round = lambda x: int(x) if (x%1==.5 and not(int(x)%2)) else int(round(x))
 sr = lambda : 2*(r()-.5)
 fr = lambda : choice([-1,1])
 origin = (0,0)
-d=2
+d = 2
 
 def time_average(data):
     """Works on data of the form [(t0, a), (t1, b), (t2, c),...]"""

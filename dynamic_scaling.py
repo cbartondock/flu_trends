@@ -1,7 +1,7 @@
 from growth_simulator import simulate_outbreak
 from universal import *
 
-init_mu = 1.5
+init_mu = 2.
 actual_mu = 1.5
 
 def get_scaling(mu, d):
@@ -31,8 +31,29 @@ def scaling(future, initial_guess):
     children = {deme: filter(lambda x:x<0, [disease_interval(deme,child,n_guess) for child in pot_children]) for deme in future[0]}
     return adapt_guess(n_guess, children)
 
+def get_all_cones(future, guess):
+    if len(future) == 1:
+        return []
+    child_intervals = [disease_interval(deme, child, guess) for deme in future[0] for gen in future[1:] for child in gen if disease_interval(deme,child, guess)<0]
+    return child_intervals + get_all_cones(future[1:],guess)
+
+def all_cones_plot(future):
+    global actual_mu, init_mu
+    intervals = get_all_cones(future, init_mu)
+    correct_intervals = get_all_cones(future, actual_mu)
+    plt.hist(intervals,150, alpha =.5, label =r'$\mu_{\mbox{guess}}='+str(init_mu)+'$')
+    plt.hist(correct_intervals,150, alpha=.5, label = r'$\mu_{\mbox{actual}}='+str(actual_mu)+'$')
+    plt.legend(loc='upper right')
+    plt.xlabel(r'$\chi_{\mu}(\mbox{source},\mbox{child})$')
+    plt.ylabel(r'$N$')
+    plt.title(r'Difference between $\chi$ histograms for $\mu_{\mbox{actual}}$ and $\mu_{\mbox{guess}}$')
+    plt.savefig("scaling_figs/allcones_guessmu_{0}_actualmu_{1}.png".format(init_mu, actual_mu), dpi=400)
+    plt.clf()
+
+
 if __name__ == '__main__':
-    data_from_outbreak = simulate_outbreak(1,20, actual_mu, True, -1, 3)[1]
+    data_from_outbreak = simulate_outbreak(1,8, actual_mu, True, -1, 3)[1]
     #print [(int(p[0]),p[1]) for g in data_from_outbreak for p in g]
-    l = scaling(data_from_outbreak, init_mu)
+    #l = scaling(data_from_outbreak, init_mu)
+    all_cones_plot(data_from_outbreak)
 

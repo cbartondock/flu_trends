@@ -200,7 +200,6 @@ def main():
 
 
 
-#not sure why we do it this way...
 if __name__ == '__main__':
     main()
 

@@ -67,8 +67,8 @@ if __name__ == '__main__':
     N = 30
 
     #Jump Kernel Parameters
-    mu = 2.0
-    usegenerations = True
+    mu = 1.6
+    usegenerations = False
     maxpop = -1 if usegenerations else 10**5
     data_dump = simulate_outbreak(d, N, mu, usegenerations, maxpop)
     print "Saving Simulation Data"

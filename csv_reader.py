@@ -41,6 +41,6 @@ ax.set_xlabel(r'\textsl{Year}')
 ax.set_ylabel(r'\textsl{ILI Searches}')
 ax.set_xlim([dates[0],dates[-1]])
 ax.set_ylim([0,int(max(data[c])*1.2)])
-plt.savefig('outputs/ILI_time_plot_of_{0}.pdf'.format(filename.split('.')[0]))
+plt.savefig('outputs/fludata.pdf'.format(filename.split('.')[0]))
 plt.clf()
 

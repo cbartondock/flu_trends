@@ -3,12 +3,14 @@ from growth_simulator import simulate_outbreak
 from outbreak_splitter import *
 from kernel_analysis import *
 
-N = 10
-mus = [1.9,2.0,2.1]
+include_secondaries = False
+
+N = 50
+mus = [1.5,1.7,1.9]
 L = 1000000000
 C = 1
-n_sim = 3
-max_pop = 10**5;
+n_sim = 4
+max_pop = 10**6;
 kernels = {}
 for mu in mus:
     pairs =[]
@@ -16,15 +18,16 @@ for mu in mus:
         simulation_results = simulate_outbreak(d, N, mu, L, C, False, max_pop)
         r_of_t = simulation_results[2]
         generations = simulation_results[1]
-        secondary_r_of_ts = get_secondaries(generations)[1]
-        primary_kernel = list(zip(*invert_to_kernel(r_of_t)))
+        primary_kernel = list(zip(*invert_to_kernel_convolution(r_of_t)))
         pairs.extend(primary_kernel)
-        secondary_count=0
-        for s_node, s_r_of_t in secondary_r_of_ts.items():
-            secondary_kernel = list(zip(*invert_to_kernel(s_r_of_t)))
-            secondary_count += len(secondary_kernel)
-            pairs.extend(secondary_kernel)
-        print "Secondary outbreaks got us an extra {0} kernel points for mu={1}".format(secondary_count, mu)
+        if include_secondaries:
+            secondary_r_of_ts = get_secondaries(generations)[1]
+            secondary_count=0
+            for s_node, s_r_of_t in secondary_r_of_ts.items():
+                secondary_kernel = list(zip(*invert_to_kernel_convolution(s_r_of_t)))
+                secondary_count += len(secondary_kernel)
+                pairs.extend(secondary_kernel)
+            print "Secondary outbreaks got us an extra {0} kernel points for mu={1}".format(secondary_count, mu)
     pairs.sort(key = lambda p: p[0])
     kernels[mu] = zip(*pairs)
     #print kernels[mu]
