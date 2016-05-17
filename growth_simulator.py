@@ -12,9 +12,9 @@ nes - # of extra randomly placed seeds (0 by default)
 
 from universal import *
 from kernel_analysis import *
-from plotters import *
+from standard_plotters import *
 
-def simulate_outbreak(N, mu, ug=True, mp=-1, nes=0, L=1000000000, C=1):
+def simulate_outbreak(N, mu, ug=True, mp=-1, nes=0):
     #Seeding of Lattice
     seeds = [tuple([0 for i in range(0,d+1)])]
     seeds.extend([tuple([sr()*1000 for j in range(0,d)]) + (0,) for i in range(0, nes)])
@@ -37,7 +37,7 @@ def simulate_outbreak(N, mu, ug=True, mp=-1, nes=0, L=1000000000, C=1):
         generations.append([])
         for deme in infected_demes:
             Y = r()
-            R = (Y*(L**(-mu)-C**(-mu))+C**(-mu))**(-1/mu)
+            R = (Y*(L**(-mu-1)-C**(-mu-1))+C**(-mu-1))**(-1/(mu+1))
             if d == 2:
                 theta = 2*np.pi*r()
                 new_infected = (deme[0]+int(R*np.cos(theta)),deme[1]+int(R*np.sin(theta)))
@@ -54,7 +54,7 @@ def simulate_outbreak(N, mu, ug=True, mp=-1, nes=0, L=1000000000, C=1):
         population_dict[i] = len(infected_demes)
     print "# demes: {0}".format(len(infected_demes))
     print "# generations: {0}".format(len(generations))
-    return [infected_demes, generations, r_of_t, population_dict, (L,mu,N)]
+    return [infected_demes, generations, r_of_t, population_dict, (mu,N)]
 
 if __name__ == '__main__':
     #Simulation Parameters

@@ -1,12 +1,12 @@
 from universal import *
 from kernel_analysis import *
-#data_dump = [infected_demes, generations, r_of_t, population_dict, (L, mu, N, d)]
+#data_dump = [infected_demes, generations, r_of_t, population_dict, (mu, N)]
 
 def plot_spread(filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
     infected_demes = data_dump[0]
-    (L, mu, N) = data_dump[4]
+    (mu, N) = data_dump[4]
     print "Plotting Spread"
     xyt = zip(*infected_demes)
     fig = plt.figure()
@@ -20,14 +20,14 @@ def plot_spread(filename):
     cbar.solids.set_edgecolor("face")
     ax.set_xlabel(r'$x$')
     ax.set_ylabel(r'$y$')
-    fig.savefig("outputs/spread_plot_N{0}_mu{1}_L{2}.png".format(N,mu,L), dpi=400)
+    fig.savefig("outputs/spread_plot_N{0}_mu{1}.png".format(N,mu), dpi=400)
 
 def plot_radii(filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
     generations = data_dump[1]
     r_of_t = data_dump[2]
-    (L, mu, N) = data_dump[4]
+    (mu, N) = data_dump[4]
     print "Plotting Radii"
     radii_fig = plt.figure()
     radii_fig.suptitle(r'Radial growth over {0} generations, $\mu={1}$'.format(N, mu),  fontweight='bold')
@@ -35,15 +35,15 @@ def plot_radii(filename):
     radii_fig.subplots_adjust(top=.9)
     radii_ax.plot([r_of_t[g] for g in range(0,len(generations))])
     radii_ax.set_xlabel(r'Generation')
-    radii_ax.set_ylabel(r'Maximum Radius')
-    radii_fig.savefig("outputs/radial_plot_N{0}_mu{1}_L{2}.png".format(N,mu,L),dpi=400)
+    radii_ax.set_ylabel(r'Gyration Radius')
+    radii_fig.savefig("outputs/radial_plot_N{0}_mu{1}.png".format(N,mu),dpi=400)
 
 def plot_populations(filename):
     data_dump_file = open(filename,'rb')
     data_dump = pickle.load(data_dump_file)
     generations = data_dump[1]
     population_dict = data_dump[3]
-    (L, mu, N) = data_dump[4]
+    (mu, N) = data_dump[4]
     print "Plotting Populations"
     pop_fig = plt.figure()
     pop_fig.suptitle(r'Population Plot with {0} generations, $\mu={1}$'.format(N,mu),fontsize=14,fontweight='bold')
@@ -52,13 +52,13 @@ def plot_populations(filename):
     pop_ax.plot([population_dict[g] for g in range(0,len(generations))])
     pop_ax.set_xlabel(r'Generation')
     pop_ax.set_ylabel(r'Total Population')
-    pop_fig.savefig("outputs/population_plot_N{0}_mu{1}_L{2}.png".format(N,mu,L),dpi=400)
+    pop_fig.savefig("outputs/population_plot_N{0}_mu{1}.png".format(N,mu),dpi=400)
 
 def plot_kernel(kernel_filename):
     kernel_file = open(kernel_filename,'rb')
     kernel_data = pickle.load(kernel_file)
     kernel = kernel_data[0]
-    (L, mu, N) = kernel_data[1]
+    (mu, N) = kernel_data[1]
     print "Plotting Kernel"
     kernel_fig = plt.figure()
     kernel_fig.suptitle(r'Approximated Jump Kernel for simulation, $\mu={0}$'.format(mu))
@@ -82,13 +82,13 @@ def plot_kernel(kernel_filename):
     plt.text(0.4,.2,r'$\log{G(l)}\approx'+str(round(coefficients[0],2))+'\log(l)+'+str(round(coefficients[1],2))+'$', horizontalalignment='center',verticalalignment='center',transform=kernel_ax.transAxes)
     fit_log_gs = polynomial(log_ls)
     kernel_ax.plot(ls,np.exp(fit_log_gs))
-    kernel_fig.savefig("outputs/kernel_plot_N{0}_mu{1}_L{2}.png".format(N,mu,L), dpi=400)
+    kernel_fig.savefig("outputs/kernel_plot_N{0}_mu{1}.png".format(N,mu), dpi=400)
 
 def animate_spread(filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
     generations = data_dump[1]
-    (L, mu, N) = data_dump[4]
+    (mu, N) = data_dump[4]
     infected_demes = []
     cm = plt.cm.get_cmap('viridis')
     animation_figure = plt.figure()

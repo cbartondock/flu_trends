@@ -5,28 +5,49 @@ from kernel_analysis import *
 
 include_secondaries = False
 
-
-def multiple_kernels(N, mus, n_sim, incl_secs = False, ug = True, mpop = -1):
+def expectation_of_kernels(N, mus, n_sim, incl_secs = False, ug = True, mpop=-1):
     kernels = {}
     for mu in mus:
         pairs =[]
         for i in range(0, n_sim):
             simulation_results = simulate_outbreak(N, mu, ug, mpop)
             r_of_t = simulation_results[2]
+            print r_of_t
             generations = simulation_results[1]
             primary_kernel = list(zip(*invert_to_kernel_interp(r_of_t)))
             pairs.extend(primary_kernel)
             if incl_secs:
                 secondary_r_of_ts = get_secondaries(generations)[1]
                 secondary_count=0
-                for s_node, s_r_of_t in secondary_r_of_ts.items():
+                for s_r_of_t in secondary_r_of_ts.values():
                     secondary_kernel = list(zip(*invert_to_kernel_interp(s_r_of_t)))
                     secondary_count += len(secondary_kernel)
                     pairs.extend(secondary_kernel)
-                print "Secondary outbreaks got us an extra {0} kernel points for mu={1}".format(secondary_count, mu)
         pairs.sort(key = lambda p: p[0])
         kernels[mu] = zip(*pairs)
     return kernels
+
+def kernels_of_expectations(N, mus, n_sim, incl_secs = False, ug = True, mpop=-1):
+    kernels = {}
+    for mu in mus:
+        r_of_ts = []
+        for i in range(0, n_sim):
+            print "i = {0}".format(i)
+            simulation_results = simulate_outbreak(N, mu, ug, mpop)
+            r_of_ts.append(simulation_results[2])
+            if incl_secs:
+                secondary_r_of_ts = get_secondaries(generations)[1]
+                secondary_count = 0
+                for s_r_of_t in secondary_r_of_ts.values():
+                    r_of_ts.append(s_r_of_t)
+                    secondary_count+=1
+        av_r_of_t = {k: mean([r_of_t[k] for r_of_t in r_of_ts]) for k in r_of_ts[0].keys()}
+        kernels[mu] = invert_to_kernel_convolution(av_r_of_t)
+    return kernels
+
+
+
+
 
 def mu_retrieval(actual_mu, kernel):
     ls = np.asarray(kernel[0], dtype = 'float')
@@ -34,19 +55,24 @@ def mu_retrieval(actual_mu, kernel):
     log_ls = np.log(ls)
     log_gs = np.log(gs)
     coefficients = np.polyfit(log_ls,log_gs,1)
-    print "Actual mu = " + str(mu)
-    approx_mu = -(coefficients[0]+d)
+    print "Actual mu = " + str(actual_mu)
+    mu_approx = -(coefficients[0]+d)
     print "Approximated mu = " + str(mu_approx)
-    print "Relative error = " + str(abs(mu-mu_approx)/mu)
-    return approx_mu
+    print "Relative error = " + str(abs(actual_mu-mu_approx)/actual_mu)
+    return mu_approx, coefficients, log_ls, log_gs, ls, gs
+
+
+
+
+
 
 if __name__ == '__main__':
-    N = 15
-    n_sim = 50
-    mus = [1.8]
-    kernels = multiple_kernels(N, mus, n_sim)
+    N = 25
+    n_sim = 1000
+    mus = [1.7,1.8,1.9]
+    kernels = kernels_of_expectations(N, mus, n_sim)
     kernel_fig = plt.figure()
-    kernel_fig.suptitle(r'Approximated Jump Kernel for simulation, $n_s={1}$'.format(mu,n_sim))
+    kernel_fig.suptitle(r'Approximated Jump Kernel for simulation, $n_s={1}$, $[\mu]={0}$'.format(mus,n_sim))
     kernel_ax = kernel_fig.add_subplot(111)
     kernel_fig.subplots_adjust(top=.9)
     kernel_ax.set_yscale('log')
@@ -55,11 +81,11 @@ if __name__ == '__main__':
     kernel_ax.set_ylabel(r'$\approx \log(G(l))$')
     legend_data = [[],[]]
     c_i = 0
-    for mu, kernel in kernels.items():
-        mu_approx = mu_retrieval(actual_mu, kernel)
+    for actual_mu, kernel in kernels.items():
+        mu_approx,coefficients,log_ls,log_gs,ls,gs = mu_retrieval(actual_mu, kernel)
 
         kernel_ax.plot(*kernel, color = my_colors[c_i%len(my_colors)], alpha=.3)
-        legend_data[1].append(r'Actual $\mu$: {0}, Fitted $\mu$: {1}'.format(mu,mu_approx))
+        legend_data[1].append(r'Actual $\mu$: {0}, Fitted $\mu$: {1}'.format(actual_mu,mu_approx))
         polynomial = np.poly1d(coefficients)
         fit_log_gs = polynomial(log_ls)
         plot_pointer, = kernel_ax.plot(ls,np.exp(fit_log_gs), color = my_colors[c_i%len(my_colors)],alpha=1.)

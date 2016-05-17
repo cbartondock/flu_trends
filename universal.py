@@ -22,11 +22,14 @@ rcParams['figure.figsize'] = 7.3, 4.2
 
 
 #Highly Useful Functions and Constants
-sr = lambda : 2*(r()-.5)
-fr = lambda : choice([-1,1])
+
 origin = (0,0)
 d = 2
+L=100000000000000
+C=1
 
+sr = lambda : 2*(r()-.5)
+fr = lambda : choice([-1,1])
 distance = lambda p1, p2: ( (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2 )**.5
 distance_1d = lambda p1, p2: abs(p1[0] - p2[0])
 mean = lambda l: 0 if len(l)==0 else sum(l) / float(len(l))

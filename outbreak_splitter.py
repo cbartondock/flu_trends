@@ -64,7 +64,7 @@ def growth_rate_plot(secondary_outbreaks, filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
     generations = data_dump[1]
-    (L, mu, N, d) = data_dump[4]
+    (mu, N) = data_dump[4]
 
     l_of_t_primary = []
     for g in range(1, len(generations)-1):
@@ -102,7 +102,7 @@ def animate_secondary_outbreaks(secondary_outbreaks, filename):
     data_dump = pickle.load(data_dump_file)
     generations = data_dump[1]
     all_demes = data_dump[0]
-    (L, mu, N, d) = data_dump[4]
+    (mu, N) = data_dump[4]
     infected_demes = []
 
     cm = plt.cm.get_cmap('hsv')
