@@ -14,7 +14,7 @@ from universal import *
 from kernel_analysis import *
 from plotters import *
 
-def simulate_outbreak(d, N, mu, ug, mp, nes=0, L=1000000000, C=1):
+def simulate_outbreak(N, mu, ug=True, mp=-1, nes=0, L=1000000000, C=1):
     #Seeding of Lattice
     seeds = [tuple([0 for i in range(0,d+1)])]
     seeds.extend([tuple([sr()*1000 for j in range(0,d)]) + (0,) for i in range(0, nes)])
@@ -22,7 +22,8 @@ def simulate_outbreak(d, N, mu, ug, mp, nes=0, L=1000000000, C=1):
     infection_tracker = Counter() # P: Infected?
     for seed in [seed[:-1] for seed in seeds]:
         infection_tracker[seed] = 1
-    r_of_t = {0 : mean([distance(p, origin) for p in seeds]) } #g: R(g)
+    #r_of_t = {0 : mean([distance(p, origin) for p in seeds]) } #g: R(g)
+    r_of_t = {0 : 1}
     population_dict = {0: len(seeds)}
     generations = [[]]
     generations[0].extend(seeds)
@@ -46,31 +47,26 @@ def simulate_outbreak(d, N, mu, ug, mp, nes=0, L=1000000000, C=1):
                 infection_tracker[new_infected] = 1
                 generations[i].append(new_infected + (i,))
         infected_demes.extend(generations[i])
-        #r_of_t[i] = max(map(lambda p: p[0]**2+p[1]**2, infected_demes))**.5
-        """if d==2:
-            r_of_t[i] = mean([distance(p, origin) for p in infected_demes])
-        else:
-            r_of_t[i] = mean([distance_1d(p, origin) for p in infected_demes])"""
-        if d==2:
-            r_of_t[i] = (len(infected_demes)/np.pi)**.5
-        else:
-            r_of_t[i] = len(infected_demes)
-        #r_of_t[i] = mean([distance(p,origin) for p in generations[i]])
-        #r_of_t[i] = (len(infected_demes)/np.pi)**.5
+
+        xav = sum([deme[0] for deme in infected_demes])/len(infected_demes)
+        yav = sum([deme[1] for deme in infected_demes])/len(infected_demes)
+        r_of_t[i] = gyr_rad(xav, yav, infected_demes)
         population_dict[i] = len(infected_demes)
     print "# demes: {0}".format(len(infected_demes))
     print "# generations: {0}".format(len(generations))
-    return [infected_demes, generations, r_of_t, population_dict, (L,mu,N,d)]
+    return [infected_demes, generations, r_of_t, population_dict, (L,mu,N)]
 
 if __name__ == '__main__':
     #Simulation Parameters
-    N = 30
+    N = 10
 
     #Jump Kernel Parameters
-    mu = 1.6
-    usegenerations = False
+    mu = 1.8
+    usegenerations = True
     maxpop = -1 if usegenerations else 10**5
-    data_dump = simulate_outbreak(d, N, mu, usegenerations, maxpop)
+    data_dump = simulate_outbreak(N, mu)
+    print data_dump[2]
+    print data_dump[3]
     print "Saving Simulation Data"
     if usegenerations:
         output_filename = "data_outputs/simulation_data_N{0}_mu{1}.pkl".format(N,mu)

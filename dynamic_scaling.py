@@ -4,13 +4,10 @@ from universal import *
 init_mu = 2.
 actual_mu = 1.5
 
-def get_scaling(mu, d):
-    delta = mu - d
-    h = 2*d/delta
-    return lambda t: 2**((h/delta)*(np.log2(t)/h + (1+1/h)**(-np.log2(t))-1))
+
 
 #analagous to spacetime interval in Special Relativity
-disease_interval = lambda source, child, mu: ((child[0]-source[0])**2 - get_scaling(mu, 1)(child[1]-source[1])**2)/get_scaling(mu,1)(child[1]-source[1])**2
+disease_interval = lambda source, child, mu: ((child[0]-source[0])**2 - get_scaling(mu)(child[1]-source[1])**2)/get_scaling(mu)(child[1]-source[1])**2
 
 i=0
 def adapt_guess(guess, children):
@@ -52,7 +49,7 @@ def all_cones_plot(future):
 
 
 if __name__ == '__main__':
-    data_from_outbreak = simulate_outbreak(1,8, actual_mu, True, -1, 3)[1]
+    data_from_outbreak = simulate_outbreak(8, actual_mu, True, -1, 3)[1]
     #print [(int(p[0]),p[1]) for g in data_from_outbreak for p in g]
     #l = scaling(data_from_outbreak, init_mu)
     all_cones_plot(data_from_outbreak)

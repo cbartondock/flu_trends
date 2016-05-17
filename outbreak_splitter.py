@@ -1,13 +1,16 @@
 from universal import *
 
-def get_secondaries(generations):
+def get_secondaries(gens):
     secondary_nodes = {}
-    print len(generations)
-    for g in range(0, len(generations)-1):
+    print len(gens)
+    for g in range(0, len(gens)-1):
         print g
-        metric = 1.2 * mean([distance(old_deme, origin) for old_deme in generations[g]])
-        for deme in generations[g+1]:
-            r_deme = distance(deme, origin)
+        xav = mean(map(lambda gen: mean(map(lambda p: p[0], gen)), gens[:g]))
+        yav = mean(map(lambda gen: mean(map(lambda p: p[1], gen)), gens[:g]))
+        metric = 1.2*mean_rad(xav,yav, gens[g])
+
+        for deme in gens[g+1]:
+            r_deme = distance(deme, (xav,yav))
             if r_deme > metric+1:
                 source = True
                 for s_node, s_node_info in secondary_nodes.items():
@@ -15,21 +18,32 @@ def get_secondaries(generations):
                         source = False
                         break
                 if source:
-                    secondary_nodes[deme] = (.14*(r_deme-metric),g+1)
+                    node_info = (.14*(r_deme-metric), g+1)
+                    secondary_nodes[deme] = node_info
+    #sec_nodes is of the form source_node: (effective radius, global gen)
     print "Converting Format of Secondaries"
     secondary_outbreaks = {}
     secondary_r_of_ts = {}
     for s_node in secondary_nodes.keys():
         secondary_outbreaks[s_node] = [(s_node[0],s_node[1],secondary_nodes[s_node][1],0)]
         secondary_r_of_ts[s_node] = {0: 0}
-    #s_node_info has (px, py, global g, local g), s_node has (sx, sy)
+    #sec_outbreaks is of the form source_node: [(node, global gen, local gen)]
+    #sec_r_of_ts is of the form source_node: {local gen: r(gen)}
+
     for s_node, s_node_info in secondary_nodes.items():
-        for g in range(s_node_info[1]+1,len(generations)):
-            gen = [deme for deme in generations[g] if distance(deme,s_node) < s_node_info[0]]
-            secondary_r_of_ts[s_node][g-s_node_info[1]] = mean([distance(p,origin) for p in gen])
-            #for deme in gen:
-            #    secondary_outbreaks[s_node].append((deme[0], deme[1], s_node_info[1], g-s_node_info[1]))
+        for g in range(s_node_info[1]+1, len(gens)):
+            filtered_gen = [deme for deme in gens[g] if distance(deme,s_node) < s_node_info[0]]
+            for deme in filtered_gen:
+                secondary_outbreaks[s_node].append((deme[0], deme[1], s_node_info[1], g-s_node_info[1]))
+
+            s_xav = mean(map(lambda p: p[0], secondary_outbreaks[s_node]))
+            s_yav = mean(map(lambda p: p[1], secondary_outbreaks[s_node]))
+            secondary_r_of_ts[s_node][g-s_node_info[1]] = gyr_rad(s_xav,s_yav, secondary_outbreaks[s_node])
+
+#filter out the micro outbreaks
     secondary_outbreaks = {k: v for k, v in secondary_outbreaks.items() if len(v)>5 }
+    secondary_r_of_ts = {k: v for k, v in secondary_r_of_ts.items() if len(secondary_outbreaks[k]) > 5 }
+
     return secondary_outbreaks, secondary_r_of_ts
 
 def get_secondary_generational_r_of_t(secondary_outbreaks):

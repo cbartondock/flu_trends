@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      8530,        243]
-NotebookOptionsPosition[      8159,        225]
-NotebookOutlinePosition[      8517,        241]
-CellTagsIndexPosition[      8474,        238]
+NotebookDataLength[      8547,        243]
+NotebookOptionsPosition[      8177,        225]
+NotebookOutlinePosition[      8534,        241]
+CellTagsIndexPosition[      8491,        238]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -169,12 +169,12 @@ Cell[BoxData[
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{
       Hold[$CellContext`t$$], 1, 2923}}, Typeset`size$$ = {
-    1368., {360., 365.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`t$942359$$ = 0}, 
+    845., {221., 226.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`t$18424$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
      1, StandardForm, "Variables" :> {$CellContext`t$$ = 1}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`t$$, $CellContext`t$942359$$, 0]}, 
+        Hold[$CellContext`t$$, $CellContext`t$18424$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
@@ -208,7 +208,7 @@ Cell[BoxData[
            Length[$CellContext`data]}]]], 
       "Specifications" :> {{$CellContext`t$$, 1, 2923}}, "Options" :> {}, 
       "DefaultOptions" :> {}],
-     ImageSizeCache->{1413., {404., 409.}},
+     ImageSizeCache->{890., {265., 270.}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -220,10 +220,10 @@ Cell[BoxData[
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
  CellChangeTimes->{{3.666122299326429*^9, 3.666122312386613*^9}, 
-   3.666122449797305*^9, 3.666456277551098*^9}]
+   3.666122449797305*^9, 3.666456277551098*^9, 3.668480027587468*^9}]
 }, Open  ]]
 },
-WindowSize->{1920, 1151},
+WindowSize->{1440, 851},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 FrontEndVersion->"10.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (December 10, \
 2015)",
@@ -243,7 +243,7 @@ Notebook[{
 Cell[558, 20, 2137, 54, 114, "Input"],
 Cell[CellGroupData[{
 Cell[2720, 78, 2955, 83, 114, "Input"],
-Cell[5678, 163, 2465, 59, 830, "Output"]
+Cell[5678, 163, 2483, 59, 552, "Output"]
 }, Open  ]]
 }
 ]
