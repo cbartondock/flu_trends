@@ -28,12 +28,14 @@ def plot_radii(filename):
     generations = data_dump[1]
     r_of_t = data_dump[2]
     (mu, N) = data_dump[4]
+    scaling = get_crossover_scaling(mu)
     print "Plotting Radii"
     radii_fig = plt.figure()
     radii_fig.suptitle(r'Radial growth over {0} generations, $\mu={1}$'.format(N, mu),  fontweight='bold')
     radii_ax = radii_fig.add_subplot(111)
     radii_fig.subplots_adjust(top=.9)
-    radii_ax.plot([r_of_t[g] for g in range(0,len(generations))])
+    radii_ax.scatter(list(range(0,N)),[r_of_t[g] for g in range(0,N)])
+    radii_ax.plot([scaling(g) for g in range(0,N)])
     radii_ax.set_xlabel(r'Generation')
     radii_ax.set_ylabel(r'Gyration Radius')
     radii_fig.savefig("outputs/radial_plot_N{0}_mu{1}.png".format(N,mu),dpi=400)
@@ -76,8 +78,10 @@ def plot_kernel(kernel_filename):
     log_gs = np.log(gs)
     coefficients = np.polyfit(log_ls,log_gs,1)
     print "Actual mu = " + str(mu)
-    print "Approximated mu = " + str(-(coefficients[0]+d))
-    print "Relative error = " + str(abs(mu+coefficients[0]+d)/mu)
+    print "Slope Approximated mu = " + str(-(coefficients[0]+d))
+    print coefficients[1]
+    print "Intercept Approximated mu = " + str(np.exp(abs(coefficients[1])))
+    print "Relative Slope error = " + str(abs(mu+coefficients[0]+d)/mu)
     polynomial = np.poly1d(coefficients)
     plt.text(0.4,.2,r'$\log{G(l)}\approx'+str(round(coefficients[0],2))+'\log(l)+'+str(round(coefficients[1],2))+'$', horizontalalignment='center',verticalalignment='center',transform=kernel_ax.transAxes)
     fit_log_gs = polynomial(log_ls)

@@ -22,28 +22,52 @@ def get_sep_distr(cone):
     return sep_distr
 
 def get_twopoint(cones,l):
-    twopoint = Counter()
-    for cone in cones:
+    correlator = Counter()
+
+    for m in range(0,len(cones)):
+        cone = cones[m]
+        print m
+        for g in range(1,len(cone)):
+            cone[g].extend(map(lambda p: (p[0],p[1],g), cone[g-1]))
         flat_cone = [deme for gen in cone for deme in gen]
+
         for i in range(0,len(flat_cone)):
-            for j in range(0, i):
-                if flat_cone[i][2] >= flat_cone[j][2]:
-                    dx = flat_cone[i][0] - flat_cone[j][0]
-                    dy = flat_cone[i][1] - flat_cone[j][1]
-                    dt = flat_cone[i][2] - flat_cone[j][2]
-                    if (dx**2+dy**2)**.5 < l(2*dt):
-                        twopoint[(1./l(dt))*(dx**2+dy**2)**.5]+=1
-    total = sum(twopoint.values())
-    for key, value in twopoint.items():
-        twopoint[key] = float(value) / total
+            for j in range(0, i+1):
+                    x1 = flat_cone[i][0]
+                    x2 = flat_cone[j][0]
+                    y1 = flat_cone[i][1]
+                    y2 = flat_cone[j][1]
+                    t1 = flat_cone[i][2]
+                    t2 = flat_cone[j][2]
+                    correlator[(x1,x2,y1,y2,t1,t2)]+=1
+    for key, value in correlator.items():
+        correlator[key] = float(value) / len(cones)
+
+    twopoint = Counter()
+    for c, v in correlator.items():
+        twopoint[(round(((c[0]-c[1])**2+(c[2]-c[3])**2)**.5,2),abs(c[4]-c[5]))]=v
     return twopoint
 
 
 
 if __name__ == '__main__':
     cones = []
-    n_cones = 15
+    n_cones = 100
+    mu = 1.8
     for i in range(0,n_cones):
-        cones.append(simulate_outbreak(40,1.8)[1])
-    twopoint = get_twopoint(cones, get_scaling(1.8))
+        cones.append(simulate_outbreak(20, mu)[1])
+    twopoint = get_twopoint(cones, get_scaling(mu))
+
+    print "Plotting"
+    fig = plt.figure()
+    fig.suptitle("Two Point Correlation Function for $\mu={0}$".format(mu),fontsize=14,fontweight='bold')
+    ax = fig.add_subplot(111, projection = '3d')
+    variables = zip(*twopoint.keys())
+    ax.scatter(variables[0],variables[1],twopoint.values())
+    ax.set_xlabel(r'$dr$')
+    ax.set_ylabel(r'$dt$')
+    ax.set_zlabel(r'$\varepsilon(dt, dr)$')
+    fig.savefig("outputs/twopoint_mu{0}.png".format(mu),dpi=400)
+    plt.show()
+    plt.clf()
 

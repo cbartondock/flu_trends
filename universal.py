@@ -7,6 +7,7 @@ import matplotlib.pylab as plt
 from matplotlib.font_manager import FontProperties
 from matplotlib import rcParams
 import matplotlib.animation as animation
+from mpl_toolkits.mplot3d import Axes3D
 import sys
 from collections import Counter
 
@@ -38,6 +39,7 @@ even_round = lambda x: int(x) if (x%1==.5 and not(int(x)%2)) else int(round(x))
 mean_rad = lambda x0, y0, l: mean([((p[0]-x0)**2+(p[1]-y0)**2)**.5 for p in l])
 gyr_rad = lambda x0, y0, l: mean([(p[0]-x0)**2+(p[1]-y0)**2 for p in l])**.5
 area_rad = lambda x0, y0, l: (len(infected_demes)/np.pi)**.5
+max_rad = lambda x0, y0, l: max([((p[0]-x0)**2+(p[1]-y0)**2)**.5 for p in l])
 
 
 def time_average(data):
@@ -49,9 +51,33 @@ def time_average(data):
 
 
 #This gives the crossover scaling from Oskar's PNAS paper SI
-def get_scaling(mu):
+def get_crossover_scaling(mu):
     delta = mu - d
     h = 2*d/delta
-    return lambda t: 1 if t==0 else 2**((h/delta)*(np.log2(t)/h + (1+1/h)**(-np.log2(t))-1))
+    z = lambda t: np.log2(t)
+    return lambda t: 1 if t==0 else 2**((h/delta)*(z(t)/h + (1+1/h)**(-z(t))-1))
+
+#This gives the asymptotic zeroth order powerlaw scaling from Oskar's PNAS paper SI
+def get_powerlaw_scaling(mu):
+    delta = mu - d
+    if delta > 0:
+        print "Wrong regime for value of mu"
+    A = 2**(-2*d/(delta**2))
+    beta = -1./(delta)
+    return lambda t: 1 if t==0 else A*(t**beta)
+
+
+def get_sexp_scaling(mu):
+    delta = mu - d
+    B = 2*d/(delta**2)
+    eta = log((2*d/(d+mu)))/log(2)
+    return lambda t: 1 if t==0 else 2**(B*(t**eta))
+
+def get_sexp_scaling_corrected(mu):
+    delta = mu
+    B = 2*d/(delta**2)
+    eta = log((2*d/(d+mu)))/log(2)
+
+
 
 my_colors = map(lambda rgb: (rgb[0]/255.,rgb[1]/255.,rgb[2]/255.), [(240,163,255),(0,117,220),(153,63,0),(76,0,92),(25,25,25),(0,92,49),(43,206,72),(255,204,153),(128,128,128),(148,255,181),(143,124,0),(157,204,0),(194,0,136),(0,51,128),(255,164,5),(255,168,187),(66,102,0),(255,0,16),(94,241,242),(0,153,143),(224,255,102),(116,10,255),(153,0,0),(255,255,128),(255,255,0),(255,80,5)])

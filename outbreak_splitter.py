@@ -1,5 +1,11 @@
 from universal import *
 
+def dynamic_scaling(gens):
+#First we figure out our initial guess for l(t)
+#Then we use that to establish zones for primary and secondary inclusion
+#The rest is history
+
+
 def get_secondaries(gens):
     secondary_nodes = {}
     print len(gens)
@@ -7,7 +13,7 @@ def get_secondaries(gens):
         print g
         xav = mean(map(lambda gen: mean(map(lambda p: p[0], gen)), gens[:g]))
         yav = mean(map(lambda gen: mean(map(lambda p: p[1], gen)), gens[:g]))
-        metric = 1.2*mean_rad(xav,yav, gens[g])
+        metric = mean_rad(xav,yav, gens[g])
 
         for deme in gens[g+1]:
             r_deme = distance(deme, (xav,yav))
@@ -18,7 +24,7 @@ def get_secondaries(gens):
                         source = False
                         break
                 if source:
-                    node_info = (.14*(r_deme-metric), g+1)
+                    node_info = (.5*(r_deme-metric), g+1)
                     secondary_nodes[deme] = node_info
     #sec_nodes is of the form source_node: (effective radius, global gen)
     print "Converting Format of Secondaries"
@@ -38,12 +44,11 @@ def get_secondaries(gens):
 
             s_xav = mean(map(lambda p: p[0], secondary_outbreaks[s_node]))
             s_yav = mean(map(lambda p: p[1], secondary_outbreaks[s_node]))
-            secondary_r_of_ts[s_node][g-s_node_info[1]] = gyr_rad(s_xav,s_yav, secondary_outbreaks[s_node])
+            secondary_r_of_ts[s_node][g-s_node_info[1]] = gyr_rad(s_xav, s_yav, secondary_outbreaks[s_node])
 
-#filter out the micro outbreaks
-    secondary_outbreaks = {k: v for k, v in secondary_outbreaks.items() if len(v)>5 }
+    #filter out the micro outbreaks
     secondary_r_of_ts = {k: v for k, v in secondary_r_of_ts.items() if len(secondary_outbreaks[k]) > 5 }
-
+    secondary_outbreaks = {k: v for k, v in secondary_outbreaks.items() if len(v)>5 }
     return secondary_outbreaks, secondary_r_of_ts
 
 def get_secondary_generational_r_of_t(secondary_outbreaks):
@@ -132,7 +137,9 @@ def animate_secondary_outbreaks(secondary_outbreaks, filename):
             generations[i][j][2] = colordict[(generations[i][j][0],generations[i][j][1])]
         infected_demes.extend(generations[i])
         xyt = zip(*infected_demes)
-        ims.append((plt.scatter(xyt[0],xyt[1],c=xyt[2], norm = matplotlib.colors.Normalize(vmin=0,vmax=max(colordict.values())),cmap=cm, alpha=.8,marker='o',lw=0.0),))
+        print xyt
+        if xyt!=[]:
+            ims.append((plt.scatter(xyt[0],xyt[1],c=xyt[2], norm = matplotlib.colors.Normalize(vmin=0,vmax=max(colordict.values())),cmap=cm, alpha=.8,marker='o',lw=0.0),))
     im_ani = animation.ArtistAnimation(animation_figure,ims,interval=50,repeat_delay=3000,blit=True)
     im_ani.save('outputs/split_outbreak_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer)
 

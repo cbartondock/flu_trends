@@ -14,13 +14,13 @@ def expectation_of_kernels(N, mus, n_sim, incl_secs = False, ug = True, mpop=-1)
             r_of_t = simulation_results[2]
             print r_of_t
             generations = simulation_results[1]
-            primary_kernel = list(zip(*invert_to_kernel_interp(r_of_t)))
+            primary_kernel = list(zip(*invert_to_kernel_convolution(r_of_t)))
             pairs.extend(primary_kernel)
             if incl_secs:
                 secondary_r_of_ts = get_secondaries(generations)[1]
                 secondary_count=0
                 for s_r_of_t in secondary_r_of_ts.values():
-                    secondary_kernel = list(zip(*invert_to_kernel_interp(s_r_of_t)))
+                    secondary_kernel = list(zip(*invert_to_kernel_convolution(s_r_of_t)))
                     secondary_count += len(secondary_kernel)
                     pairs.extend(secondary_kernel)
         pairs.sort(key = lambda p: p[0])
@@ -67,10 +67,10 @@ def mu_retrieval(actual_mu, kernel):
 
 
 if __name__ == '__main__':
-    N = 25
+    N = 30
     n_sim = 1000
-    mus = [1.7,1.8,1.9]
-    kernels = kernels_of_expectations(N, mus, n_sim)
+    mus = [1.6, 1.7,1.8,1.9,2.0,2.1,2.2]
+    kernels = expectation_of_kernels(N, mus, n_sim)
     kernel_fig = plt.figure()
     kernel_fig.suptitle(r'Approximated Jump Kernel for simulation, $n_s={1}$, $[\mu]={0}$'.format(mus,n_sim))
     kernel_ax = kernel_fig.add_subplot(111)

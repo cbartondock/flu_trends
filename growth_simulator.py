@@ -27,7 +27,6 @@ def simulate_outbreak(N, mu, ug=True, mp=-1, nes=0):
     population_dict = {0: len(seeds)}
     generations = [[]]
     generations[0].extend(seeds)
-    print infected_demes
     #Simulation
     i=0
     radii = []
@@ -58,7 +57,7 @@ def simulate_outbreak(N, mu, ug=True, mp=-1, nes=0):
 
 if __name__ == '__main__':
     #Simulation Parameters
-    N = 10
+    N = 100
 
     #Jump Kernel Parameters
     mu = 1.8
