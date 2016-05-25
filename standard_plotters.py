@@ -5,8 +5,8 @@ from kernel_analysis import *
 def plot_spread(filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
-    infected_demes = data_dump[0]
-    (mu, N) = data_dump[4]
+    infected_demes = data_dump["infected"]
+    (mu, N) = data_dump["params"]
     print "Plotting Spread"
     xyt = zip(*infected_demes)
     fig = plt.figure()
@@ -25,33 +25,38 @@ def plot_spread(filename):
 def plot_radii(filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
-    generations = data_dump[1]
-    r_of_t = data_dump[2]
-    (mu, N) = data_dump[4]
+    generations = data_dump["gens"]
+    gyr_r_of_t = data_dump["gyr_r"]
+    max_r_of_t = data_dump["max_r"]
+    (mu, N) = data_dump["params"]
     scaling = get_crossover_scaling(mu)
     print "Plotting Radii"
     radii_fig = plt.figure()
     radii_fig.suptitle(r'Radial growth over {0} generations, $\mu={1}$'.format(N, mu),  fontweight='bold')
     radii_ax = radii_fig.add_subplot(111)
     radii_fig.subplots_adjust(top=.9)
-    radii_ax.scatter(list(range(0,N)),[r_of_t[g] for g in range(0,N)])
-    radii_ax.plot([scaling(g) for g in range(0,N)])
+    gyrplot = radii_ax.scatter(list(range(0,N)),[gyr_r_of_t[g] for g in range(0,N)], color=rc())
+    maxplot = radii_ax.scatter(list(range(0,N)),[max_r_of_t[g] for g in range(0,N)], color=rc())
+    fc = rc()
+    fpatch = mpatches.Patch(color=fc)
+    fitplot = radii_ax.plot([scaling(g) for g in range(0,N)],c=fc)
     radii_ax.set_xlabel(r'Generation')
     radii_ax.set_ylabel(r'Gyration Radius')
+    radii_ax.legend(handles=[gyrplot,maxplot,fpatch],labels=[r'Gyration Radius', r'Maximum Radius', r'Crossover Prediction'], loc='upper left')
     radii_fig.savefig("outputs/radial_plot_N{0}_mu{1}.png".format(N,mu),dpi=400)
 
 def plot_populations(filename):
     data_dump_file = open(filename,'rb')
     data_dump = pickle.load(data_dump_file)
-    generations = data_dump[1]
-    population_dict = data_dump[3]
-    (mu, N) = data_dump[4]
+    generations = data_dump["gens"]
+    pop_of_t = data_dump["pop"]
+    (mu, N) = data_dump["params"]
     print "Plotting Populations"
     pop_fig = plt.figure()
     pop_fig.suptitle(r'Population Plot with {0} generations, $\mu={1}$'.format(N,mu),fontsize=14,fontweight='bold')
     pop_ax = pop_fig.add_subplot(111)
     pop_fig.subplots_adjust(top=.9)
-    pop_ax.plot([population_dict[g] for g in range(0,len(generations))])
+    pop_ax.plot([pop_of_t[g] for g in range(0,len(generations))])
     pop_ax.set_xlabel(r'Generation')
     pop_ax.set_ylabel(r'Total Population')
     pop_fig.savefig("outputs/population_plot_N{0}_mu{1}.png".format(N,mu),dpi=400)
@@ -91,8 +96,8 @@ def plot_kernel(kernel_filename):
 def animate_spread(filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
-    generations = data_dump[1]
-    (mu, N) = data_dump[4]
+    generations = data_dump["gens"]
+    (mu, N) = data_dump["params"]
     infected_demes = []
     cm = plt.cm.get_cmap('viridis')
     animation_figure = plt.figure()
@@ -121,7 +126,7 @@ if __name__ == '__main__':
     args = sys.argv[1:]
     if len(args)!=2:
         print "Directly running plotters.py requires two arguments, the plotter name and the data file"
-        print "Valid options for plotter name are spread, radii, populations, kernel, or all"
+        print "Valid options for plotter name are spread, radii, pops, animate, kernel, or all"
         sys.exit()
     f = args[1]
     p = args[0]
@@ -129,7 +134,7 @@ if __name__ == '__main__':
         plot_spread(f)
     if p == 'radii' or p == 'all':
         plot_radii(f)
-    if p == 'populations' or p == 'all':
+    if p == 'pops' or p == 'all':
         plot_populations(f)
     if p == 'kernel':
         plot_kernel(f)

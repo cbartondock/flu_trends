@@ -1,82 +1,132 @@
-""" This program uses a d-lattice  and a jump kernel to simulate the spread of an epidemic
-that involves long range jumps
-d - lattice dimension
-N - # of generations (if generation cap in place)
-mu - mu value in kernel
-L - Scale Parameter for kernel
-C - Scale Parameter for kernel
-ug - use generation cap?
-mp - max population (if population cap in place)
-nes - # of extra randomly placed seeds (0 by default)
-"""
-
 from universal import *
 from kernel_analysis import *
 from standard_plotters import *
 
-def simulate_outbreak(N, mu, ug=True, mp=-1, nes=0):
-    #Seeding of Lattice
+def seed_lattice(num_extra, extent=10):
     seeds = [tuple([0 for i in range(0,d+1)])]
-    seeds.extend([tuple([sr()*1000 for j in range(0,d)]) + (0,) for i in range(0, nes)])
+    seeds.extend([tuple([fr()*sr()*extent for j in range(0,d)]) + (0,) for i in range(0, num_extra)])
+    return seeds
+
+def jump(source, mu):
+    Y = r()
+    R = (Y*(L**(-mu-1)-C**(-mu-1))+C**(-mu-1))**(-1/(mu+1))
+    theta = 2*np.pi*r()
+    return (source[0]+int(R*np.cos(theta)),source[1]+int(R*np.sin(theta)))
+
+def polya_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
     infected_demes = [seed for seed in seeds]
-    infection_tracker = Counter() # P: Infected?
+    infection_tracker = Counter()
     for seed in [seed[:-1] for seed in seeds]:
         infection_tracker[seed] = 1
-    #r_of_t = {0 : mean([distance(p, origin) for p in seeds]) } #g: R(g)
-    r_of_t = {0 : 1}
-    population_dict = {0: len(seeds)}
     generations = [[]]
     generations[0].extend(seeds)
-    #Simulation
-    i=0
-    radii = []
-    while (i < N and ug) or (not ug and len(infected_demes) < maxpop):
-        i+=1
-        print i
-        generations.append([])
-        for deme in infected_demes:
-            Y = r()
-            R = (Y*(L**(-mu-1)-C**(-mu-1))+C**(-mu-1))**(-1/(mu+1))
-            if d == 2:
-                theta = 2*np.pi*r()
-                new_infected = (deme[0]+int(R*np.cos(theta)),deme[1]+int(R*np.sin(theta)))
-            else:
-                new_infected = (deme[0]+ fr()*R,)
-            if infection_tracker[new_infected] != 1:
-                infection_tracker[new_infected] = 1
-                generations[i].append(new_infected + (i,))
-        infected_demes.extend(generations[i])
+    gyr_r_of_t = {}
+    max_r_of_t = {}
+    mean_r_of_t = {}
+    pop_of_t = {}
 
+    i=0
+    while (i < N and ug) or (not ug and len(infected_demes) < maxpop):
         xav = sum([deme[0] for deme in infected_demes])/len(infected_demes)
         yav = sum([deme[1] for deme in infected_demes])/len(infected_demes)
-        r_of_t[i] = gyr_rad(xav, yav, infected_demes)
-        population_dict[i] = len(infected_demes)
+        max_r_of_t[i] = max_rad(xav, yav, generations[i])
+        gyr_r_of_t[i] = gyr_rad(xav, yav, infected_demes)
+        mean_r_of_t[i] = mean_rad(xav,yav,generations[i])
+        pop_of_t[i] = len(infected_demes)
+        i += 1
+        if i==N:
+            break
+        generations.append([])
+        for j in range(0,L**d):
+            source = (fr()*randint(0,L//2),fr()*randint(0,L//2))
+            if infection_tracker[source]:
+                target = jump(source, mu)
+                if infection_tracker[target] != 1:
+                    infection_tracker[target] = 1
+                    generations[i].append(target + (i,))
+        infected_demes.extend(generations[i])
+
     print "# demes: {0}".format(len(infected_demes))
     print "# generations: {0}".format(len(generations))
-    return [infected_demes, generations, r_of_t, population_dict, (mu,N)]
+    return {"infected": infected_demes,
+            "gens": generations,
+            "max_r": max_r_of_t,
+            "gyr_r": gyr_r_of_t,
+            "mean_r": mean_r_of_t,
+            "pop": pop_of_t,
+            "params": (mu,N if ug else mp)}
+
+def simulate_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
+    infected_demes = [seed for seed in seeds]
+    infection_tracker = Counter()
+    for seed in [seed[:-1] for seed in seeds]:
+        infection_tracker[seed] = 1
+    generations = [[]]
+    generations[0].extend(seeds)
+    gyr_r_of_t = {}
+    max_r_of_t = {}
+    mean_r_of_t = {}
+    pop_of_t = {}
+
+    i=0
+    while (i < N and ug) or (not ug and len(infected_demes) < maxpop):
+        xav = sum([deme[0] for deme in infected_demes])/len(infected_demes)
+        yav = sum([deme[1] for deme in infected_demes])/len(infected_demes)
+        max_r_of_t[i] = max_rad(xav, yav, generations[i])
+        gyr_r_of_t[i] = gyr_rad(xav, yav, infected_demes)
+        mean_r_of_t[i] = mean_rad(xav,yav,generations[i])
+        pop_of_t[i] = len(infected_demes)
+        i+=1
+        if i==N:
+            break
+        generations.append([])
+        for deme in infected_demes:
+            target = jump(deme, mu)
+            if infection_tracker[target] != 1:
+                infection_tracker[target] = 1
+                generations[i].append(target + (i,))
+        infected_demes.extend(generations[i])
+
+    print "# demes: {0}".format(len(infected_demes))
+    print "# generations: {0}".format(len(generations))
+    return {"infected": infected_demes,
+            "gens": generations,
+            "max_r": max_r_of_t,
+            "gyr_r": gyr_r_of_t,
+            "mean_r": mean_r_of_t,
+            "pop": pop_of_t,
+            "params": (mu,N if ug else mp)}
+
+def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
+    SIM = CDLL(libraries["outbreak"])
+    seeds = np.array(seeds)
+    SIM.simulate_outbreak(c_uint(N),
+            c_float(mu),
+            c_ubyte(ug),
+            c_int32(mp),
+            (POINTER(c_int32)*len(seeds))(*[deme.ctypes.data_as(POINTER(c_int32)) for deme in seeds])
+            )
+
+
 
 if __name__ == '__main__':
-    #Simulation Parameters
-    N = 100
-
-    #Jump Kernel Parameters
+    N = 50
     mu = 1.8
     usegenerations = True
     maxpop = -1 if usegenerations else 10**5
-    data_dump = simulate_outbreak(N, mu)
-    print data_dump[2]
-    print data_dump[3]
-    print "Saving Simulation Data"
-    if usegenerations:
-        output_filename = "data_outputs/simulation_data_N{0}_mu{1}.pkl".format(N,mu)
+    polya = False
+
+    if polya:
+        data_dump = polya_outbreak(N,mu)
     else:
-        output_filename = "data_outputs/simulation_data_P{0}_mu{1}.pkl".format(maxpop,mu)
+        data_dump = simulate_outbreak(N, mu)
+
+    output_filename = "data_outputs/{0}_data_{1}{2}_mu{3}".format("polya" if polya else "simulation","N" if usegenerations else "P", N if usegenerations else maxpop, mu)
     data_output = open(output_filename,'wb')
     pickle.dump(data_dump, data_output)
     data_output.close()
 
-
-#Jump Kernel Analysis (super simple first, will get clever)
+#Jump Kernel Analysis
     kernel_filename = analyze_kernel(output_filename)
 
 #Lots of Plotting

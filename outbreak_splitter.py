@@ -20,14 +20,14 @@ def get_secondaries(gens):
             if r_deme > metric+1:
                 source = True
                 for s_node, s_node_info in secondary_nodes.items():
-                    if distance(deme,s_node) < s_node_info[0]:
+                    if distance(deme, s_node) < s_node_info[0]:
                         source = False
                         break
                 if source:
                     node_info = (.5*(r_deme-metric), g+1)
                     secondary_nodes[deme] = node_info
     #sec_nodes is of the form source_node: (effective radius, global gen)
-    print "Converting Format of Secondaries"
+    print "Accumulating Subdemes"
     secondary_outbreaks = {}
     secondary_r_of_ts = {}
     for s_node in secondary_nodes.keys():

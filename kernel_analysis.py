@@ -6,11 +6,11 @@ def analyze_kernel(filename):
     time reversal symmetry argument to extrapolate the jump kernel"""
     data_dump_file = open(filename,'rb')
     data_dump = pickle.load(data_dump_file)
-    r_of_t = data_dump[2]
-    (mu, N) = data_dump[4]
+    r_of_t = data_dump["gyr_r"]
+    (mu, N) = data_dump["params"]
     kernel = invert_to_kernel_convolution(r_of_t)
     data_dump_file.close()
-    kernel_output_filename = 'data_outputs/approx_kernel_data' + filename.split('simulation_data')[1]
+    kernel_output_filename = 'data_outputs/approx_kernel_data' + filename.split('_data')[1]
     kernel_output = open(kernel_output_filename,'wb')
     pickle.dump([kernel,(mu,N)], kernel_output)
     kernel_output.close()

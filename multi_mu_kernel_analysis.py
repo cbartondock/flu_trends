@@ -11,9 +11,8 @@ def expectation_of_kernels(N, mus, n_sim, incl_secs = False, ug = True, mpop=-1)
         pairs =[]
         for i in range(0, n_sim):
             simulation_results = simulate_outbreak(N, mu, ug, mpop)
-            r_of_t = simulation_results[2]
-            print r_of_t
-            generations = simulation_results[1]
+            r_of_t = simulation_results["gyr_r"]
+            generations = simulation_results["gens"]
             primary_kernel = list(zip(*invert_to_kernel_convolution(r_of_t)))
             pairs.extend(primary_kernel)
             if incl_secs:
@@ -34,7 +33,7 @@ def kernels_of_expectations(N, mus, n_sim, incl_secs = False, ug = True, mpop=-1
         for i in range(0, n_sim):
             print "i = {0}".format(i)
             simulation_results = simulate_outbreak(N, mu, ug, mpop)
-            r_of_ts.append(simulation_results[2])
+            r_of_ts.append(simulation_results["gyr_r"])
             if incl_secs:
                 secondary_r_of_ts = get_secondaries(generations)[1]
                 secondary_count = 0
