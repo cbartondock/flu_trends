@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     42860,       1199]
-NotebookOptionsPosition[     39327,       1072]
-NotebookOutlinePosition[     39918,       1095]
-CellTagsIndexPosition[     39813,       1090]
+NotebookDataLength[     10597,        297]
+NotebookOptionsPosition[      9803,        264]
+NotebookOutlinePosition[     10181,        281]
+CellTagsIndexPosition[     10138,        278]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -99,7 +99,7 @@ Cell[BoxData[
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{"0", ",", "1", ",", "2"}], "}"}]], "Output",
- CellChangeTimes->{3.666280040508259*^9}]
+ CellChangeTimes->{3.666280040508259*^9, 3.672422363483111*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -144,17 +144,17 @@ Cell[BoxData[{
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`\[Delta]$$ = -1, Typeset`show$$ = True, 
-    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
-    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
-    "\"untitled\"", Typeset`specs$$ = {{
+   DynamicModuleBox[{$CellContext`\[Delta]$$ = 0.6600000000000001, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
       Hold[$CellContext`\[Delta]$$], -1, 1}}, Typeset`size$$ = {
-    450., {124., 132.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`\[Delta]$11964$$ = 0}, 
+    450., {131., 139.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`\[Delta]$50878$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
      1, StandardForm, "Variables" :> {$CellContext`\[Delta]$$ = -1}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`\[Delta]$$, $CellContext`\[Delta]$11964$$, 0]}, 
+        Hold[$CellContext`\[Delta]$$, $CellContext`\[Delta]$50878$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
@@ -168,7 +168,7 @@ Cell[BoxData[
             Log[2, $CellContext`t]) - 1)), {$CellContext`t, 1, 1000}], 
       "Specifications" :> {{$CellContext`\[Delta]$$, -1, 1}}, "Options" :> {},
        "DefaultOptions" :> {}],
-     ImageSizeCache->{505., {176., 183.}},
+     ImageSizeCache->{505., {183., 190.}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -183,891 +183,83 @@ Cell[BoxData[
   3.6664556997269583`*^9, {3.666455730823792*^9, 3.666455768015607*^9}, {
    3.666455799565962*^9, 3.666455971800004*^9}, 3.66645600229106*^9, {
    3.6664798730473623`*^9, 3.6664798853615026`*^9}, 3.666484086737187*^9, {
-   3.6668991891552057`*^9, 3.666899226956071*^9}}]
+   3.6668991891552057`*^9, 3.666899226956071*^9}, 3.672422365944354*^9, 
+   3.6724308314365664`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
- RowBox[{
+ RowBox[{"Manipulate", "[", 
   RowBox[{
-   SubsuperscriptBox["\[Integral]", "0", "1"], 
-   RowBox[{
-    SuperscriptBox["x", 
-     RowBox[{"-", "x"}]], 
-    RowBox[{"\[DifferentialD]", "x"}]}]}], "//", "N"}]], "Input",
- CellChangeTimes->{{3.666590339225853*^9, 3.666590355159903*^9}, {
-  3.666590438032851*^9, 3.666590440389228*^9}}],
-
-Cell[BoxData["1.2912860174669885`"], "Output",
- CellChangeTimes->{{3.66659035316503*^9, 3.666590356474937*^9}, 
-   3.666590442163715*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"N", "[", 
-  RowBox[{
-   RowBox[{
-    SubsuperscriptBox["\[Integral]", "0", "1"], 
+   RowBox[{"Plot", "[", 
     RowBox[{
-     SuperscriptBox["x", 
-      RowBox[{"-", "x"}]], 
-     RowBox[{"\[DifferentialD]", "x"}]}]}], ",", "20"}], "]"}]], "Input",
- NumberMarks->False],
-
-Cell[BoxData["1.2912859970626635404072825905955830067959178848990891697368`20.\
-"], "Output",
- CellChangeTimes->{3.666590861246064*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"1", "/", 
-   SqrtBox["3"]}], "//", "N"}]], "Input",
- CellChangeTimes->{{3.666598924118734*^9, 3.6665989335315857`*^9}}],
-
-Cell[BoxData["0.5773502691896258`"], "Output",
- CellChangeTimes->{{3.6665989299817944`*^9, 3.666598933831744*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  SqrtBox[
-   RowBox[{"3", "/", "5"}]], "//", "N"}]], "Input",
- CellChangeTimes->{{3.666599250338977*^9, 3.666599255759158*^9}}],
-
-Cell[BoxData["0.7745966692414834`"], "Output",
- CellChangeTimes->{{3.6665992529770184`*^9, 3.666599256376937*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"5", "/", "9."}]], "Input",
- CellChangeTimes->{{3.666600650460449*^9, 3.666600651616989*^9}}],
-
-Cell[BoxData["0.5555555555555556`"], "Output",
- CellChangeTimes->{3.666600652133114*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"8", "/", "9."}]], "Input",
- CellChangeTimes->{{3.666600655789135*^9, 3.6666006571208763`*^9}}],
-
-Cell[BoxData["0.8888888888888888`"], "Output",
- CellChangeTimes->{3.6666006574529533`*^9}]
-}, Open  ]],
-
-Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.6666306768637867`*^9, 3.6666306797460747`*^9}}],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{
-   SubsuperscriptBox["\[Integral]", "0", "1"], 
-   RowBox[{
-    SuperscriptBox[
-     RowBox[{"(", 
-      RowBox[{"x", "-", 
-       SqrtBox[
-        RowBox[{"3", "/", "5"}]]}], ")"}], "2"], 
-    SuperscriptBox["x", "2"], 
-    SuperscriptBox[
-     RowBox[{"(", 
-      RowBox[{"x", "+", 
-       SqrtBox[
-        RowBox[{"3", "/", "5"}]]}], ")"}], "2"], 
-    RowBox[{"\[DifferentialD]", "x"}]}]}], "//", "N"}]], "Input",
- CellChangeTimes->{{3.666630674244578*^9, 3.6666307215171003`*^9}}],
-
-Cell[BoxData["0.022857142857142857`"], "Output",
- CellChangeTimes->{{3.666630716522863*^9, 3.666630722319964*^9}}]
-}, Open  ]],
-
-Cell[BoxData["g"], "Input",
- CellChangeTimes->{3.6666307413145227`*^9}],
-
-Cell[CellGroupData[{
-
-Cell["boltzmann constant", "WolframAlphaLong",
- CellChangeTimes->{{3.666682791968547*^9, 3.666682806912527*^9}}],
-
-Cell[BoxData[
- NamespaceBox["WolframAlphaQueryResults",
-  DynamicModuleBox[{Typeset`q$$ = "boltzmann constant", Typeset`opts$$ = {
-   AppearanceElements -> {
-     "Warnings", "Assumptions", "Brand", "Pods", "PodMenus", "Unsuccessful", 
-      "Sources"}, Asynchronous -> All, 
-    TimeConstraint -> {30, Automatic, Automatic, Automatic}, 
-    Method -> {
-     "Formats" -> {"cell", "minput", "msound", "dataformats"}, "Server" -> 
-      "http://api.wolframalpha.com/v1/"}}, Typeset`elements$$ = {
-   "Warnings", "Assumptions", "Brand", "Pods", "PodMenus", "Unsuccessful", 
-    "Sources"}, Typeset`pod1$$ = XMLElement[
-   "pod", {"title" -> "Input interpretation", "scanner" -> "Identity", "id" -> 
-     "Input", "position" -> "100", "error" -> "false", "numsubpods" -> "1"}, {
-    
-     XMLElement["subpod", {"title" -> ""}, {
-       XMLElement["minput", {}, {"Quantity[None, \"BoltzmannConstant\"]"}], 
-       XMLElement["cell", {"compressed" -> False, "string" -> True}, {
-         Cell[
-          BoxData[
-           FormBox[
-            StyleBox[
-             TagBox[
-              RowBox[{
-                TagBox[
-                 RowBox[{
-                   StyleBox[
-                    StyleBox["\"k\"", Italic, StripOnInput -> False], 
-                    FontFamily -> "Helvetica", FontSize -> Smaller]}], 
-                 Identity], "  ", 
-                StyleBox[
-                 
-                 RowBox[{
-                  "\"(\"", "\[NoBreak]", "\"Boltzmann constant\"", 
-                   "\[NoBreak]", "\")\""}], {
-                 FontFamily -> "Helvetica", FontSize -> Smaller, 
-                  GrayLevel[0.6], LinebreakAdjustments -> {1, 100, 1, 0, 100},
-                   LineIndent -> 0}, StripOnInput -> False]}], 
-              PolynomialForm[#, TraditionalOrder -> False]& ], 
-             LinebreakAdjustments -> {1, 100, 1, 0, 100}, LineIndent -> 0, 
-             ZeroWidthTimes -> False], TraditionalForm]], "Output", {}]}], 
-       XMLElement["dataformats", {}, {"plaintext,minput"}]}]}], 
-   Typeset`pod2$$ = XMLElement[
-   "pod", {"title" -> "Value", "scanner" -> "Unit", "id" -> "Value", 
-     "position" -> "200", "error" -> "false", "numsubpods" -> "4"}, {
-     XMLElement["subpod", {"title" -> ""}, {
-       XMLElement["cell", {"compressed" -> False, "string" -> True}, {
-         Cell[
-          BoxData[
-           FormBox[
-            StyleBox[
-             TagBox[
-              RowBox[{
-                TagBox[
-                 TagBox[
-                  RowBox[{
-                    TagBox[
-                    RowBox[{"1.38065", 
-                    StyleBox["\[Times]", 
-                    GrayLevel[0.5]], 
-                    SuperscriptBox["10", "-23"]}], 
-                    $CellContext`TagBoxWrapper[
-                    "StringBoxes" -> RowBox[{"1.38065", "\[Times]", 
-                    SuperscriptBox["10", "-23"]}]], SyntaxForm -> CenterDot], 
-                    "\[NoBreak]", 
-                    StyleBox[
-                    RowBox[{}], FontFamily -> "Helvetica", FontSize -> 
-                    Smaller], "\[InvisibleSpace]", "\[ThickSpace]", 
-                    "\[InvisibleSpace]", 
-                    StyleBox[
-                    
-                    RowBox[{
-                    "\"J\"", "\[InvisibleSpace]", "\"/\"", 
-                    "\[InvisibleSpace]", "\"K\""}], FontFamily -> "Helvetica",
-                     FontSize -> Smaller]}], Identity], #& , SyntaxForm -> 
-                 Dot], "  ", 
-                StyleBox[
-                 
-                 RowBox[{
-                  "\"(\"", "\[NoBreak]", "\"joules per kelvin\"", 
-                   "\[NoBreak]", "\")\""}], {
-                 FontFamily -> "Helvetica", FontSize -> Smaller, 
-                  GrayLevel[0.6], LinebreakAdjustments -> {1, 100, 1, 0, 100},
-                   LineIndent -> 0}, StripOnInput -> False]}], "Unit", 
-              SyntaxForm -> Dot], LinebreakAdjustments -> {1, 100, 1, 0, 100},
-              LineIndent -> 0, ZeroWidthTimes -> False], TraditionalForm]], 
-          "Output", {}]}], 
-       XMLElement[
-       "dataformats", {}, {
-        "plaintext,computabledata,formatteddata,numberdata,quantitydata"}]}], 
-     
-     XMLElement["subpod", {"title" -> ""}, {
-       XMLElement["cell", {"compressed" -> False, "string" -> True}, {
-         Cell[
-          BoxData[
-           FormBox[
-            StyleBox[
-             TagBox[
-              RowBox[{
-                TagBox[
-                 TagBox[
-                  RowBox[{
-                    TagBox["0.086173", 
-                    $CellContext`TagBoxWrapper["StringBoxes" -> "0.086173"]], 
-                    "\[NoBreak]", 
-                    StyleBox[
-                    RowBox[{}], FontFamily -> "Helvetica", FontSize -> 
-                    Smaller], "\[InvisibleSpace]", "\[ThickSpace]", 
-                    "\[InvisibleSpace]", 
-                    StyleBox[
-                    
-                    RowBox[{
-                    "\"meV\"", "\[InvisibleSpace]", "\"/\"", 
-                    "\[InvisibleSpace]", "\"K\""}], FontFamily -> "Helvetica",
-                     FontSize -> Smaller]}], Identity], #& , SyntaxForm -> 
-                 Dot], "  ", 
-                StyleBox[
-                 
-                 RowBox[{
-                  "\"(\"", "\[NoBreak]", "\"millielectronvolts per kelvin\"", 
-                   "\[NoBreak]", "\")\""}], {
-                 FontFamily -> "Helvetica", FontSize -> Smaller, 
-                  GrayLevel[0.6], LinebreakAdjustments -> {1, 100, 1, 0, 100},
-                   LineIndent -> 0}, StripOnInput -> False]}], "Unit", 
-              SyntaxForm -> Dot], LinebreakAdjustments -> {1, 100, 1, 0, 100},
-              LineIndent -> 0, ZeroWidthTimes -> False], TraditionalForm]], 
-          "Output", {}]}], 
-       XMLElement[
-       "dataformats", {}, {
-        "plaintext,computabledata,formatteddata,numberdata,quantitydata"}]}], 
-     
-     XMLElement["subpod", {"title" -> ""}, {
-       XMLElement["cell", {"compressed" -> False, "string" -> True}, {
-         Cell[
-          BoxData[
-           FormBox[
-            StyleBox[
-             TagBox[
-              RowBox[{
-                TagBox[
-                 TagBox[
-                  RowBox[{
-                    TagBox[
-                    RowBox[{"8.6173", 
-                    StyleBox["\[Times]", 
-                    GrayLevel[0.5]], 
-                    SuperscriptBox["10", "-5"]}], 
-                    $CellContext`TagBoxWrapper[
-                    "StringBoxes" -> RowBox[{"8.6173", "\[Times]", 
-                    SuperscriptBox["10", "-5"]}]], SyntaxForm -> CenterDot], 
-                    "\[NoBreak]", 
-                    StyleBox[
-                    RowBox[{}], FontFamily -> "Helvetica", FontSize -> 
-                    Smaller], "\[InvisibleSpace]", "\[ThickSpace]", 
-                    "\[InvisibleSpace]", 
-                    StyleBox[
-                    
-                    RowBox[{
-                    "\"eV\"", "\[InvisibleSpace]", "\"/\"", 
-                    "\[InvisibleSpace]", "\"K\""}], FontFamily -> "Helvetica",
-                     FontSize -> Smaller]}], Identity], #& , SyntaxForm -> 
-                 Dot], "  ", 
-                StyleBox[
-                 
-                 RowBox[{
-                  "\"(\"", "\[NoBreak]", "\"electronvolts per kelvin\"", 
-                   "\[NoBreak]", "\")\""}], {
-                 FontFamily -> "Helvetica", FontSize -> Smaller, 
-                  GrayLevel[0.6], LinebreakAdjustments -> {1, 100, 1, 0, 100},
-                   LineIndent -> 0}, StripOnInput -> False]}], "Unit", 
-              SyntaxForm -> Dot], LinebreakAdjustments -> {1, 100, 1, 0, 100},
-              LineIndent -> 0, ZeroWidthTimes -> False], TraditionalForm]], 
-          "Output", {}]}], 
-       XMLElement[
-       "dataformats", {}, {
-        "plaintext,computabledata,formatteddata,numberdata,quantitydata"}]}], 
-     
-     XMLElement["subpod", {"title" -> ""}, {
-       XMLElement["cell", {"compressed" -> False, "string" -> True}, {
-         Cell[
-          BoxData[
-           FormBox[
-            StyleBox[
-             TagBox[
-              RowBox[{
-                TagBox[
-                 TagBox[
-                  RowBox[{
-                    TagBox[
-                    RowBox[{"1.38065", 
-                    StyleBox["\[Times]", 
-                    GrayLevel[0.5]], 
-                    SuperscriptBox["10", "-16"]}], 
-                    $CellContext`TagBoxWrapper[
-                    "StringBoxes" -> RowBox[{"1.38065", "\[Times]", 
-                    SuperscriptBox["10", "-16"]}]], SyntaxForm -> CenterDot], 
-                    "\[NoBreak]", 
-                    StyleBox[
-                    RowBox[{}], FontFamily -> "Helvetica", FontSize -> 
-                    Smaller], "\[InvisibleSpace]", "\[ThickSpace]", 
-                    "\[InvisibleSpace]", 
-                    StyleBox[
-                    
-                    RowBox[{
-                    "\"erg\"", "\[InvisibleSpace]", "\"/\"", 
-                    "\[InvisibleSpace]", "\"K\""}], FontFamily -> "Helvetica",
-                     FontSize -> Smaller]}], Identity], #& , SyntaxForm -> 
-                 Dot], "  ", 
-                StyleBox[
-                 
-                 RowBox[{
-                  "\"(\"", "\[NoBreak]", "\"ergs per kelvin\"", "\[NoBreak]", 
-                   "\")\""}], {FontFamily -> "Helvetica", FontSize -> Smaller, 
-                  GrayLevel[0.6], LinebreakAdjustments -> {1, 100, 1, 0, 100},
-                   LineIndent -> 0}, StripOnInput -> False]}], "Unit", 
-              SyntaxForm -> Dot], LinebreakAdjustments -> {1, 100, 1, 0, 100},
-              LineIndent -> 0, ZeroWidthTimes -> False], TraditionalForm]], 
-          "Output", {}]}], 
-       XMLElement[
-       "dataformats", {}, {
-        "plaintext,computabledata,formatteddata,numberdata,quantitydata"}]}]}]\
-, Typeset`pod3$$ = XMLElement[
-   "pod", {"title" -> "Interpretation", "scanner" -> "Unit", "id" -> 
-     "Interpretation", "position" -> "300", "error" -> "false", "numsubpods" -> 
-     "1"}, {
-     XMLElement["subpod", {"title" -> ""}, {
-       XMLElement["cell", {"compressed" -> False, "string" -> True}, {
-         Cell[
-          BoxData[
-           FormBox[
-            FormBox[
-             TagBox["\"Boltzmann constant\"", Identity], TraditionalForm], 
-            TraditionalForm]], "Output", {}]}], 
-       XMLElement["dataformats", {}, {"plaintext"}]}]}], Typeset`pod4$$ = 
-   XMLElement[
-   "pod", {"title" -> "Basic unit dimensions", "scanner" -> "Unit", "id" -> 
-     "BasicUnitDimensions", "position" -> "400", "error" -> "false", 
-     "numsubpods" -> "1"}, {
-     XMLElement["subpod", {"title" -> ""}, {
-       XMLElement["cell", {"compressed" -> False, "string" -> True}, {
-         Cell[
-          BoxData[
-           FormBox[
-            TagBox[
-             RowBox[{"\"[mass]\"", " ", 
-               
-               TemplateBox[{"\"[length]\"", "2"}, "Superscript", SyntaxForm -> 
-                SuperscriptBox], " ", 
-               TemplateBox[{"\"[time]\"", 
-                 RowBox[{"-", "2"}]}, "Superscript", SyntaxForm -> 
-                SuperscriptBox], " ", 
-               TemplateBox[{"\"[temperature]\"", 
-                 RowBox[{"-", "1"}]}, "Superscript", SyntaxForm -> 
-                SuperscriptBox]}], HoldForm], TraditionalForm]], 
-          "Output", {}]}], 
-       XMLElement[
-       "dataformats", {}, {
-        "plaintext,computabledata,formatteddata,formuladata"}]}]}], 
-   Typeset`aux1$$ = {True, False, {False}, True}, Typeset`aux2$$ = {
-   True, False, {False, False, False, False}, True}, Typeset`aux3$$ = {
-   True, False, {False}, True}, Typeset`aux4$$ = {True, False, {False}, True},
-    Typeset`asyncpods$$ = {}, Typeset`nonpods$$ = {
-    XMLElement["assumptions", {"count" -> "1"}, {
-      XMLElement[
-      "assumption", {
-       "type" -> "Unit", "word" -> "boltzmann constant", "template" -> 
-        "Assuming ${desc1} for \"${word}\". Use ${desc2} instead", "count" -> 
-        "2"}, {
-        XMLElement[
-        "value", {
-         "name" -> "BoltzmannConstant", "desc" -> 
-          "Boltzmann constants (energy per temperature)", "input" -> 
-          "UnitClash_*boltzmann+constant.*BoltzmannConstant--"}, {}], 
-        XMLElement[
-        "value", {
-         "name" -> "BoltzmannConstantTemperatureDifferenceUnit", "desc" -> 
-          "Boltzmann constant (energy per temperature difference)", "input" -> 
-          "UnitClash_*boltzmann+constant.*\
-BoltzmannConstantTemperatureDifferenceUnit--"}, {}]}]}]}, Typeset`initdone$$ =
-    True, Typeset`queryinfo$$ = {
-   "success" -> "true", "error" -> "false", "numpods" -> "4", "datatypes" -> 
-    "Quantity", "timedout" -> "", "timedoutpods" -> "", "timing" -> "1.339", 
-    "parsetiming" -> "0.171", "parsetimedout" -> "false", "recalculate" -> "",
-     "id" -> "MSPa15531df4afbdb63gic2100003ci257b3dei45f79", "host" -> 
-    "http://www4c.wolframalpha.com", "server" -> "29", "related" -> 
-    "http://www4c.wolframalpha.com/api/v2/relatedQueries.jsp?id=\
-MSPa15541df4afbdb63gic210000334fcgfh79dhc27f&s=29", "version" -> "2.6", 
-    "profile" -> "EnterDoQuery:0.,StartWrap:1.3386"}, 
-   Typeset`sessioninfo$$ = {
-   "TimeZone" -> -8., 
-    "Date" -> {2016, 3, 11, 3, 0, 9.007704`7.70718909320015}, "Line" -> 442, 
-    "SessionID" -> 18168898629033961572}, Typeset`showpods$$ = {1, 2, 3, 4}, 
-   Typeset`failedpods$$ = {}, Typeset`chosen$$ = {}, Typeset`open$$ = False, 
-   Typeset`newq$$ = "boltzmann constant"}, 
-   DynamicBox[ToBoxes[
-     AlphaIntegration`FormatAlphaResults[
-      Dynamic[{
-       1, {Typeset`pod1$$, Typeset`pod2$$, Typeset`pod3$$, Typeset`pod4$$}, {
-        Typeset`aux1$$, Typeset`aux2$$, Typeset`aux3$$, Typeset`aux4$$}, 
-        Typeset`chosen$$, Typeset`open$$, Typeset`elements$$, Typeset`q$$, 
-        Typeset`opts$$, Typeset`nonpods$$, Typeset`queryinfo$$, 
-        Typeset`sessioninfo$$, Typeset`showpods$$, Typeset`failedpods$$, 
-        Typeset`newq$$}]], StandardForm],
-    ImageSizeCache->{886., {244., 250.}},
-    TrackedSymbols:>{Typeset`showpods$$, Typeset`failedpods$$}],
-   DynamicModuleValues:>{},
-   Initialization:>If[
-     Not[Typeset`initdone$$], Null; 
-     WolframAlphaClient`Private`doAsyncUpdates[
-       Hold[{Typeset`pod1$$, Typeset`pod2$$, Typeset`pod3$$, Typeset`pod4$$}],
-        Typeset`asyncpods$$, 
-       Dynamic[Typeset`failedpods$$]]; Typeset`asyncpods$$ = {}; 
-     Typeset`initdone$$ = True],
-   SynchronousInitialization->False],
-  BaseStyle->{Deployed -> True},
-  DeleteWithContents->True,
-  Editable->False,
-  SelectWithContents->True]], "Print",
- CellMargins->{{20, 10}, {Inherited, Inherited}},
- CellChangeTimes->{3.6666828090585203`*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- StyleBox[
-  RowBox[{"300", "*", 
-   RowBox[{"Log", "[", "3", "]"}], "*", 
-   StyleBox[
-    RowBox[{"1", 
-     StyleBox[".38065", "Unit"]}]], 
-   StyleBox["\[Times]", "Unit",
-    LineColor->GrayLevel[0.5],
-    FrontFaceColor->GrayLevel[0.5],
-    BackFaceColor->GrayLevel[0.5],
-    GraphicsColor->GrayLevel[0.5],
-    FontColor->GrayLevel[0.5]], 
-   SuperscriptBox["10", 
-    RowBox[{"-", "23"}]], 
-   StyleBox["\[NoBreak]\[InvisibleSpace]", "Unit"]}],
-  ZeroWidthTimes->False,
-  LineIndent->0,
-  LinebreakAdjustments->{1, 100, 1, 0, 100}]], "Input",
- CellChangeTimes->{{3.666682820507513*^9, 3.6666828239073267`*^9}}],
-
-Cell[BoxData["4.550397169048878`*^-21"], "Output",
- CellChangeTimes->{3.6666828243667316`*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  FractionBox["1", 
-   RowBox[{"1", "+", 
-    SuperscriptBox["E", 
-     RowBox[{
-      RowBox[{"-", "300"}], " ", 
+     SuperscriptBox["2", 
       RowBox[{
-       RowBox[{"Log", "[", "3", "]"}], "/", "230"}]}]]}]], "//", 
-  "N"}]], "Input",
- CellChangeTimes->{{3.6666829239633923`*^9, 3.666683030202238*^9}}],
-
-Cell[BoxData["0.8073640510693016`"], "Output",
- CellChangeTimes->{{3.666683027200815*^9, 3.6666830306966677`*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{
-   RowBox[{"Log", "[", "3", "]"}], "/", "50000"}], "//", "N"}]], "Input",
- CellChangeTimes->{{3.666683291276503*^9, 3.666683303940486*^9}}],
-
-Cell[BoxData["0.000021972245773362198`"], "Output",
- CellChangeTimes->{{3.666683301231196*^9, 3.666683304297275*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"Plot", "[", 
-  RowBox[{
-   FractionBox[
-    RowBox[{"1", "+", 
-     RowBox[{
-      FractionBox["190", "100"], 
-      SuperscriptBox["E", 
-       RowBox[{
+       FractionBox[
+        RowBox[{"2", "d"}], 
+        SuperscriptBox["\[Delta]", "2"]], 
+       RowBox[{"(", 
         RowBox[{
-         FractionBox["1", 
-          StyleBox[
-           RowBox[{
-            StyleBox[
-             RowBox[{"1", 
-              StyleBox[".38065", "Unit"]}]], 
-            StyleBox["\[Times]", "Unit",
-             LineColor->GrayLevel[0.5],
-             FrontFaceColor->GrayLevel[0.5],
-             BackFaceColor->GrayLevel[0.5],
-             GraphicsColor->GrayLevel[0.5],
-             FontColor->GrayLevel[0.5]], 
-            SuperscriptBox["10", 
-             RowBox[{"-", "23"}]], 
-            StyleBox["\[NoBreak]\[InvisibleSpace]", "Unit"], "*", "300"}],
-           ZeroWidthTimes->False,
-           LineIndent->0,
-           LinebreakAdjustments->{1, 100, 1, 0, 100}]], "f", 
-         RowBox[{"(", 
-          RowBox[{"190", "-", "100"}], ")"}], "*", 
-         SuperscriptBox["10", 
-          RowBox[{"-", "9"}]]}], "-", "6"}]], " "}]}], 
-    RowBox[{"1", "+", 
-     SuperscriptBox["E", 
-      RowBox[{
-       RowBox[{
-        FractionBox["1", 
-         StyleBox[
-          RowBox[{
-           StyleBox[
-            RowBox[{"1", 
-             StyleBox[".38065", "Unit"]}]], 
-           StyleBox["\[Times]", "Unit",
-            LineColor->GrayLevel[0.5],
-            FrontFaceColor->GrayLevel[0.5],
-            BackFaceColor->GrayLevel[0.5],
-            GraphicsColor->GrayLevel[0.5],
-            FontColor->GrayLevel[0.5]], 
-           SuperscriptBox["10", 
-            RowBox[{"-", "23"}]], 
-           StyleBox["\[NoBreak]\[InvisibleSpace]", "Unit"], "*", "300"}],
-          ZeroWidthTimes->False,
-          LineIndent->0,
-          LinebreakAdjustments->{1, 100, 1, 0, 100}]], "f", "*", 
-        RowBox[{"(", 
-         RowBox[{"190", "-", "100"}], ")"}], "*", 
-        SuperscriptBox["10", 
-         RowBox[{"-", "9"}]]}], "-", "6"}]]}]], ",", 
+         RowBox[{
+          FractionBox["\[Delta]", 
+           RowBox[{"2", "d"}]], 
+          RowBox[{"Log", "[", 
+           RowBox[{"2", ",", "t"}], "]"}]}], "+", 
+         SuperscriptBox[
+          RowBox[{"(", 
+           RowBox[{"1", "+", 
+            FractionBox["\[Delta]", 
+             RowBox[{"2", "d"}]]}], ")"}], 
+          RowBox[{"-", 
+           RowBox[{"Log", "[", 
+            RowBox[{"2", ",", "t"}], "]"}]}]], "-", "1"}], ")"}]}]], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", "1", ",", "100"}], "}"}]}], "]"}], ",", 
    RowBox[{"{", 
-    RowBox[{"f", ",", "0", ",", 
-     RowBox[{"10", "*", 
-      SuperscriptBox["10", 
-       RowBox[{"-", "12"}]]}]}], "}"}]}], "]"}]], "Input",
- CellChangeTimes->{{3.6667131631507683`*^9, 3.666713236987218*^9}, {
-  3.666713310950912*^9, 3.666713399257725*^9}, {3.666713451464508*^9, 
-  3.666713475226375*^9}, {3.666713587533464*^9, 3.666713618970935*^9}, {
-  3.6667136502455063`*^9, 3.6667136600108347`*^9}, {3.666713728932159*^9, 
-  3.6667137524952087`*^9}, {3.666714837595985*^9, 3.666714873340624*^9}}],
+    RowBox[{"\[Delta]", ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.672430930797275*^9, 3.672430934492339*^9}, 
+   3.67243097604782*^9}],
 
 Cell[BoxData[
- GraphicsBox[{{}, {}, 
-   {RGBColor[0.368417, 0.506779, 0.709798], AbsoluteThickness[1.6], Opacity[
-    1.], LineBox[CompressedData["
-1:eJxTTMoPSmViYGCwAGIQ/bTL15V/eo2tVFIaEPyzv340P2brwRpbhhQIv+rX
-ma85VXW2smkQfr/4VPdJkg22sVB+67nrr1s4Gm3ToPzqVqkJ5d8bbVOhfI27
-3Ks7rzXB5a+a/D06e2sznP9U6Zrmz6xWON/W67pNi2s7nM+82dTWj6ETbh4X
-y08Rrw+dcHmB0D1vXB902aZD+UVHq6Lvne6Gq79ianmqbHsPXD1bhPDUZ3l9
-cP6Bm13sh1QnwPkmK6ysDVgmwvnek+vcTL8i+Pvm7n1x7eEkuPkvPFYzztg3
-GS6/VUD30/u1U+B8y8rYyPTeqXD3STJ2hldnTIPLz1nqoasWNh3Ov/ZqW+UH
-4xlw9Ueld3ArrpkBt2+Lz865gSoz4fwAXovqgFkz4frfnt0W4S8wC67/6b2e
-j7F1CP7d90ldOW9mwdUX6i2erHB7Npy/h3eS8Jedc+D8JJ4arZQpc+H8Neq/
-JLIb58HtX/tYrW5i3Hw4X/Necay6+gKEf2ZpbxedvgBuv+HzhJhLLAvh/HuO
-Cbm3qhfC1T97s83y06uFcPMcll0vDE1eBJf3eF/6te0mgr+6I9vkhPtiuPq2
-mNOdfc2L4fIJBtr3Q/YvhtuXscZMSPk7gl+o4eT6UW8JIjxzeOYtS0Xw9Tdc
-+xY9ZwlcvfnvVtbt1xHy9m6mIkLCSxHu0Xn95nojgi/Umfd49f6lcP2VTz/e
-rP+L4AMAwyijOQ==
-     "]]}},
-  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
-  Axes->{True, True},
-  AxesLabel->{None, None},
-  AxesOrigin->{0, 1.8999999999997499`},
-  DisplayFunction->Identity,
-  Frame->{{False, False}, {False, False}},
-  FrameLabel->{{None, None}, {None, None}},
-  FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
-  GridLines->{None, None},
-  GridLinesStyle->Directive[
-    GrayLevel[0.5, 0.4]],
-  Method->{
-   "DefaultBoundaryStyle" -> Automatic, "DefaultMeshStyle" -> 
-    AbsolutePointSize[6], "ScalingFunctions" -> None},
-  PlotRange->NCache[{{0, 
-      Rational[1, 100000000000]}, {1.8999999999997557`, 
-     1.9000000000000001`}}, {{0, 1.*^-11}, {1.8999999999997557`, 
-     1.9000000000000001`}}],
-  PlotRangeClipping->True,
-  PlotRangePadding->{{
-     Scaled[0.02], 
-     Scaled[0.02]}, {
-     Scaled[0.05], 
-     Scaled[0.05]}},
-  Ticks->{Automatic, Automatic}]], "Output",
- CellChangeTimes->{
-  3.666713401078846*^9, {3.666713452453825*^9, 3.666713476281329*^9}, 
-   3.666713661019347*^9, {3.6667137322099323`*^9, 3.666713753239421*^9}, {
-   3.666714844785458*^9, 3.6667148748338137`*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"(", 
-   RowBox[{"10", "*", "2", "\[Pi]"}], ")"}], "/", "14.8"}]], "Input",
- CellChangeTimes->{{3.666715077647729*^9, 3.666715082142219*^9}}],
-
-Cell[BoxData["4.245395477824044`"], "Output",
- CellChangeTimes->{3.666715082888129*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"4.2454", "*", 
-  RowBox[{"(", 
-   RowBox[{"100", "\[Pi]"}], ")"}], "*", 
-  SuperscriptBox["10", 
-   RowBox[{"-", "21"}]]}]], "Input",
- CellChangeTimes->{{3.666715358494656*^9, 3.666715380333947*^9}}],
-
-Cell[BoxData["1.3337317451550106`*^-18"], "Output",
- CellChangeTimes->{{3.666715368310491*^9, 3.666715380982049*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"3", "*", 
-  FractionBox["4.24", 
-   RowBox[{"14.8", " ", 
-    SuperscriptBox["10", "3"]}]], 
-  SuperscriptBox[
-   RowBox[{"(", 
-    RowBox[{"100", "\[Pi]"}], ")"}], "2"]}]], "Input",
- CellChangeTimes->{{3.666716885395837*^9, 3.666716912625688*^9}}],
-
-Cell[BoxData["84.82524863638962`"], "Output",
- CellChangeTimes->{3.666716914455447*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  SuperscriptBox["10", "3"], 
-  FractionBox[
-   SuperscriptBox[
-    RowBox[{"(", 
-     RowBox[{"100", "\[Pi]"}], ")"}], "2"], 
-   RowBox[{"14.8", "*", 
-    SuperscriptBox["10", "3"]}]], "*", 
-  SuperscriptBox["10", 
-   RowBox[{"-", "21"}]]}]], "Input",
- CellChangeTimes->{{3.6667170260402527`*^9, 3.666717085702149*^9}}],
-
-Cell[BoxData["6.668651622357674`*^-18"], "Output",
- CellChangeTimes->{{3.666717065641473*^9, 3.666717086324576*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
+ TagBox[
   StyleBox[
-   StyleBox[
-    RowBox[{"1", 
-     StyleBox[".38065", "Unit"]}]],
-   ZeroWidthTimes->False,
-   LineIndent->0,
-   LinebreakAdjustments->{1, 100, 1, 0, 100}], 
-  StyleBox[
-   StyleBox["\[Times]", "Unit",
-    LineColor->GrayLevel[0.5],
-    FrontFaceColor->GrayLevel[0.5],
-    BackFaceColor->GrayLevel[0.5],
-    GraphicsColor->GrayLevel[0.5],
-    FontColor->GrayLevel[0.5]],
-   ZeroWidthTimes->False,
-   LineIndent->0,
-   LinebreakAdjustments->{1, 100, 1, 0, 100}], 
-  StyleBox[
-   SuperscriptBox["10", 
-    RowBox[{"-", "23"}]],
-   ZeroWidthTimes->False,
-   LineIndent->0,
-   LinebreakAdjustments->{1, 100, 1, 0, 100}], 
-  StyleBox["*",
-   ZeroWidthTimes->False,
-   LineIndent->0,
-   LinebreakAdjustments->{1, 100, 1, 0, 100}], 
-  SuperscriptBox[
-   StyleBox["10",
-    ZeroWidthTimes->False,
-    LineIndent->0,
-    LinebreakAdjustments->{1, 100, 1, 0, 100}], "21"]}]], "Input",
- CellChangeTimes->{{3.666717539332399*^9, 3.6667175439552937`*^9}}],
-
-Cell[BoxData["0.013806500000000001`"], "Output",
- CellChangeTimes->{3.666717544867516*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"0.0138065", "*", "300", "*", "14.8", "*", 
-  RowBox[{
-   SuperscriptBox["10", "3"], "/", 
-   RowBox[{"(", 
-    RowBox[{"16", 
-     SuperscriptBox["\[Pi]", "2"]}], ")"}]}]}]], "Input",
- CellChangeTimes->{{3.666717552052066*^9, 3.666717577801585*^9}}],
-
-Cell[BoxData["388.19223084332737`"], "Output",
- CellChangeTimes->{3.66671757993125*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"E", "//", "N"}]], "Input",
- CellChangeTimes->{{3.6684510179053087`*^9, 3.668451018928815*^9}}],
-
-Cell[BoxData["2.718281828459045`"], "Output",
- CellChangeTimes->{3.668451019315658*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"700", "*", ".96", "*", 
-  RowBox[{
-   SuperscriptBox["10", "4"], "/", 
-   RowBox[{"(", 
-    RowBox[{"4", "\[Pi]"}], ")"}]}]}]], "Input",
- CellChangeTimes->{{3.668459027196504*^9, 3.6684590367612343`*^9}}],
-
-Cell[BoxData["534760.6087887684`"], "Output",
- CellChangeTimes->{3.668459037467451*^9}]
-}, Open  ]],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"euler", "[", 
-   RowBox[{"a_", ",", "b_", ",", "ya_", ",", "f_", ",", "n_"}], "]"}], ":=", 
-  "\[IndentingNewLine]", 
-  RowBox[{"(", "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"h", " ", "=", " ", 
-     RowBox[{
-      RowBox[{"(", 
-       RowBox[{"b", "-", "a"}], ")"}], "/", "n"}]}], ";", 
-    "\[IndentingNewLine]", 
-    RowBox[{"u", " ", "=", " ", "ya"}], ";", "\[IndentingNewLine]", 
-    RowBox[{"points", "=", 
-     RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
-    RowBox[{"For", "[", 
-     RowBox[{
-      RowBox[{"j", "=", "0"}], ",", 
-      RowBox[{"j", "<", "n"}], ",", 
-      RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
-      RowBox[{
-       RowBox[{"AppendTo", "[", 
-        RowBox[{"points", ",", 
-         RowBox[{"{", 
-          RowBox[{
-           RowBox[{"a", "+", 
-            RowBox[{"j", "*", "h"}]}], ",", "u"}], "}"}]}], "]"}], ";", 
-       "\[IndentingNewLine]", 
-       RowBox[{"u", "+=", 
-        RowBox[{"h", "*", 
-         RowBox[{"f", "[", 
-          RowBox[{
-           RowBox[{"a", "+", 
-            RowBox[{"j", "*", "h"}]}], ",", "u"}], "]"}]}]}], ";"}]}], 
-     "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-    RowBox[{"Return", "[", "points", "]"}], ";"}], "\[IndentingNewLine]", 
-   ")"}]}]], "Input",
- CellChangeTimes->{{3.668460210900641*^9, 3.668460366373824*^9}, {
-  3.66846043749512*^9, 3.668460442743284*^9}}],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"euler", "[", 
-  RowBox[{"0", ",", 
-   RowBox[{"4", "\[Pi]"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"1", ",", "0", ",", "0", ",", "1"}], "}"}], ",", 
-   RowBox[{"#1", "&"}], ",", "100"}], "]"}]], "Input",
- CellChangeTimes->{{3.668460336475168*^9, 3.6684603373724194`*^9}, {
-  3.668460369127425*^9, 3.668460401244698*^9}, {3.668460451463114*^9, 
-  3.668460453709424*^9}, {3.6684605228652143`*^9, 3.668460560526888*^9}}],
-
-Cell[BoxData[
- GraphicsBox[{{}, {{}, 
-    {RGBColor[0.368417, 0.506779, 0.709798], PointSize[0.009166666666666668], 
-     AbsoluteThickness[1.6], PointBox[CompressedData["
-1:eJxVlHtM1WUcxglJkxxqMbKaImWmmTOn5b1nlZqX0kTHmiOlRmVZIRrqsP5w
-RkwbEl7mYkgkVKMLI8cKiRjXEFPGTQ/I7RzgAIfDgd/l/M7RLq73fff8/vDd
-zs5+57y/5/t8n8/7fWPeSop9OzQkJCRRfOT33UvDkciil12pn+Hu5zNI/umL
-zj3iuXRWmndbaS6235t/auU99v8F+C58/RMpoRqyv5KrEO+Xf3x6Rpi9vwh5
-jyzqnjNRw+g2+csvkLuz77PfL8EbXesnHL5fQ7gjf9+a8N8wiILeighb7xJ6
-t2ac++gBDfPjM6uteeXYNCV0QXqUrV8BJfeohgLxtiO/EvtPnBwwou16VXjm
-FelQwxK1arCrbKNQsOvX4k7bYc/cxRpqrHmiQh2m5iy5ULLM9lOPrKmpz/34
-vIZYVfAyji2Sgra/Bgz9U6i3vKrBlSoFr0C1H2f7vQrpLneXhmRpb981lO2d
-fDvvXdt/I/o8Zy9OSdaYexN92f00Qe6alaZhgyrQjJCko2F1mXZ/zfDlrn66
-LVuDrBaf2YJNR6RDu99WPBwWF7HwogbVjqMVr68ouXywwu6/DZOFu/l/aYhW
-ha7jqcIHm9a223lcxx/9kTMb3BreUesGqq58s+5X087HgWdVoDqkWmSRA0pu
-ms682slDR0DKWe1Y+bh0qDO/DhzYk+X7BDpUPGtuYubOxFW9W3XmeRPLb1Un
-/pCgM4dO1L7483s9yTrz7ULVCimo49pVubogT9vRszrz7oZo/vz49zpUu5E9
-2C3c1ZfpzL8Hs1uSdk9q1KHk4nsR+2Te8WKXTh5O+rb7cbJvg3yc+HLxoYUx
-0Qb3OfH58ht1Hy41yMuFMW+lcGiwXxfqNy87/kKCQX4uTFNADPbfB+muNMMg
-zz4EU5w50781mEcfzqSn7WwtN8i3HxcEjf/aDObTj5ji/SJRg7z7MV3KTTSZ
-1wB5mOQ/gLV/+4RDk/kNID2qozG43eR5cGOVGkCTebrx5g6ZkMnz4aY/k/kO
-4s5LUtDkeRnEoYqvxQ1gMu9BJLibHuu8bTLHIfwu3GlRfuY/xPz8PE9DqBH0
-d8T6yWOYPvzkMcyc/OQxjGj/B3GfFvnJY5h8/eThwal46dBPHh6kyHGNsMjD
-g4aD0rBFHiM4KdxteM1inRGeP4s8RrB3QeBc92mLPLw4VikHxCIPL9R11WGR
-hxeTpNy/FnmMkkeAPEaxpTlLOAyQxyhyamcLogHy8EGNR0aAOfhwotglbpAA
-efg4vwHyGMNqJRggjzEoHHOC5DEGOR1/bg6SxzgeEu5mHAiSxzjvlyB5jGOp
-uB1vVQfxP0rbHS4=
-      "]]}, {}}, {}},
-  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
-  Axes->{True, True},
-  AxesLabel->{None, None},
-  AxesOrigin->{0, 0.9757450000000001},
-  DisplayFunction->Identity,
-  Frame->{{False, False}, {False, False}},
-  FrameLabel->{{None, None}, {None, None}},
-  FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
-  GridLines->{None, None},
-  GridLinesStyle->Directive[
-    GrayLevel[0.5, 0.4]],
-  Method->{},
-  PlotRange->{{0, 0.99}, {1., 1.4851}},
-  PlotRangeClipping->True,
-  PlotRangePadding->{{
-     Scaled[0.02], 
-     Scaled[0.02]}, {
-     Scaled[0.05], 
-     Scaled[0.05]}},
-  Ticks->{Automatic, Automatic}]], "Output",
- CellChangeTimes->{{3.66846044555192*^9, 3.668460454824649*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"?", "AppendTo"}]], "Input",
- CellChangeTimes->{{3.668460415024726*^9, 3.6684604163082457`*^9}}],
-
-Cell[BoxData[
- RowBox[{
-  StyleBox["\<\"\\!\\(\\*RowBox[{\\\"AppendTo\\\", \\\"[\\\", \
-RowBox[{StyleBox[\\\"s\\\", \\\"TI\\\"], \\\",\\\", StyleBox[\\\"elem\\\", \\\
-\"TI\\\"]}], \\\"]\\\"}]\\) appends \\!\\(\\*StyleBox[\\\"elem\\\", \
-\\\"TI\\\"]\\) to the value of \\!\\(\\*StyleBox[\\\"s\\\", \\\"TI\\\"]\\), \
-and resets \\!\\(\\*StyleBox[\\\"s\\\", \\\"TI\\\"]\\) to the result. \"\>", 
-   "MSG"], "\[NonBreakingSpace]", 
-  ButtonBox[
-   StyleBox["\[RightSkeleton]", "SR"],
-   Active->True,
-   BaseStyle->"Link",
-   ButtonData->"paclet:ref/AppendTo"]}]], "Print", "PrintUsage",
- CellChangeTimes->{3.668460417245163*^9},
- CellTags->"Info-cfdd3aee-8abe-4e10-bacd-7eb97429677f"]
+   DynamicModuleBox[{$CellContext`\[Delta]$$ = -0.03600000000000003, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`\[Delta]$$], -1, 1}}, Typeset`size$$ = {
+    450., {127., 135.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`\[Delta]$65847$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`\[Delta]$$ = -1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`\[Delta]$$, $CellContext`\[Delta]$65847$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> 
+      Plot[2^((2 $CellContext`d/$CellContext`\[Delta]$$^2) (($CellContext`\
+\[Delta]$$/(2 $CellContext`d)) 
+           Log[2, $CellContext`t] + (
+            1 + $CellContext`\[Delta]$$/(2 $CellContext`d))^(-
+            Log[2, $CellContext`t]) - 1)), {$CellContext`t, 1, 100}], 
+      "Specifications" :> {{$CellContext`\[Delta]$$, -1, 1}}, "Options" :> {},
+       "DefaultOptions" :> {}],
+     ImageSizeCache->{505., {179., 186.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.6724309360011578`*^9, 3.672430976732486*^9}]
 }, Open  ]]
 },
 WindowSize->{960, 1151},
@@ -1081,16 +273,10 @@ StyleDefinitions->"Default.nb"
 
 (* Internal cache information *)
 (*CellTagsOutline
-CellTagsIndex->{
- "Info-cfdd3aee-8abe-4e10-bacd-7eb97429677f"->{
-  Cell[38630, 1055, 681, 14, 51, "Print",
-   CellTags->"Info-cfdd3aee-8abe-4e10-bacd-7eb97429677f"]}
- }
+CellTagsIndex->{}
 *)
 (*CellTagsIndex
-CellTagsIndex->{
- {"Info-cfdd3aee-8abe-4e10-bacd-7eb97429677f", 39688, 1084}
- }
+CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
@@ -1103,103 +289,15 @@ Cell[2734, 80, 138, 3, 35, "Output"]
 Cell[2887, 86, 91, 1, 35, "Input"],
 Cell[CellGroupData[{
 Cell[3003, 91, 208, 5, 35, "Input"],
-Cell[3214, 98, 125, 3, 35, "Output"]
+Cell[3214, 98, 147, 3, 35, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[3376, 106, 1251, 35, 81, "Input"],
-Cell[4630, 143, 2123, 42, 379, "Output"]
+Cell[3398, 106, 1251, 35, 81, "Input"],
+Cell[4652, 143, 2189, 43, 393, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[6790, 190, 327, 9, 60, "Input"],
-Cell[7120, 201, 137, 2, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[7294, 208, 267, 9, 60, "Input"],
-Cell[7564, 219, 135, 2, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[7736, 226, 154, 4, 48, "Input"],
-Cell[7893, 232, 114, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[8044, 238, 152, 4, 42, "Input"],
-Cell[8199, 244, 114, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[8350, 250, 116, 2, 35, "Input"],
-Cell[8469, 254, 88, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[8594, 260, 118, 2, 35, "Input"],
-Cell[8715, 264, 90, 1, 35, "Output"]
-}, Open  ]],
-Cell[8820, 268, 96, 1, 35, "Input"],
-Cell[CellGroupData[{
-Cell[8941, 273, 519, 17, 60, "Input"],
-Cell[9463, 292, 114, 1, 35, "Output"]
-}, Open  ]],
-Cell[9592, 296, 71, 1, 36, "Input"],
-Cell[CellGroupData[{
-Cell[9688, 301, 112, 1, 50, "WolframAlphaLong"],
-Cell[9803, 304, 14727, 319, 506, "Print"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[24567, 628, 630, 19, 39, "Input"],
-Cell[25200, 649, 94, 1, 38, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[25331, 655, 306, 10, 59, "Input"],
-Cell[25640, 667, 114, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[25791, 673, 174, 4, 36, "Input"],
-Cell[25968, 679, 117, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[26122, 685, 2474, 67, 95, "Input"],
-Cell[28599, 754, 2025, 46, 292, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[30661, 805, 175, 4, 35, "Input"],
-Cell[30839, 811, 87, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[30963, 817, 223, 6, 38, "Input"],
-Cell[31189, 825, 117, 1, 38, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[31343, 831, 272, 8, 60, "Input"],
-Cell[31618, 841, 87, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[31742, 847, 344, 11, 63, "Input"],
-Cell[32089, 860, 116, 1, 38, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[32242, 866, 979, 34, 38, "Input"],
-Cell[33224, 902, 90, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[33351, 908, 273, 7, 42, "Input"],
-Cell[33627, 917, 87, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[33751, 923, 118, 2, 35, "Input"],
-Cell[33872, 927, 87, 1, 35, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[33996, 933, 228, 6, 42, "Input"],
-Cell[34227, 941, 87, 1, 35, "Output"]
-}, Open  ]],
-Cell[34329, 945, 1413, 38, 246, "Input"],
-Cell[CellGroupData[{
-Cell[35767, 987, 439, 9, 35, "Input"],
-Cell[36209, 998, 2262, 48, 305, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[38508, 1051, 119, 2, 36, "Input"],
-Cell[38630, 1055, 681, 14, 51, "Print",
- CellTags->"Info-cfdd3aee-8abe-4e10-bacd-7eb97429677f"]
+Cell[6878, 191, 1006, 31, 59, "Input"],
+Cell[7887, 224, 1900, 37, 419, "Output"]
 }, Open  ]]
 }
 ]
