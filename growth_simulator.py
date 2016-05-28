@@ -97,29 +97,52 @@ def simulate_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
             "pop": pop_of_t,
             "params": (mu,N if ug else mp)}
 
-def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(3)):
+def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
     SIM = CDLL(libraries["outbreak"])
     seeds = np.array(seeds).astype(int)
-    SIM.simulate_outbreak(c_uint(N),
-            c_float(mu),
+    class Outbreak(Structure):
+        pass
+
+    Outbreak._fields_ = [("demes",POINTER(POINTER(c_int))),("used",c_uint),("size",c_uint)]
+    Outbreak_P = POINTER(Outbreak)
+    csim = SIM.simulate_outbreak
+    csim.restype = Outbreak_P
+    my_outbreak = Outbreak_P()
+    my_outbreak = csim(c_uint(N),
+            c_double(mu),
             c_ubyte(ug),
             c_int32(mp),
             (POINTER(c_int32)*len(seeds))(*[deme.ctypes.data_as(POINTER(c_int32)) for deme in seeds]),
-            c_int32(len(seeds)))
+            c_int32(len(seeds)),
+            c_int32(C),
+            c_int32(L))
+    print "used is " +str(my_outbreak.contents.used)
+    test = my_outbreak.contents.demes
+    print "deme_test " +str([[test[i][j] for j in range(0,3)] for i in range(0,N)])
+    """infected_demes = []
+    for i in range(0, my_outbreak.contents.used):
+        infected_demes.append([my_outbreak.contents.demes[i][j] for j in range(0,3)])
+    print infected_demes"""
+
+
 
 
 
 if __name__ == '__main__':
-    N = 50
+    args = sys.argv[1:]
+
+    N = 5
     mu = 1.8
     usegenerations = True
     maxpop = -1 if usegenerations else 10**5
-    polya = False
 
-    if polya:
-        data_dump = polya_outbreak(N,mu)
-    else:
+    if len(args)==0 or args[0]=="normal":
         data_dump = simulate_outbreak(N, mu)
+    elif args[0] == "polya":
+        data_dump = polya_outbreak(N, mu)
+    elif args[0] == "c":
+        data_dump =c_outbreak(N,mu)
+
 """
     output_filename = "data_outputs/{0}_data_{1}{2}_mu{3}".format("polya" if polya else "simulation","N" if usegenerations else "P", N if usegenerations else maxpop, mu)
     data_output = open(output_filename,'wb')
