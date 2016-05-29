@@ -146,8 +146,6 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),drop_fluff=Fal
             "params": (mu, N if ug else mp)}
 
 
-
-
 if __name__ == '__main__':
     args = sys.argv[1:]
 

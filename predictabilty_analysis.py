@@ -39,9 +39,9 @@ def fluctuation_of_time(init_N, N, mu, n_sim):
 
 if __name__ == '__main__':
     init_N = 10
-    N = 5
+    N = 50
     mu = 1.8
-    n_sim = 100
+    n_sim = 1000
 
     args = sys.argv[1:]
     if len(args)==0 or args[0] == "fluctuations":
@@ -61,29 +61,30 @@ if __name__ == '__main__':
     elif args[0]=="distributions":
         max_extents, gyr_extents, pops = distributions_of_time(init_N, N, mu, n_sim)
 
-        ani_fig = plt.figure()
+        plt.locator_params(nbins=3)
+        ani_fig, (pop_ax,rmax_ax,rgyr_ax) = plt.subplots(1, 3)
         ani_fig.suptitle(r'Distributions for $R_{m}(t)$, $R_{g}(t)$, and $N(t)$',fontsize=14, fontweight='bold')
-        #f, (pop_ax,rmax_ax,rgyr_ax) = plt.subplots(1,3)
-        #pop_ax.set_xlabel(r'N(t)')
-        #pop_ax.set_ylabel(r'Probability')
-        #rmax_ax.set_xlabel(r'R_{m}(t)')
-        #rgyr_ax.set_xlabel(r'R_{g}(t)')
+        pop_ax.set_xlabel(r'$N(t)$')
+        pop_ax.set_ylabel(r'Probability')
+        rmax_ax.set_xlabel(r'$R_{m}(t)$')
+        rgyr_ax.set_xlabel(r'$R_{g}(t)$')
         Writer = animation.writers['ffmpeg']
-        writer = Writer(fps=15, metadata=dict(artist='Chris Dock'),bitrate=1800)
-        ims = []
+        writer = Writer(fps=15, metadata=dict(artist='Chris Dock'), bitrate=1800)
         popc = rc()
         rmc = rc()
         rgc = rc()
-        for g in range(1, len(max_extents)):
-            print g
+        ims = []
+        for g in range(1,len(pops)):
+            print "g = "+str(g)
             pop_hist, pop_edges = np.histogram(np.array(pops[g]),100,normed=True)
             pop_edges = [edge + (pop_edges[1]-pop_edges[0])/2. for edge in pop_edges][:-1]
-            #im1 = plt.scatter(pop_edges,pop_hist,color=popc,marker='o')
-            #pn, pb, pp = pop_ax.hist(pops[g], 100, facecolor=rc())
-            #rmn,rmb,rmp = rmax_ax.hist(max_extents[g],100,facecolor=rc())
-            #irgn,rgb,rgp = rgyr_ax.hist(gyr_extents[g],100,facecolor=rc())
-            ims.append((plt.scatter(pop_edges,pop_hist,color=popc,marker='o'),))
-        im_ani = animation.ArtistAnimation(ani_fig,ims, interval=50, repeat_delay=3000,blit=True)
-        im_ani.save('ouputs/distribution_animation.mp4',writer=writer)
-
-
+            im1 = pop_ax.scatter(pop_edges,pop_hist,color=popc,marker='o')
+            rm_hist, rm_edges = np.histogram(np.array(max_extents[g]),100,normed=True)
+            rm_edges = [edge + (rm_edges[1]-rm_edges[0])/2. for edge in rm_edges][:-1]
+            im2 = rmax_ax.scatter(rm_edges,rm_hist,color=rmc,marker='o')
+            rg_hist, rg_edges = np.histogram(np.array(gyr_extents[g]),100,normed=True)
+            rg_edges = [edge + (rg_edges[1]-rg_edges[0])/2. for edge in rg_edges][:-1]
+            im3 = rgyr_ax.scatter(rg_edges,rg_hist,color=rgc,marker='o')
+            ims.append((im1,im2,im3))
+        im_ani = animation.ArtistAnimation(ani_fig,ims,interval=50,repeat_delay=3000,blit=True)
+        im_ani.save('outputs/dist_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer,dpi=400)
