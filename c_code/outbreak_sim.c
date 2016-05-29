@@ -9,14 +9,19 @@
 Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** seeds, int ns,
         int C, int L) {
     srand(clock());
+    BoolTable* tab = (BoolTable*)malloc(sizeof(BoolTable));
+
+    init_h(tab, L);
+    //printf("size of BoolTable is %zu\n",sizeof(BoolTable));
     Outbreak* infected = (Outbreak*)malloc(sizeof(Outbreak));
     init(infected, 2*N*N);
-    BoolTable* tab = (BoolTable*)malloc(sizeof(BoolTable));
-    init_h(tab, L);
+    //printf("HERE FUCKER\n"); 
     for(int i=0; i < ns; i++) {
+        //printf("seed: (%d,%d,%d)\n",seeds[i][0],seeds[i][1],seeds[i][2]);
         append(infected,seeds[i]);
         install(tab, seeds[i][0],seeds[i][1]);
     }
+
     int new_infected[3] = {0,0,0};
     int j=1;
     size_t temp_size;
@@ -37,6 +42,7 @@ Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** se
         j++;
     }
     trim(infected);
+    free_hash(tab);
     return infected;
 }
 
@@ -47,7 +53,7 @@ int main(int argc, char** argv) {
         printf("options for func are simtest or arrtest\n");
     }
     if(strcmp(argv[1], "simtest")==0) {
-        int N = 5;
+        int N = 10;
         float mu = 1.8;
         unsigned char ug = 1;
         int mp = -1;
@@ -78,11 +84,14 @@ int main(int argc, char** argv) {
         BoolTable* tab = (BoolTable*)malloc(sizeof(BoolTable));
         int L = 10000;
         init_h(tab, L);
-        printf("here\n");
         install(tab,0,0);
-        printf("here2\n");
         unsigned char result = lookup(tab,0,0);
-        printf("result %u\n", result);
-
+        printf("true result %u\n", result);
+        //result = lookup(tab,0,1);
+        //printf("false result %u\n", result);
+        free_hash(tab);
+        //BoolTable* tab2 = (BoolTable*)malloc(sizeof(BoolTable));
+        //init_h(tab2, L);
+        //install(tab2,0,5);
     }
 }

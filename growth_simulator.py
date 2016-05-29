@@ -4,7 +4,7 @@ from standard_plotters import *
 
 def seed_lattice(num_extra, extent=10):
     seeds = [tuple([0 for i in range(0,d+1)])]
-    seeds.extend([tuple([fr()*sr()*extent for j in range(0,d)]) + (0,) for i in range(0, num_extra)])
+    seeds.extend([tuple([int(fr()*sr()*extent) for j in range(0,d)]) + (0,) for i in range(0, num_extra)])
     return seeds
 
 def jump(source, mu):
@@ -97,8 +97,9 @@ def simulate_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
             "pop": pop_of_t,
             "params": (mu,N if ug else mp)}
 
-def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),drop_fluff=False):
+def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
     SIM = CDLL(libraries["outbreak"])
+    ARR = CDLL(libraries["array"])
     class Outbreak(Structure):
         pass
     Outbreak._fields_ = [("demes",POINTER(POINTER(c_int))),("used",c_uint),("size",c_uint)]
@@ -123,6 +124,7 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),drop_fluff=Fal
             c_int(L))
     demes = my_outbreak.contents.demes
     infected_demes = [[demes[i][j] for j in range(0,3)] for i in range(0,my_outbreak.contents.used)]
+    ARR.free_outbreak(my_outbreak)
     generations = [[] for i in range(0,N)]
     for deme in infected_demes:
         generations[deme[2]].append(deme)
@@ -149,7 +151,7 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),drop_fluff=Fal
 if __name__ == '__main__':
     args = sys.argv[1:]
 
-    N = 50
+    N = 100
     mu = 1.8
     usegenerations = True
     maxpop = -1 if usegenerations else 10**5
@@ -159,8 +161,8 @@ if __name__ == '__main__':
     elif args[0] == "polya":
         data_dump = polya_outbreak(N, mu)
     elif args[0] == "c":
-        data_dump = c_outbreak(N,mu)
-
+        data_dump = c_outbreak(N,mu,seeds)
+"""
     output_filename = "data_outputs/{0}_data_{1}{2}_mu{3}".format("normal" if len(args)==0 else args[0],"N" if usegenerations else "P", N if usegenerations else maxpop, mu)
     data_output = open(output_filename,'wb')
     pickle.dump(data_dump, data_output)
@@ -174,3 +176,4 @@ if __name__ == '__main__':
     plot_spread(output_filename)
     plot_radii(output_filename)
     plot_populations(output_filename)
+"""

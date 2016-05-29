@@ -96,5 +96,6 @@ def rc():
 
 #C Interface
 libraries = {
-        "outbreak":"c_code/dylibs/outbreak_sim.dylib"
+        "outbreak": "c_code/dylibs/outbreak_sim.dylib",
+        "array": "c_code/dylibs/dynamic_array.dylib"
 }

@@ -2,7 +2,7 @@
 #include "murmur3/murmur3.c"
 
 
-#define HASHSIZE 1020379
+#define HASHSIZE 104729
 
 struct nlist {
     struct nlist *next;
@@ -13,7 +13,7 @@ struct nlist {
 };
 
 typedef struct {
-    struct nlist* HASHTABLE[HASHSIZE];
+    struct nlist** HASHTABLE;
     int L;
 } BoolTable;
 
@@ -29,14 +29,18 @@ unsigned int hash(int xkey, int ykey, int L) {
 
 void init_h(BoolTable *tab, int L) {
     tab->L = L;
+    tab->HASHTABLE = (struct nlist**)calloc(sizeof(struct nlist*),HASHSIZE);
 }
 
 unsigned char lookup(BoolTable* tab, int xkey, int ykey) {
+    //printf("LOOK UP JAVERT!\n");
     struct nlist* np = tab->HASHTABLE[hash(xkey,ykey,tab->L)];
     if(np == NULL){
         return 0;
     }
     np = np->next;
+
+    //printf("DID I DIE YET?\n");
     while(np->value!=2) {
         if(xkey==np->xkey && ykey == np->ykey) {
             return 1;
@@ -46,7 +50,9 @@ unsigned char lookup(BoolTable* tab, int xkey, int ykey) {
 }
 
 void install(BoolTable* tab, int xkey, int ykey) {
+    //printf("INSTALLING\n");
     if(!lookup(tab, xkey,ykey)) {
+        //printf("BITCHES\n");
         struct nlist* new_entry = (struct nlist*)malloc(sizeof(struct nlist));
         new_entry->xkey = xkey;
         new_entry->ykey = ykey;
@@ -58,11 +64,30 @@ void install(BoolTable* tab, int xkey, int ykey) {
             current->next = current;
             current->value = 2; //SENTINEL
         } 
-        struct nlist* prev = current->prev;
-        prev->next = new_entry;
-        current->prev = new_entry;
-        new_entry->prev = prev;
         new_entry->next = current;
+        new_entry->prev = current->prev;
+        current->prev->next = new_entry;
+        current->prev=new_entry; 
+        //printf("OVER HEEEERREEEE\n");
         tab->HASHTABLE[hash(xkey,ykey,tab->L)] = current;
     }
+}
+void free_hash(BoolTable* tab) {
+    struct nlist *np;
+    struct nlist *next;
+    for(int i=0; i<HASHSIZE;i++) {
+        np = tab->HASHTABLE[i];
+        if(np!=NULL) {
+            np = np->next;
+            while(np->value!=2) {
+                next = np->next;
+                free(np);
+                np = next;
+            }
+            free(np);
+        }
+    }
+    //printf("OUTSIDE\n");
+    free(tab->HASHTABLE);
+    free(tab);
 }

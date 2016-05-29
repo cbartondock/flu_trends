@@ -5,7 +5,6 @@ from universal import *
 def distributions_of_time(init_N, N, mu, n_sim):
     seeds = [[deme[0],deme[1],0] for deme in c_outbreak(init_N, mu)["infected"]]
     infected_states = {g: [] for g in range(0,N)}
-
     for i in range(0, n_sim):
         print i
         data = c_outbreak(N, mu, seeds = seeds)
@@ -35,11 +34,13 @@ def fluctuation_of_time(init_N, N, mu, n_sim):
         pop_fluct[g] = mean([(pop - pop_mean[g])**2 for pop in pops[g]])**.5/pop_mean[g]
     return max_fluct, gyr_fluct, pop_fluct
 
+#def average_over_initials(init_N, N, mu, n_sim):
+
 
 
 if __name__ == '__main__':
     init_N = 10
-    N = 50
+    N = 80
     mu = 1.8
     n_sim = 1000
 
