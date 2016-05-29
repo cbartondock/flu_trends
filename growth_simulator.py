@@ -174,4 +174,3 @@ if __name__ == '__main__':
     plot_spread(output_filename)
     plot_radii(output_filename)
     plot_populations(output_filename)
-

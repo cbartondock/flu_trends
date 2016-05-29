@@ -61,9 +61,9 @@ if __name__ == '__main__':
     elif args[0]=="distributions":
         max_extents, gyr_extents, pops = distributions_of_time(init_N, N, mu, n_sim)
 
-        plt.locator_params(nbins=3)
         ani_fig, (pop_ax,rmax_ax,rgyr_ax) = plt.subplots(1, 3)
         ani_fig.suptitle(r'Distributions for $R_{m}(t)$, $R_{g}(t)$, and $N(t)$',fontsize=14, fontweight='bold')
+        plt.locator_params(axis='x',nbins=4)
         pop_ax.set_xlabel(r'$N(t)$')
         pop_ax.set_ylabel(r'Probability')
         rmax_ax.set_xlabel(r'$R_{m}(t)$')
@@ -73,18 +73,42 @@ if __name__ == '__main__':
         popc = rc()
         rmc = rc()
         rgc = rc()
-        ims = []
-        for g in range(1,len(pops)):
-            print "g = "+str(g)
-            pop_hist, pop_edges = np.histogram(np.array(pops[g]),100,normed=True)
+        popline = pop_ax.plot([],[],color=popc,marker='o',lw=0)[0]
+        rmline = rmax_ax.plot([],[],color=rmc,marker='o',lw=0)[0]
+        rgline = rgyr_ax.plot([],[],color=rgc,marker='o',lw=0)[0]
+        def init():
+            popline.set_data([],[])
+            rmline.set_data([],[])
+            rgline.set_data([],[])
+            return [popline, rmline, rgline]
+        def animate(i):
+            g=i+1
+            print "g is "+str(g)
+            pop_weights = np.ones_like(pops[g])/float(len(pops[g]))
+            pop_hist, pop_edges = np.histogram(np.array(pops[g]),100,normed=0,weights=pop_weights)
             pop_edges = [edge + (pop_edges[1]-pop_edges[0])/2. for edge in pop_edges][:-1]
-            im1 = pop_ax.scatter(pop_edges,pop_hist,color=popc,marker='o')
-            rm_hist, rm_edges = np.histogram(np.array(max_extents[g]),100,normed=True)
+            popline.set_data(pop_edges,pop_hist)
+            pop_ax.set_xlim([int(min(pop_edges))-2,int(max(pop_edges))+2])
+            pop_ax.set_ylim([0,max(pop_hist)*1.1])
+            start, end = pop_ax.get_xlim()
+            pop_ax.xaxis.set_ticks(np.arange(start,end,(end-start)//3))
+            rm_weights = np.ones_like(max_extents[g])/float(len(max_extents[g]))
+            rm_hist, rm_edges = np.histogram(np.array(max_extents[g]),100,normed=0,weights=rm_weights)
             rm_edges = [edge + (rm_edges[1]-rm_edges[0])/2. for edge in rm_edges][:-1]
-            im2 = rmax_ax.scatter(rm_edges,rm_hist,color=rmc,marker='o')
-            rg_hist, rg_edges = np.histogram(np.array(gyr_extents[g]),100,normed=True)
+            rmline.set_data(rm_edges,rm_hist)
+            rmax_ax.set_xlim([int(min(rm_edges))-2,int(max(rm_edges))+2])
+            rmax_ax.set_ylim([0,max(rm_hist)*1.1])
+            start, end = rmax_ax.get_xlim()
+            rmax_ax.xaxis.set_ticks(np.arange(start,end,(end-start)//3))
+            rg_weights = np.ones_like(gyr_extents[g])/float(len(gyr_extents[g]))
+            rg_hist, rg_edges = np.histogram(np.array(gyr_extents[g]),100,normed=0,weights=rg_weights)
             rg_edges = [edge + (rg_edges[1]-rg_edges[0])/2. for edge in rg_edges][:-1]
-            im3 = rgyr_ax.scatter(rg_edges,rg_hist,color=rgc,marker='o')
-            ims.append((im1,im2,im3))
-        im_ani = animation.ArtistAnimation(ani_fig,ims,interval=50,repeat_delay=3000,blit=True)
-        im_ani.save('outputs/dist_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer,dpi=400)
+            rgline.set_data(rg_edges,rg_hist)
+            rgyr_ax.set_xlim([int(min(rg_edges))-2,int(max(rg_edges))+2])
+            rgyr_ax.set_ylim([0,max(rg_hist)*1.1])
+            start, end = rgyr_ax.get_xlim()
+            rgyr_ax.xaxis.set_ticks(np.arange(start,end,(end-start)//3))
+            return [popline, rmline, rgline]
+        print "Beginning Animation"
+        anim = animation.FuncAnimation(ani_fig,animate,init_func=init,frames=len(pops)-1,interval=20,blit=True)
+        anim.save('outputs/dist_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer,dpi=500)
