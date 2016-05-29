@@ -40,8 +40,8 @@ Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** se
     return infected;
 }
 
-int main(int argc, char** argv) {
 
+int main(int argc, char** argv) {
     if(argc < 2) {
         printf("usage: ./outbreak_sim func\n");
         printf("options for func are simtest or arrtest\n");
@@ -53,10 +53,12 @@ int main(int argc, char** argv) {
         int mp = -1;
         int C = 1;
         int L = 10000000;
-        int **seeds = (int**)malloc(sizeof(int*));
+        int **seeds = (int**)malloc(2*sizeof(int*));
         seeds[0] = (int*)malloc(sizeof(int)*3);
+        seeds[1] = (int*)malloc(sizeof(int)*3);
         seeds[0][0] = 0; seeds[0][1] = 0; seeds[0][2] = 0;
-        int ns = 1;
+        seeds[1][0] = 1; seeds[1][1] = 0; seeds[1][2] = 0;
+        int ns = 2;
         Outbreak* new_outbreak;
         new_outbreak = simulate_outbreak(N,mu,ug,mp,seeds,ns,C,L);
         print(new_outbreak);

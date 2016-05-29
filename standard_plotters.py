@@ -1,6 +1,5 @@
 from universal import *
 from kernel_analysis import *
-#data_dump = [infected_demes, generations, r_of_t, population_dict, (mu, N)]
 
 def plot_spread(filename):
     data_dump_file = open(filename, 'rb')
@@ -114,8 +113,6 @@ def animate_spread(filename):
         print "i = "+str(i)
         infected_demes.extend(generations[i])
         xyt = zip(*infected_demes)
-
-        print xyt
         ims.append((plt.scatter(xyt[0],xyt[1],c=xyt[2],cmap=cm, alpha=.5,marker='o',lw=0.0),))
     im_ani = animation.ArtistAnimation(animation_figure,ims,interval=50,repeat_delay=3000,blit=True)
     im_ani.save('outputs/spread_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer)

@@ -97,9 +97,8 @@ def simulate_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
             "pop": pop_of_t,
             "params": (mu,N if ug else mp)}
 
-def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
+def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),drop_fluff=False):
     SIM = CDLL(libraries["outbreak"])
-    seeds = np.array(seeds).astype(int)
     class Outbreak(Structure):
         pass
     Outbreak._fields_ = [("demes",POINTER(POINTER(c_int))),("used",c_uint),("size",c_uint)]
@@ -107,11 +106,18 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
     csim = SIM.simulate_outbreak
     csim.restype = Outbreak_P
     my_outbreak = Outbreak_P()
+    INT3ARR = c_int*3
+    SEEDARR = POINTER(c_int)* len(seeds)
+    seeds_ptr = SEEDARR()
+    for i in range(0,len(seeds)):
+        seeds_ptr[i] = INT3ARR()
+        for j in range(0,3):
+            seeds_ptr[i][j]=seeds[i][j]
     my_outbreak = csim(c_uint(N),
             c_double(mu),
             c_ubyte(ug),
             c_int(mp),
-            (POINTER(c_int)*len(seeds))(*[deme.ctypes.data_as(POINTER(c_int)) for deme in seeds]),
+            seeds_ptr,
             c_int(len(seeds)),
             c_int(C),
             c_int(L))
