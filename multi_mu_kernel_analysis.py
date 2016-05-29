@@ -1,5 +1,5 @@
 from universal import *
-from growth_simulator import simulate_outbreak
+from growth_simulator import *
 from outbreak_splitter import *
 from kernel_analysis import *
 
@@ -10,7 +10,8 @@ def expectation_of_kernels(N, mus, n_sim, incl_secs = False, ug = True, mpop=-1)
     for mu in mus:
         pairs =[]
         for i in range(0, n_sim):
-            simulation_results = simulate_outbreak(N, mu, ug, mpop)
+            print i
+            simulation_results = c_outbreak(N, mu)
             r_of_t = simulation_results["gyr_r"]
             generations = simulation_results["gens"]
             primary_kernel = list(zip(*invert_to_kernel_convolution(r_of_t)))
@@ -32,7 +33,7 @@ def kernels_of_expectations(N, mus, n_sim, incl_secs = False, ug = True, mpop=-1
         r_of_ts = []
         for i in range(0, n_sim):
             print "i = {0}".format(i)
-            simulation_results = simulate_outbreak(N, mu, ug, mpop)
+            simulation_results = c_outbreak(N, mu)
             r_of_ts.append(simulation_results["gyr_r"])
             if incl_secs:
                 secondary_r_of_ts = get_secondaries(generations)[1]
@@ -66,7 +67,7 @@ def mu_retrieval(actual_mu, kernel):
 
 
 if __name__ == '__main__':
-    N = 30
+    N = 50
     n_sim = 1000
     mus = [1.6, 1.7,1.8,1.9,2.0,2.1,2.2]
     kernels = expectation_of_kernels(N, mus, n_sim)

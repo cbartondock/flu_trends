@@ -1,4 +1,4 @@
-all: dylibs/outbreak_sim.dylib dylibs/dynamic_array.dylib
+all: dylibs/useful_functions.dylib dylibs/outbreak_sim.dylib dylibs/dynamic_array.dylib dylibs/hash_table.dylib
 exe: outbreak_sim
 
 dylibs/%.dylib : %.c

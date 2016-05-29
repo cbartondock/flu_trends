@@ -1,6 +1,6 @@
 from universal import *
 
-def dynamic_scaling(gens):
+#def dynamic_scaling(gens):
 #First we figure out our initial guess for l(t)
 #Then we use that to establish zones for primary and secondary inclusion
 #The rest is history

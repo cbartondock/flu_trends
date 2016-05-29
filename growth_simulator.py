@@ -30,7 +30,7 @@ def polya_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
         xav = mean([deme[0] for deme in infected_demes])
         yav = mean([deme[1] for deme in infected_demes])
         max_r_of_t[i-1] = max_rad(xav, yav, generations[i-1])
-        gyr_r_of_t[i-1] = gyr_rad(xav, yav, infected_demes)
+        gyr_r_of_t[i-1] = gyr_rad(xav, yav, generations[i-1])
         mean_r_of_t[i-1] = mean_rad(xav,yav,generations[i-1])
         pop_of_t[i-1] = len(infected_demes)
         if i==N:
@@ -73,7 +73,7 @@ def simulate_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
         xav = mean([deme[0] for deme in infected_demes])
         yav = mean([deme[1] for deme in infected_demes])
         max_r_of_t[i-1] = max_rad(xav, yav, generations[i-1])
-        gyr_r_of_t[i-1] = gyr_rad(xav, yav, infected_demes)
+        gyr_r_of_t[i-1] = gyr_rad(xav, yav, generations[i-1])
         mean_r_of_t[i-1] = mean_rad(xav,yav,generations[i-1])
         pop_of_t[i-1] = len(infected_demes)
         if i==N:
@@ -102,7 +102,6 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
     seeds = np.array(seeds).astype(int)
     class Outbreak(Structure):
         pass
-
     Outbreak._fields_ = [("demes",POINTER(POINTER(c_int))),("used",c_uint),("size",c_uint)]
     Outbreak_P = POINTER(Outbreak)
     csim = SIM.simulate_outbreak
@@ -111,19 +110,34 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
     my_outbreak = csim(c_uint(N),
             c_double(mu),
             c_ubyte(ug),
-            c_int32(mp),
-            (POINTER(c_int32)*len(seeds))(*[deme.ctypes.data_as(POINTER(c_int32)) for deme in seeds]),
-            c_int32(len(seeds)),
-            c_int32(C),
-            c_int32(L))
-    print "used is " +str(my_outbreak.contents.used)
-    test = my_outbreak.contents.demes
-    print "deme_test " +str([[test[i][j] for j in range(0,3)] for i in range(0,N)])
-    """infected_demes = []
-    for i in range(0, my_outbreak.contents.used):
-        infected_demes.append([my_outbreak.contents.demes[i][j] for j in range(0,3)])
-    print infected_demes"""
-
+            c_int(mp),
+            (POINTER(c_int)*len(seeds))(*[deme.ctypes.data_as(POINTER(c_int)) for deme in seeds]),
+            c_int(len(seeds)),
+            c_int(C),
+            c_int(L))
+    demes = my_outbreak.contents.demes
+    infected_demes = [[demes[i][j] for j in range(0,3)] for i in range(0,my_outbreak.contents.used)]
+    generations = [[] for i in range(0,N)]
+    for deme in infected_demes:
+        generations[deme[2]].append(deme)
+    genpops = [len(gen) for gen in generations]
+    xav = mean([deme[0] for deme in infected_demes])
+    yav = mean([deme[1] for deme in infected_demes])
+    mean_r_of_t, max_r_of_t, gyr_r_of_t, pop_of_t = {},{},{},{}
+    for i in range(0,N):
+        mean_r_of_t[i] = mean_rad(xav,yav, generations[i])
+        max_r_of_t[i] = max_rad(xav,yav, generations[i])
+        gyr_r_of_t[i] = gyr_rad(xav,yav, concat(generations,i))
+        pop_of_t[i] = sum(genpops[:i+1])
+    print "# demes: {0}".format(len(infected_demes))
+    print "# generations: {0}".format(len(generations))
+    return {"infected": infected_demes,
+            "gens": generations,
+            "max_r": max_r_of_t,
+            "gyr_r": gyr_r_of_t,
+            "mean_r": mean_r_of_t,
+            "pop": pop_of_t,
+            "params": (mu, N if ug else mp)}
 
 
 
@@ -131,7 +145,7 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
 if __name__ == '__main__':
     args = sys.argv[1:]
 
-    N = 5
+    N = 50
     mu = 1.8
     usegenerations = True
     maxpop = -1 if usegenerations else 10**5
@@ -141,10 +155,9 @@ if __name__ == '__main__':
     elif args[0] == "polya":
         data_dump = polya_outbreak(N, mu)
     elif args[0] == "c":
-        data_dump =c_outbreak(N,mu)
+        data_dump = c_outbreak(N,mu)
 
-"""
-    output_filename = "data_outputs/{0}_data_{1}{2}_mu{3}".format("polya" if polya else "simulation","N" if usegenerations else "P", N if usegenerations else maxpop, mu)
+    output_filename = "data_outputs/{0}_data_{1}{2}_mu{3}".format("normal" if len(args)==0 else args[0],"N" if usegenerations else "P", N if usegenerations else maxpop, mu)
     data_output = open(output_filename,'wb')
     pickle.dump(data_dump, data_output)
     data_output.close()
@@ -157,4 +170,4 @@ if __name__ == '__main__':
     plot_spread(output_filename)
     plot_radii(output_filename)
     plot_populations(output_filename)
-"""
+
