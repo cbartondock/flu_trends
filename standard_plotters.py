@@ -40,7 +40,7 @@ def plot_radii(filename):
     fpatch = mpatches.Patch(color=fc)
     fitplot = radii_ax.plot([scaling(g) for g in range(0,N)],c=fc)
     radii_ax.set_xlabel(r'Generation')
-    radii_ax.set_ylabel(r'Gyration Radius')
+    radii_ax.set_ylabel(r'Radius')
     radii_ax.legend(handles=[gyrplot,maxplot,fpatch],labels=[r'Gyration Radius', r'Maximum Radius', r'Crossover Prediction'], loc='upper left')
     radii_fig.savefig("outputs/radial_plot_N{0}_mu{1}.png".format(N,mu),dpi=400)
 

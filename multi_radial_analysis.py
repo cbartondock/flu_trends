@@ -7,7 +7,9 @@ def rad_expectations(N, mu, n_sim):
     max_r_av = {t: 0 for t in range(0, N)}
     gyr_r_av = {t: 0 for t in range(0, N)}
     for i in range(0, n_sim):
-        data = simulate_outbreak(N, mu)
+        print i
+        data = c_outbreak(N, mu)
+        print "stupid data: " + str(data["max_r"][0])
         max_r_av = {t: max_r_av[t] + data["max_r"][t] for t in range(0,N)}
         gyr_r_av = {t: gyr_r_av[t] + data["gyr_r"][t] for t in range(0,N)}
     max_r_av = {t: max_r_av[t]/float(n_sim) for t in range(0,N)}
@@ -35,7 +37,7 @@ if __name__ == '__main__':
     fpatch = mpatches.Patch(color=fc)
     fitplot = radii_ax.plot([scaling(g) for g in range(0,N)],c=fc)
     radii_ax.set_xlabel(r'Generation')
-    radii_ax.set_ylabel(r'Gyration Radius')
+    radii_ax.set_ylabel(r'Radius')
     radii_ax.legend(handles=[gyrplot,maxplot,fpatch],labels=[r'Gyration Radius', r'Maximum Radius', r'Crossover Prediction'], loc='upper left')
     radii_fig.savefig("outputs/average_radial_plot_N{0}_mu{1}.png".format(N,mu),dpi=400)
 

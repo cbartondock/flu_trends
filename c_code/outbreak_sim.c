@@ -12,22 +12,24 @@ Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** se
     BoolTable* tab = (BoolTable*)malloc(sizeof(BoolTable));
 
     init_h(tab, L);
-    //printf("size of BoolTable is %zu\n",sizeof(BoolTable));
     Outbreak* infected = (Outbreak*)malloc(sizeof(Outbreak));
-    init(infected, 2*N*N);
-    //printf("HERE FUCKER\n"); 
+    if(ug) {
+        init(infected, 2*N*N);
+    } else {
+        init(infected, mp);
+    }
     for(int i=0; i < ns; i++) {
         //printf("seed: (%d,%d,%d)\n",seeds[i][0],seeds[i][1],seeds[i][2]);
         append(infected,seeds[i]);
         install(tab, seeds[i][0],seeds[i][1]);
     }
-
     int new_infected[3] = {0,0,0};
     int j=1;
     size_t temp_size;
     while( (ug && j < N) || (!ug && infected->used < mp)) {
         temp_size = infected->used;
         for(int k=0; k < temp_size; k++) {
+            if(!ug && infected->used==mp) {break;}
             double Y = (double)rand()/(double)RAND_MAX;
             double R = pow((Y*(pow((double)L,-mu-1)-pow(C,-mu-1))+pow((double)C,-mu-1)),(-1./(mu+1)));
             double theta = (double)2*M_PI*rand()/(double)RAND_MAX;
@@ -55,16 +57,16 @@ int main(int argc, char** argv) {
     if(strcmp(argv[1], "simtest")==0) {
         int N = 10;
         float mu = 1.8;
-        unsigned char ug = 1;
-        int mp = -1;
+        unsigned char ug = 0;
+        int mp = 1;
         int C = 1;
         int L = 10000000;
         int **seeds = (int**)malloc(2*sizeof(int*));
         seeds[0] = (int*)malloc(sizeof(int)*3);
-        seeds[1] = (int*)malloc(sizeof(int)*3);
+        //seeds[1] = (int*)malloc(sizeof(int)*3);
         seeds[0][0] = 0; seeds[0][1] = 0; seeds[0][2] = 0;
-        seeds[1][0] = 1; seeds[1][1] = 0; seeds[1][2] = 0;
-        int ns = 2;
+        //seeds[1][0] = 1; seeds[1][1] = 0; seeds[1][2] = 0;
+        int ns = 1;
         Outbreak* new_outbreak;
         new_outbreak = simulate_outbreak(N,mu,ug,mp,seeds,ns,C,L);
         print(new_outbreak);
@@ -87,11 +89,11 @@ int main(int argc, char** argv) {
         install(tab,0,0);
         unsigned char result = lookup(tab,0,0);
         printf("true result %u\n", result);
-        //result = lookup(tab,0,1);
-        //printf("false result %u\n", result);
+        result = lookup(tab,0,1);
+        printf("false result %u\n", result);
         free_hash(tab);
-        //BoolTable* tab2 = (BoolTable*)malloc(sizeof(BoolTable));
-        //init_h(tab2, L);
-        //install(tab2,0,5);
+        BoolTable* tab2 = (BoolTable*)malloc(sizeof(BoolTable));
+        init_h(tab2, L);
+        install(tab2,0,5);
     }
 }
