@@ -31,7 +31,7 @@ rcParams['figure.figsize'] = 7.3, 4.2
 
 origin = (0,0)
 d = 2
-L=10000000
+L=1000000000000
 C=1
 
 sr = lambda : 2*(r()-.5)

@@ -19,6 +19,7 @@ def jump(source, mu):
     return (source[0]+int(R*np.cos(theta)),source[1]+int(R*np.sin(theta)))
 
 def polya_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
+    L=300
     infected_demes = [seed for seed in seeds]
     infection_tracker = Counter()
     for seed in [seed[:-1] for seed in seeds]:
@@ -85,7 +86,7 @@ def simulate_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
             break
         generations.append([])
         for deme in infected_demes:
-            target = mean_jump(deme, mu)
+            target = jump(deme, mu)
             if infection_tracker[target] != 1:
                 infection_tracker[target] = 1
                 generations[i].append(target + (i,))
@@ -157,8 +158,8 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
 if __name__ == '__main__':
     args = sys.argv[1:]
 
-    N = 5
-    mu = 1.8
+    N = 100
+    mu = 1.5
     usegenerations = True
     maxpop = -1 if usegenerations else 10**5
 
@@ -168,7 +169,7 @@ if __name__ == '__main__':
         data_dump = polya_outbreak(N, mu)
     elif args[0] == "c":
         data_dump = c_outbreak(N,mu)
-"""
+
     output_filename = "data_outputs/{0}_data_{1}{2}_mu{3}".format("normal" if len(args)==0 else args[0],"N" if usegenerations else "P", N if usegenerations else maxpop, mu)
     data_output = open(output_filename,'wb')
     pickle.dump(data_dump, data_output)
@@ -182,4 +183,4 @@ if __name__ == '__main__':
     plot_spread(output_filename)
     plot_radii(output_filename)
     plot_populations(output_filename)
-"""
+
