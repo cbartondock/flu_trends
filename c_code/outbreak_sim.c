@@ -45,7 +45,7 @@ Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** se
     }
     trim(infected);
     free_hash(tab);
-    print(infected);
+    //print(infected);
     return infected;
 }
 

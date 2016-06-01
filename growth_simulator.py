@@ -131,12 +131,9 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
             c_int(C),
             c_int(L))
     demes = my_outbreak.contents.demes
-    print my_outbreak.contents.used
     infected_demes = [[demes[i][j] for j in range(0,3)] for i in range(0,my_outbreak.contents.used)]
 
     ARR.free_outbreak(my_outbreak)
-    print "len infected is " + str(len(infected_demes))
-    print "last g is " + str(infected_demes[i][2])
     generations = [[] for i in range(0,infected_demes[-1][2]+1)]
     for deme in infected_demes:
         generations[deme[2]].append(deme)
