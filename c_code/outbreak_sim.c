@@ -7,23 +7,21 @@
 #include "hash_table.c"
 
 Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** seeds, int ns,
-        int C, int L) {
+        int C, int L, unsigned char d) {
     srand(clock());
     BoolTable* tab = (BoolTable*)malloc(sizeof(BoolTable));
-
     init_h(tab, L);
     Outbreak* infected = (Outbreak*)malloc(sizeof(Outbreak));
     if(ug) {
-        init(infected, 2*N*N);
+        init(infected, 2*N*N, d);
     } else {
-        init(infected, mp);
+        init(infected, mp, d);
     }
     for(int i=0; i < ns; i++) {
-        //printf("seed: (%d,%d,%d)\n",seeds[i][0],seeds[i][1],seeds[i][2]);
         append(infected,seeds[i]);
         install(tab, seeds[i][0],seeds[i][1]);
     }
-    int new_infected[3] = {0,0,0};
+    int* new_infected = (int*)malloc(d*sizeof(int));
     int j=1;
     size_t temp_size;
     while( (ug && j < N) || (!ug && infected->used < mp)) {
@@ -36,6 +34,9 @@ Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** se
             new_infected[0] = infected->demes[k][0] + (int)(R*cos(theta));
             new_infected[1] = infected->demes[k][1] + (int)(R*sin(theta));
             new_infected[2] = j;
+            if(d==4) {
+                new_infected[3] = infected->demes[k][3];
+            }
             if(!lookup(tab, new_infected[0],new_infected[1])) {
                 append(infected, new_infected);
                 install(tab, new_infected[0], new_infected[1]);
@@ -45,7 +46,6 @@ Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** se
     }
     trim(infected);
     free_hash(tab);
-    //print(infected);
     return infected;
 }
 
@@ -64,17 +64,17 @@ int main(int argc, char** argv) {
         int L = 10000000;
         int **seeds = (int**)malloc(2*sizeof(int*));
         seeds[0] = (int*)malloc(sizeof(int)*3);
-        //seeds[1] = (int*)malloc(sizeof(int)*3);
-        seeds[0][0] = 0; seeds[0][1] = 0; seeds[0][2] = 0;
-        //seeds[1][0] = 1; seeds[1][1] = 0; seeds[1][2] = 0;
-        int ns = 1;
+        seeds[1] = (int*)malloc(sizeof(int)*3);
+        seeds[0][0] = 0; seeds[0][1] = 0; seeds[0][2] = 0; seeds[0][3]=5;
+        seeds[1][0] = 1; seeds[1][1] = 0; seeds[1][2] = 0; seeds[1][3]=4;
+        int ns = 2;
         Outbreak* new_outbreak;
-        new_outbreak = simulate_outbreak(N,mu,ug,mp,seeds,ns,C,L);
+        new_outbreak = simulate_outbreak(N,mu,ug,mp,seeds,ns,C,L,4);
         print(new_outbreak);
         printf("c size is: %zu\n",new_outbreak->size);
     } else if(strcmp(argv[1], "arrtest")==0) {
         Outbreak outbreak;
-        init(&outbreak, 10);
+        init(&outbreak, 10,3);
         int deme[3] = {0};
         for(int j=0;j<20;j++) {
             deme[0]=j; deme[1] = j; deme[2] = j;

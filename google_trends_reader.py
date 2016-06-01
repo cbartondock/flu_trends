@@ -176,30 +176,6 @@ def main():
 
 
 
-
-
-
-
-
-
-
-    """us_daily = GetQueryVolumes(['flu','cough'], start_date = '2014-7-01', end_date = '2015-7-01',
-            geo='US',
-            geo_level = 'country',
-            frequency = 'week')
-
-
-"""
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     main()
 

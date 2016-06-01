@@ -21,6 +21,25 @@ def plot_spread(filename):
     ax.set_ylabel(r'$y$')
     fig.savefig("outputs/spread_plot_N{0}_mu{1}.png".format(N,mu), dpi=400)
 
+def plot_attr_spread(filename):
+    data_dump_file = open(filename, 'rb')
+    data_dump = pickle.load(data_dump_file)
+    infected_demes = data_dump["infected"]
+    (mu, N) = data_dump["params"]
+    attr_dict = data_dump["attr"]
+    print "Plotting Attribute Spread"
+    xyt = zip(*infected_demes)
+    fig = plt.figure()
+    fig.suptitle(r'Dispersal Plot with {0} generations, $\mu={1}$'.format(N,mu),fontsize=14,  fontweight='bold')
+    ax = fig.add_subplot(111)
+    fig.subplots_adjust(top=.9)
+    cs = [attr_dict[(xyt[0][i],xyt[1][i])] for i in range(0,len(xyt[0]))]
+    cm = plt.cm.get_cmap('hsv')
+    sc = ax.scatter(xyt[0],xyt[1],c=cs,cmap=cm,alpha=.5,marker='o',lw=0.0)
+    ax.set_xlabel(r'$x$')
+    ax.set_ylabel(r'$y$')
+    fig.savefig("outputs/attr_plot_N{0}_mu{1}.png".format(N,mu), dpi=400)
+
 def plot_radii(filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
@@ -95,7 +114,7 @@ def plot_kernel(kernel_filename):
 def animate_spread(filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
-    print data_dump
+    data_dump_file.close()
     generations = data_dump["gens"]
     (mu, N) = data_dump["params"]
     infected_demes = []
@@ -117,8 +136,36 @@ def animate_spread(filename):
         if xyt!=[]:
             ims.append((plt.scatter(xyt[0],xyt[1],c=xyt[2],cmap=cm, alpha=.5,marker='o',lw=0.0),))
     im_ani = animation.ArtistAnimation(animation_figure,ims,interval=50,repeat_delay=3000,blit=True)
-    im_ani.save('outputs/spread_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer)
+    im_ani.save('outputs/spread_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer,dpi=500)
 
+def animate_attr_spread(filename):
+    data_dump_file = open(filename, 'rb')
+    data_dump = pickle.load(data_dump_file)
+    data_dump_file.close()
+    generations = data_dump["gens"]
+    attr_dict = data_dump["attr"]
+    (mu, N) = data_dump["params"]
+    infected_demes = []
+    cm = plt.cm.get_cmap('hsv')
+    animation_figure = plt.figure()
+    animation_figure.suptitle(r'Dispersal Plot with {0} generations, $\mu={1}$'.format(N,mu),fontsize=14,  fontweight='bold')
+    ax = animation_figure.add_subplot(111)
+    animation_figure.subplots_adjust(top=.9)
+    ax.set_xlabel(r'$x$')
+    ax.set_ylabel(r'$y$')
+    Writer = animation.writers['ffmpeg']
+    writer = Writer(fps=15, metadata=dict(artist='Chris Dock'), bitrate=1800)
+
+    ims = []
+    for i in range(1,len(generations)):
+        print "i = "+str(i)
+        infected_demes.extend(generations[i])
+        xyt = zip(*infected_demes)
+        cs = [attr_dict[(xyt[0][i],xyt[1][i])] for i in range(0,len(xyt[0]))]
+        if xyt!=[]:
+            ims.append((plt.scatter(xyt[0],xyt[1],c=cs,cmap=cm, alpha=.5,marker='o',lw=0.0),))
+    im_ani = animation.ArtistAnimation(animation_figure,ims,interval=50,repeat_delay=3000,blit=True)
+    im_ani.save('outputs/attr_spread_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer,dpi=500)
 
 
 if __name__ == '__main__':
@@ -139,3 +186,7 @@ if __name__ == '__main__':
         plot_kernel(f)
     if p == 'animate':
         animate_spread(f)
+    if p == 'attr':
+        plot_attr_spread(f)
+    if p == 'animate_attr':
+        animate_attr_spread(f)

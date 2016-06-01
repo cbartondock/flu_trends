@@ -37,6 +37,7 @@ d = 2
 L=1000000000
 C=1
 
+trivial_f = lambda d: 0
 sr = lambda : 2*(r()-.5)
 fr = lambda : choice([-1,1])
 distance = lambda p1, p2: ( (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2 )**.5
