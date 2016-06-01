@@ -1,4 +1,4 @@
-from growth_simulator import simulate_outbreak
+from growth_simulator import *
 from universal import *
 
 def get_sep_distr(cone):
@@ -52,11 +52,11 @@ def get_twopoint(cones,l):
 
 if __name__ == '__main__':
     cones = []
-    n_cones = 100
+    n_cones = 10
     mu = 1.8
     for i in range(0,n_cones):
-        cones.append(simulate_outbreak(20, mu)[1])
-    twopoint = get_twopoint(cones, get_scaling(mu))
+        cones.append(c_outbreak(20, mu)["gens"])
+    twopoint = get_twopoint(cones, get_crossover_scaling(mu))
 
     print "Plotting"
     fig = plt.figure()
