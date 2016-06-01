@@ -63,8 +63,8 @@ def plot_populations(filename):
 def plot_kernel(kernel_filename):
     kernel_file = open(kernel_filename,'rb')
     kernel_data = pickle.load(kernel_file)
-    kernel = kernel_data[0]
-    (mu, N) = kernel_data[1]
+    kernel = kernel_data["kernel"]
+    (mu, N) = kernel_data["params"]
     print "Plotting Kernel"
     kernel_fig = plt.figure()
     kernel_fig.suptitle(r'Approximated Jump Kernel for simulation, $\mu={0}$'.format(mu))
@@ -95,6 +95,7 @@ def plot_kernel(kernel_filename):
 def animate_spread(filename):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
+    print data_dump
     generations = data_dump["gens"]
     (mu, N) = data_dump["params"]
     infected_demes = []

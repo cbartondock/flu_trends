@@ -24,14 +24,16 @@ rcParams['legend.fontsize'] = 9
 rcParams['font.family'] = 'serif'
 rcParams['font.serif'] = ['Computer Modern Roman']
 rcParams['text.usetex'] = True
+rcParams['pgf.texsystem'] = 'lualatex'
 rcParams['figure.figsize'] = 7.3, 4.2
+
 
 
 #Highly Useful Functions and Constants
 
 origin = (0,0)
 d = 2
-L=1000000000000
+L=1000000000
 C=1
 
 sr = lambda : 2*(r()-.5)
@@ -96,6 +98,6 @@ def rc():
 
 #C Interface
 libraries = {
-        "outbreak": "/Users/HAL/Desktop/BioPhys/flu_project/c_code/dylibs/outbreak_sim.dylib",
-        "array": "/Users/HAL/Desktop/BioPhys/flu_project/c_code/dylibs/dynamic_array.dylib"
+        "outbreak": "/Users/chrisdock/Desktop/BioPhys/flu_project/c_code/dylibs/outbreak_sim.dylib",
+        "array": "/Users/chrisdock/Desktop/BioPhys/flu_project/c_code/dylibs/dynamic_array.dylib"
 }

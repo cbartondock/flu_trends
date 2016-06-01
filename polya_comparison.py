@@ -7,14 +7,13 @@ def compare_methods(N, mu, n_sim):
     pop = {g: 0 for g in range(0,N)}
     polya_pop = {g: 0 for g in range(0,N)}
     for i in range(0, n_sim):
+        print i
         data = simulate_outbreak(N, mu)
         polya_data = polya_outbreak(N, mu)
         gyr_r = {g: gyr_r[g] + data["gyr_r"][g] for g in range(0,N)}
         polya_gyr_r = {g: polya_gyr_r[g] + polya_data["gyr_r"][g] for g in range(0,N)}
         pop = {g: pop[g] + data["pop"][g] for g in range(0,N)}
         polya_pop = {g: polya_pop[g] + polya_data["pop"][g] for g in range(0,N)}
-        print data["gyr_r"]
-        print polya_data["gyr_r"]
     gyr_r = {g: gyr_r[g]/float(n_sim) for g in range(0,N)}
     polya_gyr_r = {g: polya_gyr_r[g]/float(n_sim) for g in range(0,N)}
     pop = {g: pop[g]/float(n_sim) for g in range(0,N)}
@@ -23,9 +22,9 @@ def compare_methods(N, mu, n_sim):
 
 
 if __name__ == '__main__':
-    N = 15
+    N = 40
     mu = 1.8
-    n_sim = 20
+    n_sim = 100
     gyr_r, polya_gyr_r, pop, polya_pop = compare_methods(N, mu, n_sim)
     print "Plotting Polya vs. Normal"
     plt.suptitle(r'Comparison with Polya Dynamics over {0} generations, $\mu={1}$'.format(N, mu),  fontweight='bold')
@@ -38,12 +37,8 @@ if __name__ == '__main__':
     ax2.set_xlabel(r'Generation')
     ax1.set_ylabel(r'Gyration Radius')
     ax2.set_ylabel(r'Population')
-    ax1.set_xscale("log")
-    ax1.set_yscale("log")
-    ax2.set_xscale("log")
-    ax2.set_yscale("log")
-    #ax1.set_ylim([0,max(max(gyr_r.values()),max(polya_gyr_r.values()))])
-    #ax2.set_ylim([0,max(max(pop.values()),max(polya_pop.values()))])
+    ax1.set_ylim([0,max(max(gyr_r.values()),max(polya_gyr_r.values()))])
+    ax2.set_ylim([0,max(max(pop.values()),max(polya_pop.values()))])
     ax1.legend(handles = [gplot, pgplot], labels = ["Normal Simulation", "Polya Simulation"])
     ax2.legend(handles = [pplot, ppplot], labels = ["Normal Simulation", "Polya Simulation"])
     plt.savefig("outputs/comparison_plot_N{0}_mu{1}.png".format(N,mu),dpi=400)

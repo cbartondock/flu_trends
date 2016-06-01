@@ -12,7 +12,8 @@ def analyze_kernel(filename):
     data_dump_file.close()
     kernel_output_filename = 'data_outputs/approx_kernel_data' + filename.split('_data')[1]
     kernel_output = open(kernel_output_filename,'wb')
-    pickle.dump([kernel,(mu,N)], kernel_output)
+    result = {"kernel": kernel, "params": (mu, N)}
+    pickle.dump(result, kernel_output)
     kernel_output.close()
     return kernel_output_filename
 
@@ -31,7 +32,7 @@ def invert_to_kernel_convolution(r_of_t):
         integral = 0
         for t in range(0,T+1):
             integral += (r_of_t[t]*r_of_t[T-t])**(d)
-        kernel.append((r_of_t[T], -1 if integral == 0 or r_of_t[T] < 2 else 1/integral))
+        kernel.append((r_of_t[T], -1 if integral == 0 or r_of_t[T] < 1 else 1/integral))
     kernel = filter(lambda p: p[1]!=-1, kernel)
     return zip(*kernel)
 

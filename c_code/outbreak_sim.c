@@ -32,7 +32,7 @@ Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** se
             if(!ug && infected->used==mp) {break;}
             double Y = (double)rand()/(double)RAND_MAX;
             double R = pow((Y*(pow((double)L,-mu-1)-pow(C,-mu-1))+pow((double)C,-mu-1)),(-1./(mu+1)));
-            double theta = (double)2*M_PI*rand()/(double)RAND_MAX;
+            double theta = ((double)2*M_PI*rand())/(double)RAND_MAX;
             new_infected[0] = infected->demes[k][0] + (int)(R*cos(theta));
             new_infected[1] = infected->demes[k][1] + (int)(R*sin(theta));
             new_infected[2] = j;
@@ -45,6 +45,7 @@ Outbreak* simulate_outbreak(int N, double mu, unsigned char ug, int mp, int** se
     }
     trim(infected);
     free_hash(tab);
+    print(infected);
     return infected;
 }
 
@@ -57,7 +58,7 @@ int main(int argc, char** argv) {
     if(strcmp(argv[1], "simtest")==0) {
         int N = 10;
         float mu = 1.8;
-        unsigned char ug = 0;
+        unsigned char ug = 1;
         int mp = 1;
         int C = 1;
         int L = 10000000;

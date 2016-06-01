@@ -42,8 +42,9 @@ def polya_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
         if i==N:
             break
         generations.append([])
-        for j in range(0,L**d):
-            source = (fr()*randint(0,L//2),fr()*randint(0,L//2))
+        for j in range(0,len(infected_demes)):
+            deme_selected = infected_demes[randint(0,len(infected_demes)-1)]
+            source = (deme_selected[0],deme_selected[1])
             if infection_tracker[source]:
                 target = jump(source, mu)
                 if infection_tracker[target] != 1:
@@ -120,17 +121,22 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
         seeds_ptr[i] = INT3ARR()
         for j in range(0,3):
             seeds_ptr[i][j]=seeds[i][j]
+    c_ug = 1 if ug else 0
     my_outbreak = csim(c_uint(N),
             c_double(mu),
-            c_ubyte(ug),
+            c_ubyte(c_ug),
             c_int(mp),
             seeds_ptr,
             c_int(len(seeds)),
             c_int(C),
             c_int(L))
     demes = my_outbreak.contents.demes
+    print my_outbreak.contents.used
     infected_demes = [[demes[i][j] for j in range(0,3)] for i in range(0,my_outbreak.contents.used)]
+
     ARR.free_outbreak(my_outbreak)
+    print "len infected is " + str(len(infected_demes))
+    print "last g is " + str(infected_demes[i][2])
     generations = [[] for i in range(0,infected_demes[-1][2]+1)]
     for deme in infected_demes:
         generations[deme[2]].append(deme)
@@ -158,8 +164,8 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0)):
 if __name__ == '__main__':
     args = sys.argv[1:]
 
-    N = 100
-    mu = 1.5
+    N = 50
+    mu = 1.8
     usegenerations = True
     maxpop = -1 if usegenerations else 10**5
 
