@@ -171,7 +171,7 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),choice_f = tri
 if __name__ == '__main__':
     args = sys.argv[1:]
 
-    N = 100
+    N = 150
     mu = 1.8
     usegenerations = True
     maxpop = -1 if usegenerations else 10**5
