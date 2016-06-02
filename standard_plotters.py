@@ -33,9 +33,9 @@ def plot_attr_spread(filename):
     fig.suptitle(r'Dispersal Plot with {0} generations, $\mu={1}$'.format(N,mu),fontsize=14,  fontweight='bold')
     ax = fig.add_subplot(111)
     fig.subplots_adjust(top=.9)
-    cs = [attr_dict[(xyt[0][i],xyt[1][i])] for i in range(0,len(xyt[0]))]
+    cs = [attr_dict[(xyt[0][i],xyt[1][i])]/float(5) for i in range(0,len(xyt[0]))]
     cm = plt.cm.get_cmap('hsv')
-    sc = ax.scatter(xyt[0],xyt[1],c=cs,cmap=cm,alpha=.5,marker='o',lw=0.0)
+    sc = ax.scatter(xyt[0],xyt[1],c=cs,vmin=0.,vmax=1.,cmap=cm,alpha=.5,marker='o',lw=0.0)
     ax.set_xlabel(r'$x$')
     ax.set_ylabel(r'$y$')
     fig.savefig("outputs/attr_plot_N{0}_mu{1}.png".format(N,mu), dpi=400)
@@ -138,10 +138,13 @@ def animate_spread(filename):
     im_ani = animation.ArtistAnimation(animation_figure,ims,interval=50,repeat_delay=3000,blit=True)
     im_ani.save('outputs/spread_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer,dpi=500)
 
-def animate_attr_spread(filename):
-    data_dump_file = open(filename, 'rb')
-    data_dump = pickle.load(data_dump_file)
-    data_dump_file.close()
+def animate_attr_spread(filename="",data=[]):
+    if data==[]:
+        data_dump_file = open(filename, 'rb')
+        data_dump = pickle.load(data_dump_file)
+        data_dump_file.close()
+    else:
+        data_dump=data
     generations = data_dump["gens"]
     attr_dict = data_dump["attr"]
     (mu, N) = data_dump["params"]
@@ -161,9 +164,9 @@ def animate_attr_spread(filename):
         print "i = "+str(i)
         infected_demes.extend(generations[i])
         xyt = zip(*infected_demes)
-        cs = [attr_dict[(xyt[0][i],xyt[1][i])] for i in range(0,len(xyt[0]))]
+        cs = [attr_dict[(xyt[0][i],xyt[1][i])]/float(5) for i in range(0,len(xyt[0]))]
         if xyt!=[]:
-            ims.append((plt.scatter(xyt[0],xyt[1],c=cs,cmap=cm, alpha=.5,marker='o',lw=0.0),))
+            ims.append((plt.scatter(xyt[0],xyt[1],c=cs,vmin=0.,vmax=1.,cmap=cm, alpha=.5,marker='o',lw=0.0),))
     im_ani = animation.ArtistAnimation(animation_figure,ims,interval=50,repeat_delay=3000,blit=True)
     im_ani.save('outputs/attr_spread_animation_N{0}_mu_{1}.mp4'.format(N,mu),writer=writer,dpi=500)
 

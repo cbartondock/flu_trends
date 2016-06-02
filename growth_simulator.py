@@ -171,11 +171,11 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),choice_f = tri
 if __name__ == '__main__':
     args = sys.argv[1:]
 
-    N = 150
+    N = 50
     mu = 1.8
     usegenerations = True
     maxpop = -1 if usegenerations else 10**5
-    choice_f = lambda p: choice([0,1,2,3,4,5])
+    choice_f = lambda p: choice([0,1])
 
     if len(args)==0 or args[0]=="normal":
         data_dump = simulate_outbreak(N,mu,seeds=seed_lattice(100),choice_f=choice_f)

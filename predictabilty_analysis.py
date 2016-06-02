@@ -79,9 +79,9 @@ def average_over_initials(M_pop,N, mu, n_sim_per_seed,n_seeds_per_size):
 
 if __name__ == '__main__':
     init_N = 10
-    N = 80
+    N = 200
     mu = 1.8
-    n_sim = 1000
+    n_sim = 100
 
     args = sys.argv[1:]
     if len(args)==0 or args[0] == "fluctuations":
