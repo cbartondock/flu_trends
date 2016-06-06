@@ -1,0 +1,8 @@
+Stuff that needs doing
+----------------------
+1) Un discretize and stochasticize generations
+2) Extend fluctuations plot to higher seed sizes
+3) Track parentage and see how well my sub outbreak catcher is really doing (Carl's suggestion)
+4) More D3
+5) Set up cluster operations (give it a go and then talk to Diana)
+6) Re-organize some of the plotting stuff into functions
