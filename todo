@@ -3,6 +3,10 @@ Stuff that needs doing
 1) Un discretize and stochasticize generations
 2) Extend fluctuations plot to higher seed sizes
 3) Track parentage and see how well my sub outbreak catcher is really doing (Carl's suggestion)
-4) More D3
-5) Set up cluster operations (give it a go and then talk to Diana)
-6) Re-organize some of the plotting stuff into functions
+4) Catch large jumps which are causing breaks in max_r fluctuations (Jona's suggestion)
+5) More D3
+6) Set up cluster operations (give it a go and then talk to Diana)
+7) Re-organize some of the plotting stuff into functions
+8) Branching Brownian Motion (Reading)
+9) Figure out continuization PDE
+10) Analyze BC's corresponding to leaky sinks (hospitals)

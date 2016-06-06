@@ -18,8 +18,50 @@ def jump(source, mu):
     theta = 2*np.pi*r()
     return (source[0]+int(R*np.cos(theta)),source[1]+int(R*np.sin(theta)))
 
+def continuous_outbreak(N, mu, ug=True, mp=-1, seeds=seed_lattice(0)):
+    infected_demes = [seed for seed in seeds]
+    infection_tracker = Counter()
+    for seed in [seed[:-1] for seed in seeds]:
+        infection_tracker[seed] = 1
+    generations=[[]]
+    generations[0].extend(seeds)
+    gyr_r_of_t = {}
+    max_r_of_t = {}
+    mean_r_of_t = {}
+    pop_of_t = {}
+    i=0
+    while (ug and i <=N) or (not ug and len(infected_demes) <maxpop):
+        xav = mean([deme[0] for deme in infected_demes])
+        yav = mean([deme[1] for deme in infected_demes])
+        max_r_of_t[i] = max_rad(xav,yav, infected_demes)
+        gyr_r_of_t[i] = gyr_rad(xav,yav, infected_demes)
+        mean_r_of_t[i] = mean_rad(xav,yav, infected_demes)
+        pop_of_t[i] = len(infected_demes)
+        i+= 1./len(infected_demes)
+        deme_selected = infected_demes[randint(0,len(infected_demes)-1)]
+        source = (deme_selected[0], deme_selected[1])
+        if infection_tracker[source]:
+            target = jump(source, mu)
+            if not infection_tracker[target]:
+                infection_tracker[target]=1
+                i_d = int(round(i))
+                if i_d >= len(generations):
+                    generations.append([])
+                infected_demes.append(target+(i_d,))
+                generations[i_d].append(target+(i_d,))
+    print "# demes: {0}".format(len(infected_demes))
+    print infected_demes
+    print generations
+    return {"infected": infected_demes,
+            "gens": generations,
+            "max_r": max_r_of_t,
+            "gyr_r": gyr_r_of_t,
+            "mean_r": mean_r_of_t,
+            "pop": pop_of_t,
+            "params": (mu,N if ug else mp)}
+
+
 def polya_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
-    L=300
     infected_demes = [seed for seed in seeds]
     infection_tracker = Counter()
     for seed in [seed[:-1] for seed in seeds]:
@@ -156,8 +198,6 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),choice_f = tri
         max_r_of_t[i] = max_rad(xav,yav, generations[i])
         gyr_r_of_t[i] = gyr_rad(xav,yav, concat(generations,i))
         pop_of_t[i] = sum(genpops[:i+1])
-    #print "# demes: {0}".format(len(infected_demes))
-    #print "# generations: {0}".format(len(generations))
     return {"infected": infected_demes,
             "gens": generations,
             "max_r": max_r_of_t,
@@ -171,12 +211,14 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),choice_f = tri
 if __name__ == '__main__':
     args = sys.argv[1:]
 
-    N = 50
+    N = 5
     mu = 1.8
     usegenerations = True
     maxpop = -1 if usegenerations else 10**5
     choice_f = lambda p: choice([0,1])
 
+    data_dump = continuous_outbreak(N, mu)
+"""
     if len(args)==0 or args[0]=="normal":
         data_dump = simulate_outbreak(N,mu,seeds=seed_lattice(100),choice_f=choice_f)
     elif args[0] == "polya":
@@ -197,4 +239,4 @@ if __name__ == '__main__':
     plot_spread(output_filename)
     plot_radii(output_filename)
     plot_populations(output_filename)
-
+"""

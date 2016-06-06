@@ -72,8 +72,6 @@ if __name__=="__main__":
             freqs = get_frequency_functions(data)
             for j in range(0,N):
                 max_freqs[j].append(max(freqs[j].values()))
-        plt.plot(zip(*max_freqs.values())[0])
-        plt.show()
         mean_max_freqs = [mean(max_freqs[g]) for g in range(0,N)]
         var_max_freqs = [mean([(max_freq-mean_max_freqs[g])**2 for max_freq in max_freqs[g]]) for g in range(0,N)]
         f, (mean_ax, var_ax) = plt.subplots(1, 2)
