@@ -8,7 +8,7 @@ def even_choice_f(n_attrs, m):
     shuffle(opts)
     index = 0
     nonlocals = {"opts":opts,"index":index}
-    def choice_f(d):
+    def choice_f(deme):
         result = nonlocals["opts"][nonlocals["index"]]
         nonlocals["index"] = (nonlocals["index"]+1)%len(nonlocals["opts"])
         return result
@@ -61,7 +61,7 @@ if __name__=="__main__":
         ax.legend(handles=handles,labels=labels,loc='upper left')
         f.savefig("outputs/frequency_plot_N{0}_mu{1}_ns{2}_no{3}.png".format(N,mu,n_seeds,num_opts),dpi=400)
         print "Frequency figure saved. Animating"
-        animate_attr_spread(data=data)
+        animate_attr_spread(data=data, sim_type="c")
 
     elif args[0] == "many":
         max_freqs = {g: [] for g in range(0,N)}

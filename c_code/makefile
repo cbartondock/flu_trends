@@ -2,6 +2,6 @@ all: dylibs/useful_functions.dylib dylibs/outbreak_sim.dylib dylibs/dynamic_arra
 exe: outbreak_sim
 
 dylibs/%.dylib : %.c
-	gcc-4.8 -O3 -std=c99 -Wall -lm -dynamiclib -o $@ $^
+	/usr/bin/gcc -O3 -std=c99 -Wall -lm -dynamiclib -o $@ $^
 clean:
 	rm -rf *.so *.o dylibs/*.dylib; rm -f outbreak_sim

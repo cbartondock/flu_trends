@@ -9,7 +9,6 @@ def rad_expectations(N, mu, n_sim):
     for i in range(0, n_sim):
         print i
         data = c_outbreak(N, mu)
-        print "stupid data: " + str(data["max_r"][0])
         max_r_av = {t: max_r_av[t] + data["max_r"][t] for t in range(0,N)}
         gyr_r_av = {t: gyr_r_av[t] + data["gyr_r"][t] for t in range(0,N)}
     max_r_av = {t: max_r_av[t]/float(n_sim) for t in range(0,N)}

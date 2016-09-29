@@ -65,20 +65,20 @@ var sb = d3.select("body").append("button")
 
 d3.csv("data/polya_data_N"+N+"_mu"+10*mu+".csv", function(rows) {
     var svgcircles = svg.selectAll("circle").data(rows).enter()
-        .append("circle")
-        .attr("cx", function(d) { return w/2 + d.x*1; })
-        .attr("cy", function(d) { return h/2 +d.y*1; })
-        .attr("r", 1)
-        .attr("fill","white");
-
+    .append("circle")
+    .attr("cx", function(d) { return w/2 + d.x*1; })
+    .attr("cy", function(d) { return h/2 +d.y*1; })
+    .attr("r", 1)
+    .attr("fill","white");
     sb.on('click', function(q) {
         svgcircles.transition()
-            .attr("fill","white");
+        .attr("fill","white");
         svgcircles.data(rows).transition()
-            .delay(function(d) {return d.t*150;})
-            .duration(200)
-            .attrTween("fill", function(d,i,a) {
-                return d3.interpolate(a, colors[d.k]);
-            });
+        .delay(function(d) {return d.t*150;})
+        .duration(200)
+        .attrTween("fill", function(d,i,a) {
+            return d3.interpolate(a, colors[d.k]);
+        });
     });
 });
+

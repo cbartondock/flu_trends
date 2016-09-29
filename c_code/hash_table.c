@@ -3,7 +3,8 @@
 
 
 #define HASHSIZE 104729
-
+#define d 2
+#define L 1000000000
 struct nlist {
     struct nlist *next;
     struct nlist *prev;
@@ -14,12 +15,11 @@ struct nlist {
 
 typedef struct {
     struct nlist** HASHTABLE;
-    int L;
 } BoolTable;
 
 
 
-unsigned int hash(int xkey, int ykey, int L) {
+unsigned int hash(int xkey, int ykey) {
     int index = (L+xkey) + (L+ykey)*L;
     uint32_t* hashval=(uint32_t*)malloc(sizeof(uint32_t));
     MurmurHash3_x86_128(&index, sizeof(int), 42, hashval);
@@ -27,13 +27,12 @@ unsigned int hash(int xkey, int ykey, int L) {
     return result;
 }
 
-void init_h(BoolTable *tab, int L) {
-    tab->L = L;
+void init_hash(BoolTable *tab) {
     tab->HASHTABLE = (struct nlist**)calloc(sizeof(struct nlist*),HASHSIZE);
 }
 
 unsigned char lookup(BoolTable* tab, int xkey, int ykey) {
-    struct nlist* np = tab->HASHTABLE[hash(xkey,ykey,tab->L)];
+    struct nlist* np = tab->HASHTABLE[hash(xkey,ykey)];
     if(np == NULL){
         return 0;
     }
@@ -52,7 +51,7 @@ void install(BoolTable* tab, int xkey, int ykey) {
         new_entry->xkey = xkey;
         new_entry->ykey = ykey;
         new_entry->value = 1; 
-        struct nlist* current = tab->HASHTABLE[hash(xkey, ykey, tab->L)];
+        struct nlist* current = tab->HASHTABLE[hash(xkey, ykey)];
         if(current==NULL) {
             current = (struct nlist*)malloc(sizeof(struct nlist));
             current->prev = current;
@@ -63,7 +62,7 @@ void install(BoolTable* tab, int xkey, int ykey) {
         new_entry->prev = current->prev;
         current->prev->next = new_entry;
         current->prev=new_entry; 
-        tab->HASHTABLE[hash(xkey,ykey,tab->L)] = current;
+        tab->HASHTABLE[hash(xkey,ykey)] = current;
     }
 }
 void free_hash(BoolTable* tab) {

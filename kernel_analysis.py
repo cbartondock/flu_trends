@@ -4,15 +4,16 @@ from scipy import integrate, interpolate
 def analyze_kernel(filename):
     """Open the files produced by the growth simulation and use some version of the
     time reversal symmetry argument to extrapolate the jump kernel"""
-    data_dump_file = open(filename,'rb')
-    data_dump = pickle.load(data_dump_file)
-    r_of_t = data_dump["gyr_r"]
-    (mu, N) = data_dump["params"]
+    outbreak_data_file = open(filename,'rb')
+    print filename
+    outbreak_data = pickle.load(outbreak_data_file)
+    r_of_t = outbreak_data["gyr_r"]
+    (mu, mp) = outbreak_data["params"]
     kernel = invert_to_kernel_convolution(r_of_t)
-    data_dump_file.close()
-    kernel_output_filename = 'data_outputs/approx_kernel_data' + filename.split('_data')[1]
+    outbreak_data_file.close()
+    kernel_output_filename = 'data_outputs/kernels/approx_kernel_data_mp{0}_mu{1}.pkl'.format(tenexp(mp),mu)
     kernel_output = open(kernel_output_filename,'wb')
-    result = {"kernel": kernel, "params": (mu, N)}
+    result = {"kernel": kernel, "params": (mu, mp)}
     pickle.dump(result, kernel_output)
     kernel_output.close()
     return kernel_output_filename

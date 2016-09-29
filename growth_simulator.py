@@ -3,7 +3,7 @@ from kernel_analysis import *
 from standard_plotters import *
 
 def seed_lattice(num_extra, extent=20):
-    seeds = [tuple([0 for i in range(0,d+1)])]
+    seeds = [tuple([0 for i in range(0,d+2)])]
     seeds.extend([tuple([int(fr()*sr()*extent) for j in range(0,d)]) + (0,) for i in range(0, num_extra)])
     return seeds
 
@@ -18,150 +18,16 @@ def jump(source, mu):
     theta = 2*np.pi*r()
     return (source[0]+int(R*np.cos(theta)),source[1]+int(R*np.sin(theta)))
 
-def continuous_outbreak(N, mu, ug=True, mp=-1, seeds=seed_lattice(0)):
-    infected_demes = [seed for seed in seeds]
-    infection_tracker = Counter()
-    for seed in [seed[:-1] for seed in seeds]:
-        infection_tracker[seed] = 1
-    generations=[[]]
-    generations[0].extend(seeds)
-    gyr_r_of_t = {}
-    max_r_of_t = {}
-    mean_r_of_t = {}
-    pop_of_t = {}
-    i=0
-    while (ug and i <=N) or (not ug and len(infected_demes) <maxpop):
-        xav = mean([deme[0] for deme in infected_demes])
-        yav = mean([deme[1] for deme in infected_demes])
-        max_r_of_t[i] = max_rad(xav,yav, infected_demes)
-        gyr_r_of_t[i] = gyr_rad(xav,yav, infected_demes)
-        mean_r_of_t[i] = mean_rad(xav,yav, infected_demes)
-        pop_of_t[i] = len(infected_demes)
-        i+= 1./len(infected_demes)
-        deme_selected = infected_demes[randint(0,len(infected_demes)-1)]
-        source = (deme_selected[0], deme_selected[1])
-        if infection_tracker[source]:
-            target = jump(source, mu)
-            if not infection_tracker[target]:
-                infection_tracker[target]=1
-                i_d = int(round(i))
-                if i_d >= len(generations):
-                    generations.append([])
-                infected_demes.append(target+(i_d,))
-                generations[i_d].append(target+(i_d,))
-    print "# demes: {0}".format(len(infected_demes))
-    print infected_demes
-    print generations
-    return {"infected": infected_demes,
-            "gens": generations,
-            "max_r": max_r_of_t,
-            "gyr_r": gyr_r_of_t,
-            "mean_r": mean_r_of_t,
-            "pop": pop_of_t,
-            "params": (mu,N if ug else mp)}
-
-
-def polya_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0)):
-    infected_demes = [seed for seed in seeds]
-    infection_tracker = Counter()
-    for seed in [seed[:-1] for seed in seeds]:
-        infection_tracker[seed] = 1
-    generations = [[]]
-    generations[0].extend(seeds)
-    gyr_r_of_t = {}
-    max_r_of_t = {}
-    mean_r_of_t = {}
-    pop_of_t = {}
-
-    i=1
-    while (ug and i <= N) or (not ug and len(infected_demes) < maxpop):
-        xav = mean([deme[0] for deme in infected_demes])
-        yav = mean([deme[1] for deme in infected_demes])
-        max_r_of_t[i-1] = max_rad(xav, yav, generations[i-1])
-        gyr_r_of_t[i-1] = gyr_rad(xav, yav, generations[i-1])
-        mean_r_of_t[i-1] = mean_rad(xav,yav,generations[i-1])
-        pop_of_t[i-1] = len(infected_demes)
-        if i==N:
-            break
-        generations.append([])
-        for j in range(0,len(infected_demes)):
-            deme_selected = infected_demes[randint(0,len(infected_demes)-1)]
-            source = (deme_selected[0],deme_selected[1])
-            if infection_tracker[source]:
-                target = jump(source, mu)
-                if infection_tracker[target] != 1:
-                    infection_tracker[target] = 1
-                    generations[i].append(target + (i,))
-        infected_demes.extend(generations[i])
-        i+=1
-
-    print "# demes: {0}".format(len(infected_demes))
-    print "# generations: {0}".format(len(generations))
-    return {"infected": infected_demes,
-            "gens": generations,
-            "max_r": max_r_of_t,
-            "gyr_r": gyr_r_of_t,
-            "mean_r": mean_r_of_t,
-            "pop": pop_of_t,
-            "params": (mu,N if ug else mp)}
-
-def simulate_outbreak(N, mu, ug=True, mp=-1, seeds = seed_lattice(0), choice_f = trivial_f):
-    infected_demes = [seed for seed in seeds]
-    infection_tracker = Counter()
-    attr_dict = {}
-    for seed in [seed[:-1] for seed in seeds]:
-        infection_tracker[seed] = 1
-        if choice_f != trivial_f:
-            attr_dict[seed] = choice_f(seed)
-    generations = [[]]
-    generations[0].extend(seeds)
-    gyr_r_of_t = {}
-    max_r_of_t = {}
-    mean_r_of_t = {}
-    pop_of_t = {}
-
-    i=1
-    while (ug and i <= N) or (not ug and len(infected_demes) < maxpop):
-        xav = mean([deme[0] for deme in infected_demes])
-        yav = mean([deme[1] for deme in infected_demes])
-        max_r_of_t[i-1] = max_rad(xav, yav, generations[i-1])
-        gyr_r_of_t[i-1] = gyr_rad(xav, yav, generations[i-1])
-        mean_r_of_t[i-1] = mean_rad(xav,yav,generations[i-1])
-        pop_of_t[i-1] = len(infected_demes)
-        if i==N:
-            break
-        generations.append([])
-        for deme in infected_demes:
-            target = jump(deme, mu)
-            if infection_tracker[target] != 1:
-                infection_tracker[target] = 1
-                if choice_f != trivial_f:
-                    attr_dict[target] = attr_dict[(deme[0],deme[1])]
-                generations[i].append(target + (i,))
-        infected_demes.extend(generations[i])
-        i+=1
-
-    print "# demes: {0}".format(len(infected_demes))
-    print "# generations: {0}".format(len(generations))
-    return {"infected": infected_demes,
-            "gens": generations,
-            "max_r": max_r_of_t,
-            "gyr_r": gyr_r_of_t,
-            "mean_r": mean_r_of_t,
-            "pop": pop_of_t,
-            "attr": attr_dict,
-            "params": (mu,N if ug else mp)}
-
-def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),choice_f = trivial_f):
+def c_outbreak(mu, mp, seeds = seed_lattice(0), choice_f = trivial_f):
     SIM = CDLL(libraries["outbreak"])
     ARR = CDLL(libraries["array"])
     class Outbreak(Structure):
         pass
     Outbreak._fields_ = [("demes",POINTER(POINTER(c_int))),("used",c_uint),("size",c_uint),("d",c_uint)]
     Outbreak_P = POINTER(Outbreak)
-    csim = SIM.simulate_outbreak
+    csim = SIM.sim_cont_outbreak
     csim.restype = Outbreak_P
-    my_outbreak = Outbreak_P()
+    outbreak_results = Outbreak_P()
     INT4ARR = c_int*4
     SEEDARR = POINTER(c_int)* len(seeds)
     seeds_ptr = SEEDARR()
@@ -170,28 +36,26 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),choice_f = tri
         for j in range(0,3):
             seeds_ptr[i][j] = seeds[i][j]
         seeds_ptr[i][3] = choice_f(seeds[i])
-    c_ug = 1 if ug else 0
-    my_outbreak = csim(c_uint(N),
-            c_double(mu),
-            c_ubyte(c_ug),
+
+
+    outbreak_results = csim(c_double(mu),
             c_int(mp),
             seeds_ptr,
-            c_int(len(seeds)),
-            c_int(C),
-            c_int(L), 4)
-    demes = my_outbreak.contents.demes
-    infected_demes = [[demes[i][j] for j in range(0,3)] for i in range(0,my_outbreak.contents.used)]
+            c_int(len(seeds)))
+
+    demes = outbreak_results.contents.demes
+    infected_demes = [[demes[i][j] for j in range(0,3)] for i in range(0,outbreak_results.contents.used)]
     attr_dict={}
     if(choice_f != trivial_f):
-        attr_dict = {(demes[i][0],demes[i][1]):demes[i][3] for i in range(0,my_outbreak.contents.used)}
-    ARR.free_outbreak(my_outbreak)
+        attr_dict = {(demes[i][0],demes[i][1]):demes[i][3] for i in range(0,outbreak_results.contents.used)}
+    ARR.free_outbreak(outbreak_results)
     generations = [[] for i in range(0,infected_demes[-1][2]+1)]
     for deme in infected_demes:
         generations[deme[2]].append(deme)
     genpops = [len(gen) for gen in generations]
 
     mean_r_of_t, max_r_of_t, gyr_r_of_t, pop_of_t = {},{},{},{}
-    for i in range(0,N):
+    for i in range(0,len(generations)):
         xav = mean([deme[0] for j in range(0,i+1) for deme in generations[j]])
         yav = mean([deme[1] for j in range(0,i+1) for deme in generations[j]])
         mean_r_of_t[i] = mean_rad(xav,yav, generations[i])
@@ -205,31 +69,22 @@ def c_outbreak(N, mu, ug = True, mp = -1, seeds = seed_lattice(0),choice_f = tri
             "mean_r": mean_r_of_t,
             "pop": pop_of_t,
             "attr": attr_dict,
-            "params": (mu, N if ug else mp)}
+            "params": (mu, mp)}
 
 
 if __name__ == '__main__':
-    args = sys.argv[1:]
+    args = sys.argv[ 1:]
+    mu = 1.5
+    mp = 10**5
+    seeds = seed_lattice(num_extra=100)
+    choice_f = lambda deme: choice([0,1])
+    outbreak_data = c_outbreak(mu, mp,seeds=seeds, choice_f = choice_f)
 
-    N = 5
-    mu = 1.8
-    usegenerations = True
-    maxpop = -1 if usegenerations else 10**5
-    choice_f = lambda p: choice([0,1])
-
-    data_dump = continuous_outbreak(N, mu)
-"""
-    if len(args)==0 or args[0]=="normal":
-        data_dump = simulate_outbreak(N,mu,seeds=seed_lattice(100),choice_f=choice_f)
-    elif args[0] == "polya":
-        data_dump = polya_outbreak(N, mu)
-    elif args[0] == "c":
-        data_dump = c_outbreak(N,mu,seeds=seed_lattice(100),choice_f=choice_f)
-
-    output_filename = "data_outputs/{0}_data_{1}{2}_mu{3}".format("normal" if len(args)==0 else args[0],"N" if usegenerations else "P", N if usegenerations else maxpop, mu)
+    output_filename = "data_outputs/outbreak_data_mp{0}_mu{1}.pkl".format(tenexp(mp), mu)
     data_output = open(output_filename,'wb')
-    pickle.dump(data_dump, data_output)
+    pickle.dump(outbreak_data, data_output)
     data_output.close()
+
 
 #Jump Kernel Analysis
     kernel_filename = analyze_kernel(output_filename)
@@ -239,4 +94,8 @@ if __name__ == '__main__':
     plot_spread(output_filename)
     plot_radii(output_filename)
     plot_populations(output_filename)
-"""
+    animate_spread(output_filename)
+    if choice_f != trivial_f:
+        plot_attr_spread(output_filename)
+        animate_attr_spread(output_filename)
+
