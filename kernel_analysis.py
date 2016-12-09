@@ -7,13 +7,14 @@ def analyze_kernel(filename):
     outbreak_data_file = open(filename,'rb')
     print filename
     outbreak_data = pickle.load(outbreak_data_file)
-    r_of_t = outbreak_data["gyr_r"]
-    (mu, mp) = outbreak_data["params"]
+    r_of_t = outbreak_data["mean_r"]
+    mu = outbreak_data["params"]["mu"]
+    mp = outbreak_data["params"]["mp"]
     kernel = invert_to_kernel_convolution(r_of_t)
     outbreak_data_file.close()
     kernel_output_filename = 'data_outputs/kernels/approx_kernel_data_mp{0}_mu{1}.pkl'.format(tenexp(mp),mu)
     kernel_output = open(kernel_output_filename,'wb')
-    result = {"kernel": kernel, "params": (mu, mp)}
+    result = {"kernel": kernel, "params": {"mu":mu, "mp":mp}}
     pickle.dump(result, kernel_output)
     kernel_output.close()
     return kernel_output_filename
@@ -36,17 +37,3 @@ def invert_to_kernel_convolution(r_of_t):
         kernel.append((r_of_t[T], -1 if integral == 0 or r_of_t[T] < 1 else 1/integral))
     kernel = filter(lambda p: p[1]!=-1, kernel)
     return zip(*kernel)
-
-#BROKEN
-def invert_to_kernel_interp(r_of_t):
-    ts = r_of_t.keys()
-    rs = r_of_t.values()
-    lp = interpolate.interp1d(ts, rs)
-    kernel = []
-    for T in range(1,len(ts)):
-        lp2 = lambda t: (lp(t)*lp(T-t))**d
-        integral = integrate.quad(lp2,0,T)[1]
-        kernel.append((r_of_t[T], -1 if integral == 0 or r_of_t[T] < 2 else 1/integral))
-    kernel = filter(lambda p: p[1]!=-1, kernel)
-    return zip(*kernel)
-

@@ -2,22 +2,11 @@ from universal import *
 from growth_simulator import *
 from standard_plotters import *
 
-#m*n_attr = num_seeds
-def even_choice_f(n_attrs, m):
-    opts = [i for j in range(0, m) for i in range(0, n_attrs)]
-    shuffle(opts)
-    index = 0
-    nonlocals = {"opts":opts,"index":index}
-    def choice_f(deme):
-        result = nonlocals["opts"][nonlocals["index"]]
-        nonlocals["index"] = (nonlocals["index"]+1)%len(nonlocals["opts"])
-        return result
-    return choice_f
-
 def get_frequency_functions(data):
     gens = data["gens"]
     attr_dict = data["attr"]
-
+    values = list(set(attr_dict.values()))
+    print values
     totals = Counter()
     frequencies= {0: Counter()}
     totals[0] = len(gens[0])
@@ -26,7 +15,7 @@ def get_frequency_functions(data):
 
     for i in range(1,len(gens)):
         frequencies[i] = Counter()
-        for value in attr_dict.values():
+        for value in values:
             frequencies[i][value] = frequencies[i-1][value]
         for deme in gens[i]:
             frequencies[i][attr_dict[(deme[0],deme[1])]]+=1
@@ -40,7 +29,7 @@ if __name__=="__main__":
     mu=1.8
     n_seeds=10
     num_opts=5
-    choice_f = even_choice_f(num_opts,n_seeds//num_opts)
+    choice_f = even_choice_f(num_opts)
     n_sims = 50
     args = sys.argv[1:]
     if len(args)==0 or args[0]=="frequencies":

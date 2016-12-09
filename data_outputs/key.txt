@@ -1,0 +1,4 @@
+1: many_sims_mp10000_nsim2000_mus13-16-19-20-23-26-29_nattr1
+2: many_sims_mp10000_nsim2000_mus13-16-19-20-23-26-29_nattr2 (fair)
+3: many_sims_mp10000_nsim200_mus13-16-19-20-23-26-29_nattr2 (bubble 15 30)
+4: many_sims_mp10000_nsim200_mus13-16-19-20-23-26-29_nattr2 (sector 1 5)

@@ -3,6 +3,7 @@ from random import random as r
 from random import choice
 from random import randint
 from random import shuffle
+from random import sample
 import numpy as np
 from itertools import chain
 import matplotlib
@@ -11,11 +12,15 @@ import matplotlib.patches as mpatches
 from matplotlib.font_manager import FontProperties
 from matplotlib import rcParams
 import matplotlib.animation as animation
+from matplotlib.colors import LinearSegmentedColormap
 from mpl_toolkits.mplot3d import Axes3D
-import sys, time
+import sys, time, os
+from PIL import Image
 import csv
 from collections import Counter
 from ctypes import *
+from multiprocessing import Pool
+import multiprocessing
 
 #Latex Parameters
 rcParams['axes.labelsize'] = 9
@@ -37,7 +42,81 @@ d = 2
 L=1000000000
 C=1
 
+#attribute choice_functions
 trivial_f = lambda deme: 0
+def rand_choice_f(n_attrs):
+    return lambda deme: choice(range(1,n_attrs+1))
+
+def fair_choice_f(n_attrs):
+    opts = [i for i in range(1, n_attrs+1)]
+    shuffle(opts)
+    index=0
+    nonlocals = {"opts":opts, "index":index}
+    def choice_f(deme):
+        result = nonlocals["opts"][nonlocals["index"]]
+        nonlocals["index"]= (nonlocals["index"]+1)%len(nonlocals["opts"])
+        return result
+    return choice_f
+
+def bubble_choice_f(r):
+    def choice_f(deme):
+        if deme[0]**2 + deme[1]**2 < r**2:
+            return 1
+        else:
+            return 2
+    return choice_f
+
+def angle(x,y):
+    return (np.arctan(y/x) if x>0 else np.pi+np.arctan(y/x))%(2*np.pi) if x!=0 else (np.pi/2 if y>0 else 3*np.pi/2) if y!=0 else 0
+
+def sector_choice_f(sector_proportions):
+    if len(sector_proportions) <2:
+        print "Use trivial_f"
+        return
+    sector_proportions=[entry*2*np.pi/float(sum(sector_proportions)) for entry in sector_proportions]
+    def choice_f(deme):
+        deme_angle = angle(deme[0],deme[1])
+        for i in range(1, len(sector_proportions)+1):
+            if deme_angle < sum(sector_proportions[:i]):
+                return i
+    return choice_f
+
+def seed_lattice(num, choice_f=trivial_f):
+    flat_coords = sample(range(0,num**2),num)
+    seeds = [(fr()*(flat_coords[i]%(num)),fr()*(flat_coords[i]//num)) for i in range(0, num)]
+    seeds = [(seed[0],seed[1],0,choice_f((seed[0],seed[1]))) for seed in seeds]
+    return seeds
+
+def seed_disk(R, choice_f=trivial_f):
+    seeds =[]
+    for i in range(-R,R+1):
+        for j in range(-R,R+1):
+            if i**2 + j**2 < R**2:
+                seeds.append((i,j))
+    seeds = [(seed[0],seed[1],0,choice_f((seed[0],seed[1]))) for seed in seeds]
+    return seeds
+
+def seed_annulus(r1,r2,choice_f = trivial_f):
+    seeds=[]
+    for i in range(-r2,r2+1):
+        h=int(np.floor(np.sqrt(max(0,r1**2-i**2))**1/2))
+        for j in chain(range(-r2,-h),range(h,r2)):
+            if i**2+j**2< r2**2 and i**2+j**2>=r1**2:
+                seeds.append((i,j))
+    seeds = [(seed[0],seed[1],0,choice_f((seed[0],seed[1]))) for seed in seeds]
+    return seeds
+
+def get_linear_gens(inf_demes,pergen):
+    generations = []
+    non_seed_index = 0
+    while inf_demes[non_seed_index][2]==0:
+        non_seed_index+=1
+    generations.append(inf_demes[:non_seed_index])
+    inf_demes=inf_demes[non_seed_index:]
+    for i in range(0,1+len(inf_demes)//pergen):
+        generations.append(inf_demes[pergen*i:min(pergen*(i+1),len(inf_demes))])
+    return generations[:-1] if generations[-1]==[] else generations
+
 sr = lambda : 2*(r()-.5)
 fr = lambda : choice([-1,1])
 distance = lambda p1, p2: ( (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2 )**.5
@@ -63,9 +142,12 @@ def time_average(data):
 #This gives the crossover scaling from Oskar's PNAS paper SI
 def get_crossover_scaling(mu):
     delta = mu - d
-    h = 2*d/delta
-    z = lambda t: np.log2(t)
-    return lambda t: 1 if t==0 else 2**((h/delta)*(z(t)/h + (1+1/h)**(-z(t))-1))
+    if delta!=0:
+        h = 2*d/delta
+        z = lambda t: np.log2(t)
+        return lambda t: 1 if t==0 else 2**((h/delta)*(z(t)/h + (1+1/h)**(-z(t))-1))
+    else:
+        return lambda t: 1 if t==0 else 2**((np.log(t)**2)/8.)
 
 #This gives the asymptotic zeroth order powerlaw scaling from Oskar's PNAS paper SI
 def get_powerlaw_scaling(mu):
@@ -78,13 +160,13 @@ def get_powerlaw_scaling(mu):
 def get_sexp_scaling(mu):
     delta = mu - d
     B = 2*d/(delta**2)
-    eta = log((2*d/(d+mu)))/log(2)
+    eta = np.log2((2*d/(d+mu)))
     return lambda t: 1 if t==0 else 2**(B*(t**eta))
 
 def get_sexp_scaling_corrected(mu):
     delta = mu
     B = 2*d/(delta**2)
-    eta = log((2*d/(d+mu)))/log(2)
+    eta = np.log2((2*d/(d+mu)))
     #unfinished (pending math)
 
 
@@ -92,14 +174,15 @@ def get_sexp_scaling_corrected(mu):
 my_colors = map(lambda rgb: (rgb[0]/255.,rgb[1]/255.,rgb[2]/255.), [(240,163,255),(0,117,220),(153,63,0),(76,0,92),(25,25,25),(0,92,49),(43,206,72),(255,204,153),(128,128,128),(148,255,181),(143,124,0),(157,204,0),(194,0,136),(0,51,128),(255,164,5),(255,168,187),(66,102,0),(255,0,16),(94,241,242),(0,153,143),(224,255,102),(116,10,255),(153,0,0),(255,255,128),(255,255,0),(255,80,5)])
 shuffle(my_colors)
 color_index=0
-def rc():
+def rc(advance=True):
     global color_index, my_colors
     result = my_colors[color_index]
-    color_index = (color_index + 1)%len(my_colors)
+    if advance:
+        color_index = (color_index + 1)%len(my_colors)
     return result
 
 def tenexp(number):
-    return int(np.log(number)/np.log(10.))
+    return int((np.log(number+.001))/np.log(10.))
 
 #C Interface
 libraries = {

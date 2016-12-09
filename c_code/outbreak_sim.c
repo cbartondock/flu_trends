@@ -22,18 +22,18 @@ Outbreak* sim_cont_outbreak(double mu, int mp, int** seeds, int ns) {
         append(infected,seeds[i]);
         install(inf_table,seeds[i][0],seeds[i][1]);
     }
-    double scaled_t =0.;
+    double scaled_t =1.;
     int* new_infected = (int*)malloc(d*sizeof(int));
-    while(infected->used<mp) {
-        scaled_t +=1./(1+infected->used-ns);
+    while(infected->used<mp+ns) {
         int k = rand() % infected->used;
         double Y = (double)rand()/(double)RAND_MAX;
-        double R = pow((Y*(pow((double)L,-mu-1)-pow(C,-mu-1))+pow((double)C,-mu-1)),(-1./(mu+1)));
+        double R = pow((Y*(pow((double)L,-mu)-pow(C,-mu))+pow((double)C,-mu)),(-1./(mu)));
         double theta = ((double)2*M_PI*rand())/(double)RAND_MAX;
         new_infected[0] = infected->demes[k][0] + (int)(R*cos(theta));
         new_infected[1] = infected->demes[k][1] + (int)(R*sin(theta));
         new_infected[2] = (int)round(scaled_t);
         new_infected[3] = infected->demes[k][3];
+        scaled_t+=1./(infected->used);
         if(!lookup(inf_table, new_infected[0],new_infected[1])) {
             append(infected, new_infected);
             install(inf_table, new_infected[0], new_infected[1]);
