@@ -1,12 +1,36 @@
 Stuff that needs doing
 ----------------------
-1) Un discretize and stochasticize generations
-2) Extend fluctuations plot to higher seed sizes
+1) Un discretize and stochasticize generations (DONE)
+2) Extend fluctuations plot to higher seed sizes 
 3) Track parentage and see how well my sub outbreak catcher is really doing (Carl's suggestion)
 4) Catch large jumps which are causing breaks in max_r fluctuations (Jona's suggestion)
 5) More D3
 6) Set up cluster operations (give it a go and then talk to Diana)
-7) Re-organize some of the plotting stuff into functions
+7) Re-organize some of the plotting stuff into functions (DONE)
 8) Branching Brownian Motion (Reading)
 9) Figure out continuization PDE
 10) Analyze BC's corresponding to leaky sinks (hospitals)
+
+
+
+
+KERNEL INVERSION PROJECT
+Working well for single source, simulated data. 
+
+1) Develop technique for extended sources (using convolutional technique, t := st l(t)=mean(r0s))
+^not as simple when we don't know mu. Two fitting parameters, mu and t0
+2) Get back into google API
+3) Gather more data (Google - words which should be localized geographically)
+Things people (or other slow moving objects) pass to each other locally which then cause google searches.
+WORD IDEAS:
+Flu
+Herpes
+HIV
+Suicide
+
+4)CDC Allele data
+5) Robust format conversion technique for different types of data: f(st_data, conversion_function)
+6) Likelihood Estimator
+7) Soft Outbreaks, weighted radii (first technique)
+8) Clustering Algorithms to identify sub outbreaks
+

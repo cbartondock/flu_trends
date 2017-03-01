@@ -14,8 +14,8 @@ API_KEY = 'AIzaSyCXTS9eMkgdD-9-8-lX04L2CVrDo8SqBbg'
 MAX_QUERIES = 30
 
 
-words = ['flu', 'cough']
-weights = [1,.5]
+words=["herpes"]
+weights = [1]
 
 numify_year = lambda year: sum([a*int(b) for a,b in zip([365.25,29.53,1],year.split('-'))])
 yearify_num = lambda num: '-'.join(map(lambda x: str(int(x)),[num/365.25,(num%365.25)/29.53,(num%365.25)%29.53]))
@@ -138,39 +138,44 @@ def GetQueryVolumes(queries, start_date, end_date,
 
 
 def main():
-    dmas=[]
-    reg_dict={}
-    lat_dict={}
-    long_dict={}
-    with open('data_inputs/dmas.csv') as dmas_file:
-        dmas_data = csv.reader(dmas_file)
-        for row in dmas_data:
-            dmas.append(row[0])
-            reg_dict[row[0]]=row[1]
-            long_dict[row[0]]=row[2]
-            lat_dict[row[0]]=row[3]
+    if False:
+        dmas=[]
+        reg_dict={}
+        lat_dict={}
+        long_dict={}
+        with open('data_inputs/dmas.csv') as dmas_file:
+            dmas_data = csv.reader(dmas_file)
+            for row in dmas_data:
+                dmas.append(row[0])
+                reg_dict[row[0]]=row[1]
+                long_dict[row[0]]=row[2]
+                lat_dict[row[0]]=row[3]
 
-    geo_time_series = {}
-    start = '2007-01-01'
-    end = '2015-01-01'
-    freq = 'day'
-    for dma in dmas[1:]:
-        print dma
-        data = GetQueryVolumes(words,
-            start_date=start,
-            end_date=end,
-            geo=int(dma),
-            geo_level='dma',
-            frequency=freq)[1:]
-        geo_time_series[int(dma)] = [(lat_dict[dma],long_dict[dma]), map(lambda x: sum([x[1+i]*weights[i] for i in range(0,len(weights))])/sum(weights),data)]
-    #print geo_time_series
-    with open("data_outputs/fludata_{0}_{1}_{2}_{3}.csv".format(start,end,freq,"".join(str(datetime.datetime.now()).split())), 'wb') as csv_output:
-        writer = csv.writer(csv_output, quoting = csv.QUOTE_MINIMAL)
-        writer.writerow(['dma', 'latitude', 'longitude', 'timeseries'])
-        for dma, data in geo_time_series.items():
-            print data
-            writer.writerow([dma, data[0][0], data[0][1],data[1]])
-
+        geo_time_series = {}
+        start = '2005-01-01'
+        end = '2015-01-01'
+        freq = 'day'
+        for dma in dmas[1:]:
+            print dma
+            data = GetQueryVolumes(words,
+                start_date=start,
+                end_date=end,
+                geo=int(dma),
+                geo_level='dma',
+                frequency=freq)[1:]
+            geo_time_series[int(dma)] = [(lat_dict[dma],long_dict[dma]), map(lambda x: sum([x[1+i]*weights[i] for i in range(0,len(weights))])/sum(weights),data)]
+        #print geo_time_series
+        with open("data_outputs/"+words[0]+"_data_{0}_{1}_{2}_{3}.csv".format(start,end,freq,"".join(str(datetime.datetime.now()).split())), 'wb') as csv_output:
+            writer = csv.writer(csv_output, quoting = csv.QUOTE_MINIMAL)
+            writer.writerow(['dma', 'latitude', 'longitude', 'timeseries'])
+            for dma, data in geo_time_series.items():
+                print data
+                writer.writerow([dma, data[0][0], data[0][1],data[1]])
+    if True:
+        geo_time_series = {}
+        start = '2005-01-01'
+        end = '2015-01-01'
+        freq = 'day'
 
 
 

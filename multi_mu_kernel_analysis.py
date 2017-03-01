@@ -31,7 +31,7 @@ def mu_retrieval(kernel):
     mu_approx = -(coefficients[0]+d)
     return mu_approx, coefficients, log_ls, log_gs, ls, gs
 
-
+#likelihood
 
 
 

@@ -58,7 +58,7 @@ def c_outbreak(mu, mp, seeds = seed_lattice(1)):
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    mp = int(.5*10**4)
+    mp = int(.5*10**5)
     mu=1.8
     choice_f=rand_choice_f(3)
     seeds = seed_disk(30, choice_f)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 
 #Jump Kernel Analysis
-    kernel_filename = analyze_kernel(output_filename)
+#    kernel_filename = analyze_kernel(output_filename)
 
 #Lots of Plotting
     t=str(round(time.time()))
@@ -80,6 +80,8 @@ if __name__ == '__main__':
     plot_radii(output_filename,t)
     plot_populations(output_filename,t)
 
+
+    #if this is a multiple allele simulation
     if seeds[0][3]!=0:
         plot_frequencies(output_filename,t)
         plot_similarity(choice_f,output_filename,t)

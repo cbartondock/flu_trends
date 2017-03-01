@@ -265,7 +265,6 @@ def animate_attr_spread(filename,tstring, data=[]):
     ims = []
     endrad = max_rad(0,0, generations[-1])
     rad = max_rad(0,0,generations[0])
-    print endrad
     for i in range(0,len(generations)):
         print "progress: "+str(float(i)/len(generations))
         infected_demes.extend(generations[i])

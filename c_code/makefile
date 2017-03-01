@@ -1,4 +1,4 @@
-all: dylibs/useful_functions.dylib dylibs/outbreak_sim.dylib dylibs/dynamic_array.dylib dylibs/hash_table.dylib
+all: dylibs/useful_functions.dylib dylibs/outbreak_sim.dylib dylibs/dynamic_array.dylib dylibs/hash_table.dylib dylibs/mersenne_twister.dylib
 exe: outbreak_sim
 
 dylibs/%.dylib : %.c

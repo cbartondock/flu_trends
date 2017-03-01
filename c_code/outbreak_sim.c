@@ -7,6 +7,7 @@
 
 #include "dynamic_array.c"
 #include "hash_table.c"
+#include "mersenne_twister.c"
 
 #define C 1
 #define d 2
@@ -29,8 +30,8 @@ Outbreak* sim_cont_outbreak(double mu, int mp, int** seeds, int ns) {
         double Y = (double)rand()/(double)RAND_MAX;
         double R = pow((Y*(pow((double)L,-mu)-pow(C,-mu))+pow((double)C,-mu)),(-1./(mu)));
         double theta = ((double)2*M_PI*rand())/(double)RAND_MAX;
-        new_infected[0] = infected->demes[k][0] + (int)(R*cos(theta));
-        new_infected[1] = infected->demes[k][1] + (int)(R*sin(theta));
+        new_infected[0] = infected->demes[k][0] + (long)round(R*cos(theta));
+        new_infected[1] = infected->demes[k][1] + (long)round(R*sin(theta));
         new_infected[2] = (int)round(scaled_t);
         new_infected[3] = infected->demes[k][3];
         scaled_t+=1./(infected->used);
@@ -49,11 +50,11 @@ Outbreak* sim_cont_outbreak(double mu, int mp, int** seeds, int ns) {
 int main(int argc, char** argv) {
     if(argc < 2) {
         printf("usage: ./outbreak_sim testname\n");
-        printf("options for testname are simtest or arrtest or hashtest\n");
+        printf("options for testname are simtest or arrtest or hashtest or twistertest\n");
     }
     else if(strcmp(argv[1], "simtest")==0) {
         srand(clock());
-        int mp = 1000;
+        int mp = 10000;
         float mu =1.9;
         int ns =100;
         int **seeds = (int**)malloc(ns*sizeof(int*));
@@ -92,5 +93,14 @@ int main(int argc, char** argv) {
         BoolTable* tab2 = (BoolTable*)malloc(sizeof(BoolTable));
         init_hash(tab2);
         install(tab2,0,5);
+    } else if(strcmp(argv[1], "twistertest")==0) {
+        Initialize((uint32_t)clock());
+        double r;
+        printf("{");
+        for(int i=0; i < 100; i++) {
+            r = (double)ExtractU32()/(double)UINT32_MAX;
+            printf("%f,", r);
+        }
+        printf("}");
     }
 }

@@ -6,7 +6,6 @@ def get_frequency_functions(data):
     gens = data["gens"]
     attr_dict = data["attr"]
     values = list(set(attr_dict.values()))
-    print values
     totals = Counter()
     frequencies= {0: Counter()}
     totals[0] = len(gens[0])
