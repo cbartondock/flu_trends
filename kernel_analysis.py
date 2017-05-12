@@ -1,5 +1,6 @@
 from universal import *
 from scipy import integrate, interpolate
+from plfit import plfit
 
 def analyze_kernel(filename):
     """Open the files produced by the growth simulation and use some version of the
@@ -37,3 +38,13 @@ def invert_to_kernel_convolution(r_of_t):
         kernel.append((r_of_t[T], -1 if integral == 0 or r_of_t[T] < 1 else 1/integral))
     kernel = filter(lambda p: p[1]!=-1, kernel)
     return zip(*kernel)
+
+#Unclear if Least Squares is the best approach here
+def mu_retrieval(kernel):
+    ls = np.asarray(kernel[0], dtype = 'float')
+    gs = np.asarray(kernel[1], dtype = 'float')
+    log_ls = np.log(ls)
+    log_gs = np.log(gs)
+    coefficients = np.polyfit(log_ls,log_gs,1)
+    mu_approx = -(coefficients[0]+d)
+    return mu_approx, coefficients, log_ls, log_gs, ls, gs

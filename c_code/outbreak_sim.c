@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #include <math.h>
 #include <time.h>
@@ -14,7 +15,7 @@
 #define L 1000000000
 
 Outbreak* sim_cont_outbreak(double mu, int mp, int** seeds, int ns) {
-    srand(clock());
+    Initialize((uint32_t)clock());
     BoolTable* inf_table = (BoolTable*)malloc(sizeof(BoolTable));
     init_hash(inf_table);
     Outbreak* infected = (Outbreak*)malloc(sizeof(Outbreak));
@@ -27,9 +28,9 @@ Outbreak* sim_cont_outbreak(double mu, int mp, int** seeds, int ns) {
     int* new_infected = (int*)malloc(d*sizeof(int));
     while(infected->used<mp+ns) {
         int k = rand() % infected->used;
-        double Y = (double)rand()/(double)RAND_MAX;
+        double Y = (double)ExtractU32()/(double)UINT32_MAX;
         double R = pow((Y*(pow((double)L,-mu)-pow(C,-mu))+pow((double)C,-mu)),(-1./(mu)));
-        double theta = ((double)2*M_PI*rand())/(double)RAND_MAX;
+        double theta = ((double)2*M_PI*ExtractU32())/(double)UINT32_MAX;
         new_infected[0] = infected->demes[k][0] + (long)round(R*cos(theta));
         new_infected[1] = infected->demes[k][1] + (long)round(R*sin(theta));
         new_infected[2] = (int)round(scaled_t);
@@ -53,7 +54,7 @@ int main(int argc, char** argv) {
         printf("options for testname are simtest or arrtest or hashtest or twistertest\n");
     }
     else if(strcmp(argv[1], "simtest")==0) {
-        srand(clock());
+        Initialize((uint32_t)clock());
         int mp = 10000;
         float mu =1.9;
         int ns =100;
@@ -63,7 +64,7 @@ int main(int argc, char** argv) {
             for(int i=0; i<d; i+=1) {
                 seeds[n][i] = (n+i)/3;
             }
-            seeds[n][d]=0; seeds[n][d+1]=rand() % 2;
+            seeds[n][d]=0; seeds[n][d+1]=ExtractU32() % 2;
         }
         Outbreak* new_outbreak; 
         new_outbreak = sim_cont_outbreak(mu, mp, seeds, ns);

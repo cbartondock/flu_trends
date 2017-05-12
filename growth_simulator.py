@@ -59,7 +59,7 @@ def c_outbreak(mu, mp, seeds = seed_lattice(1)):
 if __name__ == '__main__':
     args = sys.argv[1:]
     mp = int(10**5)
-    mu=1.5
+    mu=1.9
     choice_f=rand_choice_f(3)
     seeds = seed_lattice(1)
     outbreak_data = c_outbreak(mu, mp, seeds=seeds)

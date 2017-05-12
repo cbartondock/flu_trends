@@ -1,7 +1,6 @@
 from universal import *
 from growth_simulator import *
 from multiple_sims import *
-from outbreak_splitter import *
 from kernel_analysis import *
 
 def kernels_of_expectations(mus, mean_rs):
@@ -14,21 +13,14 @@ def kernels_of_expectations(mus, mean_rs):
         if len(mean_r["mean_r"]) > max_t:
             max_t= len(mean_r["mean_r"])
     for mu in mus:
+        print "mu: " + str(mu)
         av_r_of_t = {t: mean([r_of_t[t] for r_of_t in r_of_ts[mu] if t <N]) for t in range(0, max_t)}
         kernels[mu] = invert_to_kernel_convolution(av_r_of_t)
     return kernels
 
 
 
-#Unclear if Least Squares is the best approach here
-def mu_retrieval(kernel):
-    ls = np.asarray(kernel[0], dtype = 'float')
-    gs = np.asarray(kernel[1], dtype = 'float')
-    log_ls = np.log(ls)
-    log_gs = np.log(gs)
-    coefficients = np.polyfit(log_ls,log_gs,1)
-    mu_approx = -(coefficients[0]+d)
-    return mu_approx, coefficients, log_ls, log_gs, ls, gs
+
 
 #Log Likeliness?
 
@@ -39,9 +31,11 @@ if __name__ == '__main__':
 
     #multiple_sims_data = pickle.load(open("data_outputs/1.pkl",'r'))
     mus=[1.6,1.8,2.0,2.2,2.4]
+    #mus=[2.1]
     mp= int(10**5)
     n_sim = 1000
     mean_rs = many_sims(mus,mp,seed_lattice(1),n_sim, ["mean_r","params"])
+    print "finished sims"
     kernels = kernels_of_expectations(mus, mean_rs)
     kernel_fig = plt.figure()
     kernel_fig.suptitle(r'Approximated Jump Kernel for simulation, $n_s={1}$, $[\mu]={0}$'.format(mus,n_sim))
