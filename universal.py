@@ -21,6 +21,7 @@ from collections import Counter
 from ctypes import *
 from multiprocessing import Pool
 import multiprocessing
+from scipy.optimize import curve_fit
 
 #Latex Parameters
 rcParams['axes.labelsize'] = 9
@@ -139,36 +140,32 @@ def time_average(data):
     return [(k, mean(v)) for k, v in d.items()]
 
 
-#This gives the crossover scaling from Oskar's PNAS paper SI
-def get_crossover_scaling(mu):
-    delta = mu - d
-    if delta!=0:
-        h = 2*d/delta
-        z = lambda t: np.log2(t)
-        return lambda t: 1 if t==0 else 2**((h/delta)*(z(t)/h + (1+1/h)**(-z(t))-1))
-    else:
-        return lambda t: 1 if t==0 else 2**((np.log(t)**2)/8.)
+#Choose scaling accordingly
+def get_asymptotic_scaling(mu):
+    delta = mu-d
+    if delta < 0:
+        return get_sexp_scaling(delta)
+    elif delta > 0:
+        return get_powerlaw_scaling(delta)
+    return get_critical_scaling()
 
-#This gives the asymptotic zeroth order powerlaw scaling from Oskar's PNAS paper SI
-def get_powerlaw_scaling(mu):
-    delta = mu - d
-    A = 2**(-2*d/(delta**2))
-    beta = -1./(delta)
+#This gives the asymptotic first order powerlaw scaling from Oskar's PNAS paper SI
+def get_powerlaw_scaling(delta):
+    A = np.exp(-2*d*np.log(2) * delta**(-2))
+    beta = 1./(delta)
+    print "A is " + str(A)
+    print "beta is " + str(beta)
     return lambda t: 1 if t==0 else A*(t**beta)
 
+def get_sexp_scaling(delta):
+    B = 2*d*np.log(2) * delta**(-2)
+    eta = np.log((2*d/(2*d+delta))/np.log(2))
+    print "B is " + str(B)
+    print "eta is " + str(eta)
+    return lambda t: 1 if t==0 else np.exp(B * t**eta)
 
-def get_sexp_scaling(mu):
-    delta = mu - d
-    B = 2*d/(delta**2)
-    eta = np.log2((2*d/(d+mu)))
-    return lambda t: 1 if t==0 else 2**(B*(t**eta))
-
-def get_sexp_scaling_corrected(mu):
-    delta = mu
-    B = 2*d/(delta**2)
-    eta = np.log2((2*d/(d+mu)))
-    #unfinished (pending math)
-
+def get_critical_scaling():
+    return lambda t: 1 if t==0 else np.exp((np.log(t)**2) / (4*d*np.log(2)))
 
 #Plotting Helpers
 my_colors = map(lambda rgb: (rgb[0]/255.,rgb[1]/255.,rgb[2]/255.), [(240,163,255),(0,117,220),(153,63,0),(76,0,92),(25,25,25),(0,92,49),(43,206,72),(255,204,153),(128,128,128),(148,255,181),(143,124,0),(157,204,0),(194,0,136),(0,51,128),(255,164,5),(255,168,187),(66,102,0),(255,0,16),(94,241,242),(0,153,143),(224,255,102),(116,10,255),(153,0,0),(255,255,128),(255,255,0),(255,80,5)])

@@ -58,10 +58,10 @@ def c_outbreak(mu, mp, seeds = seed_lattice(1)):
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    mp = int(.5*10**5)
-    mu=1.8
+    mp = int(10**5)
+    mu=1.5
     choice_f=rand_choice_f(3)
-    seeds = seed_disk(30, choice_f)
+    seeds = seed_lattice(1)
     outbreak_data = c_outbreak(mu, mp, seeds=seeds)
     output_filename = "data_outputs/outbreak_data_mp{0}_mu{1}.pkl".format(tenexp(mp), mu)
     data_output = open(output_filename,'wb')
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     plot_populations(output_filename,t)
 
 
-    #if this is a multiple allele simulation
+#if this is a multiple allele simulation
     if seeds[0][3]!=0:
         plot_frequencies(output_filename,t)
         plot_similarity(choice_f,output_filename,t)

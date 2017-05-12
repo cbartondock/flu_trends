@@ -165,7 +165,7 @@ def main():
                 frequency=freq)[1:]
             geo_time_series[int(dma)] = [(lat_dict[dma],long_dict[dma]), map(lambda x: sum([x[1+i]*weights[i] for i in range(0,len(weights))])/sum(weights),data)]
         #print geo_time_series
-        with open("data_outputs/"+words[0]+"_data_{0}_{1}_{2}_{3}.csv".format(start,end,freq,"".join(str(datetime.datetime.now()).split())), 'wb') as csv_output:
+        with open("data_inputs/"+words[0]+"_data_{0}_{1}_{2}_{3}.csv".format(start,end,freq,"".join(str(datetime.datetime.now()).split())), 'wb') as csv_output:
             writer = csv.writer(csv_output, quoting = csv.QUOTE_MINIMAL)
             writer.writerow(['dma', 'latitude', 'longitude', 'timeseries'])
             for dma, data in geo_time_series.items():

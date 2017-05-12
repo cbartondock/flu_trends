@@ -68,7 +68,6 @@ int main(int argc, char** argv) {
         Outbreak* new_outbreak; 
         new_outbreak = sim_cont_outbreak(mu, mp, seeds, ns);
         save_outbreak(new_outbreak,"test_outbreak.txt");
-        //print(new_outbreak);
         printf("total size is: %zu\n",new_outbreak->size);
     } else if(strcmp(argv[1], "arrtest")==0) {
         Outbreak outbreak;

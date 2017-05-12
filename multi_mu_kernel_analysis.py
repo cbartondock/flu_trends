@@ -4,16 +4,15 @@ from multiple_sims import *
 from outbreak_splitter import *
 from kernel_analysis import *
 
-def kernels_of_expectations(multiple_sims_data):
-    mus = [sim["params"]["mu"] for sim in multiple_sims_data]
-    N = min([len(sim["gens"]) for sim in multiple_sims_data])
+def kernels_of_expectations(mus, mean_rs):
+    N = min([len(mean_r["mean_r"]) for mean_r in mean_rs])
     r_of_ts = {mu: [] for mu in mus}
     kernels = {}
     max_t=0
-    for data in multiple_sims_data:
-        r_of_ts[data["params"]["mu"]].append(data["mean_r"])
-        if len(data["gens"]) > max_t:
-            max_t = len(data["gens"])
+    for mean_r in mean_rs:
+        r_of_ts[mean_r["params"]["mu"]].append(mean_r["mean_r"])
+        if len(mean_r["mean_r"]) > max_t:
+            max_t= len(mean_r["mean_r"])
     for mu in mus:
         av_r_of_t = {t: mean([r_of_t[t] for r_of_t in r_of_ts[mu] if t <N]) for t in range(0, max_t)}
         kernels[mu] = invert_to_kernel_convolution(av_r_of_t)
@@ -31,18 +30,19 @@ def mu_retrieval(kernel):
     mu_approx = -(coefficients[0]+d)
     return mu_approx, coefficients, log_ls, log_gs, ls, gs
 
-#likelihood
+#Log Likeliness?
 
 
 
 
 if __name__ == '__main__':
-    mp= int(10**4)
+
+    #multiple_sims_data = pickle.load(open("data_outputs/1.pkl",'r'))
+    mus=[1.6,1.8,2.0,2.2,2.4]
+    mp= int(10**5)
     n_sim = 1000
-    mus = [1.6,1.8,2.0,2.2]
-    #multiple_sims_data = many_sims(mus,mp,seed_lattice(1),n_sim)
-    multiple_sims_data = pickle.load(open("data_outputs/1.pkl",'r'))
-    kernels = kernels_of_expectations(multiple_sims_data)
+    mean_rs = many_sims(mus,mp,seed_lattice(1),n_sim, ["mean_r","params"])
+    kernels = kernels_of_expectations(mus, mean_rs)
     kernel_fig = plt.figure()
     kernel_fig.suptitle(r'Approximated Jump Kernel for simulation, $n_s={1}$, $[\mu]={0}$'.format(mus,n_sim))
     kernel_ax = kernel_fig.add_subplot(111)

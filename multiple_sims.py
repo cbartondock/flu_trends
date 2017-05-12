@@ -1,14 +1,17 @@
 from universal import *
 from growth_simulator import *
 
-def apply_me(args):
-    print "applying"
-    return c_outbreak(*args)
+#props allow me to only passing back what I need, saving my poor computer's swap space.
 
-def many_sims(mus, mp,seeds,n_sim):
+def apply_me(args):
+    c_args, props = args[:-1], args[-1]
+    result = c_outbreak(*c_args)
+    return {prop: result[prop] for prop in props}
+
+def many_sims(mus, mp,seeds,n_sim, props):
     def arg_gen():
         for i in range(0, n_sim):
-            yield (mus[i%len(mus)],mp,seeds)
+            yield (mus[i%len(mus)],mp,seeds,props)
     pool = Pool(multiprocessing.cpu_count())
     return pool.map(apply_me, [args for args in arg_gen()])
 

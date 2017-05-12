@@ -53,31 +53,43 @@ def plot_attr_spread(filename,tstring):
     plt.clf()
     plt.close(fig)
 
-def plot_radii(filename,tstring):
+def plot_radii(filename, tstring):
     data_dump_file = open(filename, 'rb')
     data_dump = pickle.load(data_dump_file)
     generations = data_dump["gens"]
     mean_r_of_t = data_dump["mean_r"]
     max_r_of_t = data_dump["max_r"]
     mu, mp = data_dump["params"]["mu"], data_dump["params"]["mp"]
-    scaling = get_crossover_scaling(mu)
+    asym_scaling = get_asymptotic_scaling(mu)
+
+    crit_scaling = get_critical_scaling()
     print "Plotting Radii"
     radii_fig = plt.figure()
     radii_fig.suptitle(r'Radial growth with final pop. $10^{0}$, $\mu={1}$'.format(tenexp(mp), mu),  fontweight='bold')
     radii_ax = radii_fig.add_subplot(111)
     radii_fig.subplots_adjust(top=.9)
-    meanplot = radii_ax.scatter(list(range(0,len(generations))),[mean_r_of_t[g] for g in range(0,len(generations))], color=rc())
-    maxplot = radii_ax.scatter(list(range(0,len(generations))),[max_r_of_t[g] for g in range(0,len(generations))], color=rc())
-    fc = rc()
-    fpatch = mpatches.Patch(color=fc)
-    fitplot = radii_ax.plot([max_r_of_t[0]+scaling(g) for g in range(0,len(generations))],c=fc)
+    gs = range(0,len(generations))
+    mean_rs = [mean_r_of_t[g] for g in gs]
+    max_rs = [max_r_of_t[g] for g in gs]
+    meanplot = radii_ax.scatter(list(gs), mean_rs, color=rc())
+
+    fc, fc2 = rc(),rc()
+    fpatch, fpatch2 = mpatches.Patch(color=fc), mpatches.Patch(color=fc2)
+    fitfunc = lambda scaling: np.vectorize(lambda t, *p: p[0]*(scaling(t)-scaling(0)))
+    #p_asym, cov_asym = curve_fit(fitfunc(asym_scaling), gs[:10], mean_rs[:10], p0=(1,))
+    p_crit, cov_crit = curve_fit(fitfunc(crit_scaling), np.asarray(gs), np.asarray(mean_rs),p0=(1,))
+    critplot = radii_ax.plot([fitfunc(crit_scaling)(g, *p_crit) for g in gs],c=fc2)
+    #asymplot = radii_ax.plot([fitfunc(asym_scaling)(g, *p_crit) for g in gs],c=fc)
     radii_ax.set_xlabel(r'Generation')
     radii_ax.set_ylabel(r'Radius')
-    radii_ax.legend(handles=[meanplot,maxplot,fpatch],labels=[r'Mean Radius', r'Maximum Radius', r'Crossover Prediction'], loc='upper left')
+    radii_ax.legend(handles=[meanplot,fpatch2],labels=[r'Mean Radius', r'Critical Prediction'], loc='upper left')
     newdir = "outputs/_t"+tstring+"_mp{0}_mu{1}".format(tenexp(mp),mu)
     if not os.path.isdir(newdir):
         os.mkdir(newdir)
     radii_fig.savefig(newdir+"/radial_plot_t"+str(round(time.time()))+"_mp{0}_mu{1}.png".format(tenexp(mp),mu),dpi=400)
+    maxplot = radii_ax.scatter(list(gs),max_rs, color=rc())
+    radii_ax.legend(handles=[meanplot,maxplot,fpatch2],labels=[r'Mean Radius', r'Maximum Radius', r'Critical Prediction'], loc='upper left')
+    radii_fig.savefig(newdir+"/max_radial_plot_t"+str(round(time.time()))+"_mp{0}_mu{1}.png".format(tenexp(mp),mu),dpi=400)
     plt.clf()
     plt.close(radii_fig)
 
